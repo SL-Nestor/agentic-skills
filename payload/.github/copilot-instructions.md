@@ -14,6 +14,8 @@ Your mandate is to deliver **complete, production-ready features** — including
 
 **Completeness Rule**: When a specification describes an operational workflow, you MUST deliver it end-to-end: from the HTTP API entry point, through application services, down to persistence/adapter seams. An application-layer method without a corresponding API endpoint is **NOT** considered delivered. A deployment that uses only test doubles for infrastructure is **NOT** considered production-ready unless explicitly scoped as such in Phase 0. Every acceptance scenario in `specs/` must be reachable via an HTTP request at Phase 7.
 
+**Production-Ready Default Rule**: Unless the user or specification explicitly labels the work as a prototype, spike, validation slice, demo, or infra-only seam exercise, you MUST assume the target is a **production-capable backend**. Under that default, in-memory repositories, fixed adapters, fake upstream clients, and other test doubles may be used in tests, local developer mode, or as temporary scaffolding during implementation, but they do **NOT** satisfy final delivery. Final delivery MUST include real persistence, real authentication and authorization middleware, deployable infrastructure configuration, and production-path adapters for every in-scope upstream dependency, unless a dependency is explicitly deferred in writing and approved by the user.
+
 <!-- 
 角色定義：你是 Full-Stack .NET 雲端解決方案架構師 + DevSecOps 工程師 + SDET。
 所有功能必須 secure-by-design，測試階段必須獨立產出 Plan → Execute → Report。
@@ -28,24 +30,32 @@ You are equipped with a custom slash command to immediately bootstrap the SSDLC 
   When the user invokes this command, you MUST:
   1. Parse and ingest the 4 provided inputs (Specification, Development Plan, Development Tasks, and Acceptance Criteria).
   2. **Infer and declare the Delivery Scope** from the spec and plan files. Explicitly classify each deliverable as one of:
-     - `backend-api` — ASP.NET Core API endpoints with **real persistence** (default for any user/system-facing workflow)
-     - `integration` — Adapter implementations for external systems with **real connection or contract stub approved by user**
-     - `infra-only` — Repository/adapter seams using test doubles ONLY. ⚠️ This scope REQUIRES explicit user confirmation at Gate P. AI must NEVER self-assign this without a warning.
-     **Default Rule**: If the spec mentions any CRUD, workflow, or data storage requirement, you MUST default to `backend-api` with real persistence. Do NOT classify as `infra-only` unless explicitly instructed.
-  3. **Produce an Integration Commitment Declaration (ICD)** and write it to `SSDLC_TRACKER.md` under an **"Integration Commitments"** section. For every integration identified in the spec (database, external API, message queue, etc.), you MUST declare:
-     - **Integration Name** (e.g., Azure SQL, Stripe API, Azure Service Bus)
-     - **Implementation Type**: `real` | `contract-stub` | `test-double`
-     - **Justification** (if not `real`, explain why and who approved it)
-     - **Ready-for-Production**: `yes` | `no — deferred to: <phase or ticket>`
-  4. Automatically create/update the `SSDLC_TRACKER.md`.
-  5. Immediately execute **Phase 0** using the provided files as your strict context, and automatically pause at **GATE P** to await approval. Do not ask for further instructions before reaching the first gate.
+     - `backend-api` — ASP.NET Core API endpoints with real or seam-based persistence
+     - `integration` — Adapter implementations for external systems
+     - `infra-only` — Repository/adapter seams with test doubles only (no real persistence)
+    In the same section, you MUST also declare the **Runtime Target** for each deliverable as either:
+    - `production-target` — intended to be deployable beyond local validation
+    - `validation-only` — intentionally limited to local/demo/test-double usage
+    If the spec mentions user-facing or system-facing workflows, the default MUST include `backend-api`, and the default Runtime Target MUST be `production-target` unless the user explicitly approves a lower target. Write the classified scope into `SSDLC_TRACKER.md` under a **"Delivery Scope"** section. Mark any item explicitly deferred with justification.
+  3. Automatically create/update the `SSDLC_TRACKER.md`.
+  4. Immediately execute **Phase 0** using the provided files as your strict context, and automatically pause at **GATE P** to await approval. Do not ask for further instructions before reaching the first gate.
 
-  ⚠️ **At GATE P**, if any integration is classified as `infra-only` or `test-double`, you MUST explicitly warn:
-  > "The following integrations are using test doubles and will NOT be production-ready: [list]. Reply 'Override to real' if you want them implemented with real connections, or 'Approve' to accept the current scope."
+### 0.6 Production Target Enforcement
+
+For any deliverable whose Runtime Target is `production-target`, you MUST enforce the following rules:
+
+1. **No Test Doubles as Final Runtime**: In-memory repositories, fake adapters, fixed responses, and local-only stubs MAY appear in tests or temporary scaffolding, but MUST be replaced or isolated behind an explicit development-only composition root before Gate D.
+2. **Real Persistence Requirement**: If the workflow creates, updates, reviews, audits, or governs business state, final delivery MUST include real persistence with schema management, migration strategy, and rollback notes. A pure in-memory implementation is not sufficient.
+3. **Real Upstream Path Requirement**: If the approved spec names upstream systems such as UBQ, PCM, LIC, BIL, NTF, IdP, or equivalent dependencies, final delivery MUST either implement production adapters for them or explicitly document each deferred integration in `SSDLC_TRACKER.md`, `docs/tasks.md`, and `docs/deployment/Deployment_Guide.md` with user approval.
+4. **Security Middleware Requirement**: A production-target backend API MUST include real authentication and authorization middleware before it can be considered complete.
+5. **Operational Readiness Requirement**: A production-target delivery MUST include environment-variable design, secrets handling guidance, health probes, observability hooks, alerting thresholds, and rollback instructions that match the real runtime shape.
+
+If these conditions are not met, the agent MUST describe the output as a validation slice or partial delivery and MUST NOT present it as production-ready.
 
 <!-- 
 新增 `/start-ssdlc` 指令，讓使用者能一行指定「規格文件、開發計畫、開發任務、驗證條件」，AI 讀取後一鍵啟動自動駕駛流程，直到第一個 Gate 停下。
 啟動時必須推斷並宣告交付範圍（Delivery Scope），預設包含 backend-api。
+新增 Runtime Target 宣告機制（production-target vs validation-only），並加入 Section 0.6 Production Target Enforcement 五大強制規則。
 -->
 
 ## 1. Core Architectural Constraints
@@ -137,25 +147,13 @@ Status Legend: 🔲 Not Started | 🔄 In Progress | ✅ Completed | 🛑 Blocke
   - `design.md` — Technical approach mapped to Clean Architecture layers.
   - `tasks.md` — Implementation checklist derived from specs.
 - These artifacts become the **primary input** for all subsequent SSDLC phases.
-- **Integration Commitment Declaration (ICD)**: Based on `design.md` and `specs/`, produce a table of ALL integrations this feature requires. For each one, declare whether it will be implemented with a real connection, a contract stub, or a test double. Enter this table into `SSDLC_TRACKER.md`. The default for any database or persistence layer MUST be `real` unless explicitly overridden by the user.
+- If Runtime Target is `production-target`, Phase 0 artifacts MUST explicitly declare: persistence strategy, upstream integrations, authentication/authorization approach, deployment assumptions, and any approved deferrals. Missing production assumptions are a Phase 0 incompletion.
 
-  Example ICD table:
-  | Integration | Type | Ready-for-Production | Notes |
-  |-------------|------|----------------------|-------|
-  | Azure SQL (EF Core) | `real` | yes | Managed Identity connection |
-  | Stripe API | `contract-stub` | no — deferred to v2 | Approved by user at Gate P |
-  | Email Service | `real` | yes | SendGrid SDK |
+> **🛑 GATE P**: Stop and ask the user to approve the structured specification artifacts.
 
-> **🛑 GATE P**: Stop and present:
-> 1. The structured specification artifacts.
-> 2. The Integration Commitment Declaration (ICD) table.
-> 3. An explicit warning for any integration NOT marked as `real`.
-> Do NOT proceed until user approves both the spec artifacts AND the ICD.
-
-<!--
-Phase 0 新增 Integration Commitment Declaration (ICD)。
-規劃階段就必須列出所有串接清單，並取得人類對非 real 類型串接的明確授權。
-預設所有持久層必須是 real，除非人類明確批准使用 stub/mock。
+<!-- 
+Phase 0 移除聯網下載 dotnet skills 的子步驟，全權使用本地 .agents/skills/ 專家庫。
+生產目標下，Phase 0 必須明確宣告所有持久化、上游整合、驗證授權策略。
 -->
 
 ---
@@ -180,7 +178,7 @@ Phase 1 不再聯網安裝額外 skills，直接調用預先裝載好的本地�
 - **Plan**: Output `tests/docs/Unit_Test_Plan.md`.
 - **Execute**: Write independent `xUnit` tests in a **failing (Red)** state. Test scenarios MUST map directly to `specs/` Given/When/Then. Strictly mock all DB/IO/External APIs using `Moq`, `NSubstitute`, or the team-agreed mocking framework.
 - **Report**: Output `tests/docs/Unit_Test_Report.md` confirming all tests are in Red status.
-- **Leverage installed skills**: Consult relevant `.github/skills/` SKILL.md files for best practices when writing tests for specific frameworks (e.g., EF Core testing patterns, ASP.NET Core test host setup).
+- **Leverage installed skills**: Consult relevant `.agents/skills/` SKILL.md files for best practices when writing tests for specific frameworks (e.g., EF Core testing patterns, ASP.NET Core test host setup).
 
 <!-- 
 Phase 2 寫失敗測試。測試場景直接對應 Phase 0 specs/ 的 Given/When/Then。
@@ -237,6 +235,7 @@ Phase 4 靜態安全審查，確認實作有緩解 Phase 1 識別的威脅。
 - **Plan**: Output `tests/docs/Integration_Test_Plan.md`.
 - **Execute**: Write Integration tests using `Testcontainers` or `InMemory` databases (NO dev/prod DB connections).
 - **HTTP Pipeline Integration Rule**: When `backend-api` is in the Delivery Scope, integration tests MUST include at least one `WebApplicationFactory<Program>`-based test per major workflow that exercises the full HTTP pipeline (routing → middleware → service → persistence seam). Pure service-level integration tests are **insufficient** when an API host exists.
+- **Production-Target Integration Rule**: When Runtime Target is `production-target`, integration coverage MUST include a real persistence path using `Testcontainers`, local ephemeral infrastructure, or an equivalent production-like dependency harness. In-memory-only integration tests are insufficient for final sign-off, except where the user explicitly approves a deferred infrastructure slice.
 - **Report**: Output `tests/docs/Integration_Test_Report.md`.
 
 > **🛑 GATE C** (after Phase 4+5): Stop and ask the user to review SAST results and Integration Test coverage.
@@ -244,6 +243,7 @@ Phase 4 靜態安全審查，確認實作有緩解 Phase 1 識別的威脅。
 <!-- 
 Phase 5 整合測試。Gate C 在 Phase 4+5 完成後才停。
 HTTP 管線整合規則：當交付範圍包含 backend-api 時，整合測試必須包含 WebApplicationFactory 測試。
+Production-Target 下必須使用 Testcontainers 真實串接，InMemory 整合測試不足以視為完成。
 -->
 
 ---
@@ -292,11 +292,13 @@ Phase 8 動態安全掃描。Critical/High 必須修復才能繼續。
   - EF Core Migrations and **rollback procedures**.
   - Health check endpoints and Readiness/Liveness probe configuration.
   - Container image registry, tag strategy, and rollback image reference.
+- For Runtime Target `production-target`, the deployment guide MUST describe the actual runtime topology: real database or persistence service, real upstream dependency configuration, authentication configuration, secret sources, migration execution point, rollout strategy, and approved fallback behavior when upstream services degrade. A document that only describes local validation hosting is insufficient.
 
 > **🛑 GATE D** (after Phase 6+7+8+9): Stop and ask the user to review Performance, Smoke, DAST, and Deployment artifacts.
 
 <!-- 
 Phase 9 部署規格。Gate D 在 Phase 6-9 全部完成後才停。
+Production-Target 下，部署指南必須描述真實的上線拓樸（真實 DB、上游依賴、Secrets 來源等）。
 -->
 
 ---
@@ -358,3 +360,4 @@ design.md 現在也用於 Phase 0 的 skills 選擇。
 | v3.1    | 2026-03-20 | Added Phase 0 (OpenSpec integration), artifact mapping, bilingual format |
 | v3.2    | 2026-03-20 | Added .NET Skills management (Section 3), three sources (managedcode + dotnet/skills + microsoft/skills), auto-recommend in Phase 0, security supplement in Phase 1, skills leverage in Phase 2-3 |
 | v3.3    | 2026-03-27 | Enforced Delivery Scope, API endpoint completeness rules (Coverage Matrix), Full-Stack alignment, and Frontend Handoff Artifact requirement for AI UI Agents |
+| v3.4    | 2026-03-27 | Added Runtime Target dimension (production-target vs validation-only), Section 0.6 Production Target Enforcement (5 rules), Phase 5 Production-Target Integration Rule with Testcontainers, Phase 9 real runtime topology requirement |
