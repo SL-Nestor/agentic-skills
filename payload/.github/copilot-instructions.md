@@ -28,12 +28,20 @@ You are equipped with a custom slash command to immediately bootstrap the SSDLC 
   When the user invokes this command, you MUST:
   1. Parse and ingest the 4 provided inputs (Specification, Development Plan, Development Tasks, and Acceptance Criteria).
   2. **Infer and declare the Delivery Scope** from the spec and plan files. Explicitly classify each deliverable as one of:
-     - `backend-api` — ASP.NET Core API endpoints with real or seam-based persistence
-     - `integration` — Adapter implementations for external systems
-     - `infra-only` — Repository/adapter seams with test doubles only (no real persistence)
-     Write the classified scope into `SSDLC_TRACKER.md` under a **"Delivery Scope"** section. If the spec mentions user-facing or system-facing workflows, the default MUST include `backend-api`. Mark any item explicitly deferred with justification.
-  3. Automatically create/update the `SSDLC_TRACKER.md`.
-  4. Immediately execute **Phase 0** using the provided files as your strict context, and automatically pause at **GATE P** to await approval. Do not ask for further instructions before reaching the first gate.
+     - `backend-api` — ASP.NET Core API endpoints with **real persistence** (default for any user/system-facing workflow)
+     - `integration` — Adapter implementations for external systems with **real connection or contract stub approved by user**
+     - `infra-only` — Repository/adapter seams using test doubles ONLY. ⚠️ This scope REQUIRES explicit user confirmation at Gate P. AI must NEVER self-assign this without a warning.
+     **Default Rule**: If the spec mentions any CRUD, workflow, or data storage requirement, you MUST default to `backend-api` with real persistence. Do NOT classify as `infra-only` unless explicitly instructed.
+  3. **Produce an Integration Commitment Declaration (ICD)** and write it to `SSDLC_TRACKER.md` under an **"Integration Commitments"** section. For every integration identified in the spec (database, external API, message queue, etc.), you MUST declare:
+     - **Integration Name** (e.g., Azure SQL, Stripe API, Azure Service Bus)
+     - **Implementation Type**: `real` | `contract-stub` | `test-double`
+     - **Justification** (if not `real`, explain why and who approved it)
+     - **Ready-for-Production**: `yes` | `no — deferred to: <phase or ticket>`
+  4. Automatically create/update the `SSDLC_TRACKER.md`.
+  5. Immediately execute **Phase 0** using the provided files as your strict context, and automatically pause at **GATE P** to await approval. Do not ask for further instructions before reaching the first gate.
+
+  ⚠️ **At GATE P**, if any integration is classified as `infra-only` or `test-double`, you MUST explicitly warn:
+  > "The following integrations are using test doubles and will NOT be production-ready: [list]. Reply 'Override to real' if you want them implemented with real connections, or 'Approve' to accept the current scope."
 
 <!-- 
 新增 `/start-ssdlc` 指令，讓使用者能一行指定「規格文件、開發計畫、開發任務、驗證條件」，AI 讀取後一鍵啟動自動駕駛流程，直到第一個 Gate 停下。
@@ -129,11 +137,25 @@ Status Legend: 🔲 Not Started | 🔄 In Progress | ✅ Completed | 🛑 Blocke
   - `design.md` — Technical approach mapped to Clean Architecture layers.
   - `tasks.md` — Implementation checklist derived from specs.
 - These artifacts become the **primary input** for all subsequent SSDLC phases.
+- **Integration Commitment Declaration (ICD)**: Based on `design.md` and `specs/`, produce a table of ALL integrations this feature requires. For each one, declare whether it will be implemented with a real connection, a contract stub, or a test double. Enter this table into `SSDLC_TRACKER.md`. The default for any database or persistence layer MUST be `real` unless explicitly overridden by the user.
 
-> **🛑 GATE P**: Stop and ask the user to approve the structured specification artifacts.
+  Example ICD table:
+  | Integration | Type | Ready-for-Production | Notes |
+  |-------------|------|----------------------|-------|
+  | Azure SQL (EF Core) | `real` | yes | Managed Identity connection |
+  | Stripe API | `contract-stub` | no — deferred to v2 | Approved by user at Gate P |
+  | Email Service | `real` | yes | SendGrid SDK |
 
-<!-- 
-Phase 0 移除聯網下載 dotnet skills 的子步驟，全權使用本地 .agents/skills/ 專家庫。
+> **🛑 GATE P**: Stop and present:
+> 1. The structured specification artifacts.
+> 2. The Integration Commitment Declaration (ICD) table.
+> 3. An explicit warning for any integration NOT marked as `real`.
+> Do NOT proceed until user approves both the spec artifacts AND the ICD.
+
+<!--
+Phase 0 新增 Integration Commitment Declaration (ICD)。
+規劃階段就必須列出所有串接清單，並取得人類對非 real 類型串接的明確授權。
+預設所有持久層必須是 real，除非人類明確批准使用 stub/mock。
 -->
 
 ---
