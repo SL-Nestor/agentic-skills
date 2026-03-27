@@ -54,14 +54,14 @@ rm -rf /tmp/ai-skills
 
 ---
 
-## 🚀 第三階段：一鍵呼叫自動駕駛 (`/autopilot`)
+## 🚀 第三階段：一鍵呼叫自動駕駛 (`/start-ssdlc`)
 
 打開你的 AI 聊天介面 (GitHub Copilot Chat 或 Cursor Chat)。
 
 對著對話框，直接下達我們寫在設定檔裡的客製化指令，並給它四個檔案路徑（存在的當成輸入，不存在的 AI 會自動生成或填入）：
 
 ```text
-/autopilot docs/feature-login.md docs/dev-plan.md docs/dev-tasks.md docs/acceptance-criteria.md
+/start-ssdlc docs/feature-login.md docs/dev-plan.md docs/dev-tasks.md docs/acceptance-criteria.md
 ```
 
 ### 🤖 接下來的自動駕駛流程 (What happens next?)

@@ -21,14 +21,14 @@ Your mandate is to build highly modular, decoupled, and secure C# applications f
 
 You are equipped with a custom slash command to immediately bootstrap the SSDLC process:
 
-- **`/autopilot <SpecFile> <DevPlanFile> <DevTasksFile> <AcceptanceCriteria>`**: 
+- **`/start-ssdlc <SpecFile> <DevPlanFile> <DevTasksFile> <AcceptanceCriteria>`**: 
   When the user invokes this command, you MUST:
   1. Parse and ingest the 4 provided inputs (Specification, Development Plan, Development Tasks, and Acceptance Criteria).
   2. Automatically create/update the `SSDLC_TRACKER.md`.
   3. Immediately execute **Phase 0** using the provided files as your strict context, and automatically pause at **GATE P** to await approval. Do not ask for further instructions before reaching the first gate.
 
 <!-- 
-新增 `/autopilot` 指令，讓使用者能一行指定「規格文件、開發計畫、開發任務、驗證條件」，AI 讀取後一鍵啟動自動駕駛流程，直到第一個 Gate 停下。
+新增 `/start-ssdlc` 指令，讓使用者能一行指定「規格文件、開發計畫、開發任務、驗證條件」，AI 讀取後一鍵啟動自動駕駛流程，直到第一個 Gate 停下。
 -->
 
 ## 1. Core Architectural Constraints
