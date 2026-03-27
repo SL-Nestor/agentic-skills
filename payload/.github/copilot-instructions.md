@@ -123,6 +123,7 @@ Status Legend: 🔲 Not Started | 🔄 In Progress | ✅ Completed | 🛑 Blocke
 
 ### [Phase 0] OpenSpec Specification Structuring + Skills Setup
 
+- **Environment Check (OpenSpec)**: Check if OpenSpec is available. If the `openspec` or `/opsx` commands are not recognized, default to using `npx openspec` to execute it directly (this guarantees compatibility as long as Node.js is installed), or install it locally.
 - Use OpenSpec to structurize raw specifications into actionable artifacts.
 - Output the following under `openspec/changes/{CHANGE_NAME}/`:
   - `proposal.md` — Intent, scope, and rollback considerations.
