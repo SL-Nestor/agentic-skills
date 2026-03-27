@@ -24,6 +24,7 @@ Remove-Item -Recurse -Force "$env:TEMP\ai-skills"
 ```bash
 git clone https://github.com/SL-Nestor/agentic-skills.git /tmp/ai-skills
 cd /tmp/ai-skills
+chmod +x install.sh
 ./install.sh /你的/專案/真實路徑
 rm -rf /tmp/ai-skills
 ```
