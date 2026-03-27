@@ -61,46 +61,21 @@ When generating or refactoring any code, you MUST adhere strictly to these 5 rul
 Git 規範：feature branch、Conventional Commits、CI 綠燈才能 merge、SemVer 標籤。
 -->
 
-## 3. .NET Skills Management
+## 3. Pre-Bundled AI Skills Management
 
-### 3.1 Skills Sources (Priority Order)
+This project comes pre-bundled with a complete set of AI skills located centrally in `.agents/skills/`. You do not need to install any external skills.
 
-This project uses AI agent skills from three sources to enhance coding agent capabilities:
+### 3.1 Provided Skills (Inside `.agents/skills/`)
+1. **Custom SSDLC Experts**: `spec-architect`, `code-review-expert`, `ssdlc-threat-modeling`.
+2. **Microsoft SDK / .NET Core Skills**: Dozens of official `.NET` performance, MSBuild, and diagnostics skills.
 
-| Priority | Source | CLI Tool | Purpose |
-|----------|--------|----------|---------|
-| 1 | `managedcode/dotnet-skills` | `dotnet-skills` (dotnet tool) | Community-driven, library-specific skills with auto-recommend from .csproj |
-| 2 | `dotnet/skills` | Copilot `/plugin` commands | Official .NET team skills for core platform topics |
-| 3 | `microsoft/skills` | Copilot `/plugin` commands | Microsoft SDK skills (Azure, Identity, etc.) |
-
-### 3.2 Skills Installation Rules
-
-- **Phase 0**: After reading specs and producing `design.md`, run `dotnet skills recommend` to auto-detect skills from `.csproj` files. Install ALL recommended skills without stopping.
-- **Phase 1**: After producing `Threat_Model.md`, evaluate if additional security, performance, or platform skills are needed from `dotnet/skills` or `microsoft/skills`. Install them without stopping.
-- **Auto-install, no gate**: Skills installation is a sub-step within Batch P and Batch A. It does NOT trigger a separate gate or require user approval.
-- **Record all installed skills** in `docs/skills/Installed_Skills.md` with source, version, and purpose.
-
-### 3.3 Skills File Location
-
-```
-.github/
-├── skills/              ← managedcode/dotnet-skills installs here
-│   ├── dotnet-efcore/
-│   │   └── SKILL.md
-│   ├── dotnet-aspnetcore/
-│   │   └── SKILL.md
-│   └── ...
-├── copilot-instructions.md
-└── prompts/             ← OpenSpec prompt files
-```
+### 3.2 Usage Rule
+- Do **NOT** attempt to run `dotnet skills install` or search for skills online.
+- When performing a specific task (e.g., threat modeling, EF core optimization), directly reference the pre-installed markdown files under `.agents/skills/`.
 
 <!-- 
-Skills 管理：
-- 三個來源：managedcode（社群）、dotnet/skills（官方）、microsoft/skills（微軟 SDK）
-- Phase 0 用 `dotnet skills recommend` 自動推薦並安裝
-- Phase 1 根據威脅模型補充安全/效能相關 skills
-- 安裝不停頓，不需要人工核准
-- 所有已安裝 skills 記錄在 docs/skills/Installed_Skills.md
+Skills 管理已改為全部本地預先打包 (Pre-bundled)。
+AI 嚴禁執行任何 dotnet-skills install 等聯網下載指令，防範權限錯誤，直接讀取 .agents/skills/ 內的專家知識即可。
 -->
 
 ## 4. Tracking & The Gate Check Rule
@@ -135,7 +110,7 @@ Status Legend: 🔲 Not Started | 🔄 In Progress | ✅ Completed | 🛑 Blocke
 
 ## 5. The 11-Phase SSDLC Workflow (Phase 0–10)
 
-### [Phase 0] OpenSpec Specification Structuring + Skills Setup
+### [Phase 0] OpenSpec Specification Structuring
 
 - **Environment Check (OpenSpec)**: Check if OpenSpec is available. If the `openspec` or `/opsx` commands are not recognized, default to using `npx openspec` to execute it directly (this guarantees compatibility as long as Node.js is installed), or install it locally.
 - Use OpenSpec to structurize raw specifications into actionable artifacts.
@@ -144,21 +119,12 @@ Status Legend: 🔲 Not Started | 🔄 In Progress | ✅ Completed | 🛑 Blocke
   - `specs/` — Structured requirements using Given/When/Then format.
   - `design.md` — Technical approach mapped to Clean Architecture layers.
   - `tasks.md` — Implementation checklist derived from specs.
-- **Skills Auto-Setup** (runs automatically, no gate):
-  1. Run `dotnet skills recommend` to detect skills from `.csproj` files.
-  2. Run `dotnet skills install <recommended-skills>` to install them into `.github/skills/`.
-  3. Evaluate `design.md` to determine if additional skills are needed from `dotnet/skills` or `microsoft/skills` plugin marketplaces.
-  4. Install any additional skills identified.
-  5. Output `docs/skills/Installed_Skills.md` listing all installed skills.
-- These artifacts and skills become the **primary input** for all subsequent SSDLC phases.
+- These artifacts become the **primary input** for all subsequent SSDLC phases.
 
-> **🛑 GATE P**: Stop and ask the user to approve the structured specification artifacts AND the installed skills list.
+> **🛑 GATE P**: Stop and ask the user to approve the structured specification artifacts.
 
 <!-- 
-Phase 0 新增 Skills Auto-Setup 子步驟。
-dotnet skills recommend 根據 .csproj 自動推薦。
-design.md 分析決定是否需要額外的官方/微軟 skills。
-安裝過程不停頓，Gate P 時一起審查。
+Phase 0 移除聯網下載 dotnet skills 的子步驟，全權使用本地 .agents/skills/ 專家庫。
 -->
 
 ---
@@ -168,16 +134,13 @@ design.md 分析決定是否需要額外的官方/微軟 skills。
 - Read Phase 0 artifacts: `specs/`, `design.md`, and `proposal.md`.
 - Output `docs/security/Threat_Model.md` identifying STRIDE threats, input validation rules, and actionable Dev Tasks.
 - Merge Phase 0 `tasks.md` with Threat Model Dev Tasks into a consolidated task list.
-- **Skills Supplement** (runs automatically, no gate):
-  1. Based on threats identified (e.g., authentication threats → identity skills, data access threats → EF Core security skills), check if additional skills from `dotnet/skills` or `microsoft/skills` are needed.
-  2. Install any additional skills and append to `docs/skills/Installed_Skills.md`.
+- **Skills Leverage**: Invoke the `.agents/skills/ssdlc-threat-modeling` file locally to support this threat modeling phase.
 
-> **🛑 GATE A**: Stop and ask the user to approve the Threat Model, consolidated task list, and any newly added skills.
+> **🛑 GATE A**: Stop and ask the user to approve the Threat Model, consolidated task list.
 
 <!-- 
-Phase 1 新增 Skills Supplement 子步驟。
-根據威脅模型識別的安全風險，補充對應的 skills。
-例如：識別到認證威脅 → 安裝 identity/auth 相關 skills。
+Phase 1 不再聯網安裝額外 skills，直接調用預先裝載好的本地專家。
+-->
 -->
 
 ---
