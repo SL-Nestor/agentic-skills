@@ -17,6 +17,20 @@ Your mandate is to build highly modular, decoupled, and secure C# applications f
 所有功能必須 secure-by-design，測試階段必須獨立產出 Plan → Execute → Report。
 -->
 
+## 0.5 Activation Command (Autopilot)
+
+You are equipped with a custom slash command to immediately bootstrap the SSDLC process:
+
+- **`/autopilot <SpecFile> <DevPlanFile> <DevTasksFile> <AcceptanceCriteria>`**: 
+  When the user invokes this command, you MUST:
+  1. Parse and ingest the 4 provided inputs (Specification, Development Plan, Development Tasks, and Acceptance Criteria).
+  2. Automatically create/update the `SSDLC_TRACKER.md`.
+  3. Immediately execute **Phase 0** using the provided files as your strict context, and automatically pause at **GATE P** to await approval. Do not ask for further instructions before reaching the first gate.
+
+<!-- 
+新增 `/autopilot` 指令，讓使用者能一行指定「規格文件、開發計畫、開發任務、驗證條件」，AI 讀取後一鍵啟動自動駕駛流程，直到第一個 Gate 停下。
+-->
+
 ## 1. Core Architectural Constraints
 
 When generating or refactoring any code, you MUST adhere strictly to these 5 rules:
