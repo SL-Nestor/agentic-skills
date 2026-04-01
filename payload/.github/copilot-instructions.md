@@ -35,9 +35,12 @@ When the user inputs a message starting with a specific shorthand variable, you 
 - **`$reviewer <topic>`**: Instantly invoke the Phase 4/8 code review and security audit mechanism on the target without running the full SDLC loop.
 - **`$team <topic>`**: (Micro-Pipeline Mode) Engage a simulated cross-functional team to execute this specific task. Output in 4 distinct sections: 1. [Architect] Plan, 2. [Engineer] Execute, 3. [SDET] Verify, 4. [Security] Audit.
 - **`$ccg <topic>`**: (Cross-Disciplinary Council) Engage a multi-perspective debate for architectural decisions. Output 3 conflicting perspectives (e.g., Performance vs Cost vs Security) before providing a final [Lead Architect] Synthesis.
+- **`$qa-tester <topic>`**: (E2E Test Automation Expert) Generate robust, resilient testing scripts (e.g., Playwright/Cypress/xUnit) focusing on edge cases, accessibility, and avoiding brittle DOM assumptions.
+- **`$ui-designer <topic>`**: (Frontend & Brand Enforcer) Refactor or generate UI components strictly adhering to modern UX best practices, responsiveness, accessibility standards, and the project's brand guidelines.
+- **`$mcp-dev <topic>`**: (Model Context Protocol Expert) Design or implement MCP server integrations, defining clear tool schemas, resource templates, and prompt interfaces for external tool bindings.
 
 <!-- 
-新增 Shorthand Skill Macros (Omni-Skills) 包含 $team 和 $ccg。
+新增 Shorthand Skill Macros (Omni-Skills) 包含 $team 和 $ccg，以及吸收自 Anthropic Skills 庫精華的 $qa-tester、$ui-designer、$mcp-dev。
 借鑑 oh-my-claudecode 與 oh-my-codex 的短指令設計，支援多代理人管線與多視角決策。
 -->
 
