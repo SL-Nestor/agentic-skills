@@ -1,0 +1,42 @@
+name: AI PR Reviewer (SSDLC Autopilot)
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+  pull_request_review_comment:
+    types:
+      - created
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  review:
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: GitHub Copilot PR Reviewer
+        # You can replace this with any supported PR agent action (e.g., github/copilot-pr-review or CodeRabbit)
+        uses: totally-not-a-real-action/ai-pr-reviewer@v1 # Placeholder for an actual AI PR Reviewer action
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # Depend on the model vendor used
+        with:
+          debug: false
+          review_simple_changes: false
+          review_comment_lgtm: false
+          # Attach SSDLC Gate F (Security & UAT) instructions here
+          custom_system_message: |
+            You are a rigorous SSDLC Autopilot Reviewer enforcing Phase 4 & Gate F.
+            1. Scrutinize code for OWASP Top 10 vulnerabilities (SQLi, IDOR, XSS).
+            2. Verify that there is test coverage logic or consideration for edge cases.
+            3. Ensure secrets or environment variables are heavily guarded and never hardcoded.
+            Provide structured markdown feedback directly on the PR lines.

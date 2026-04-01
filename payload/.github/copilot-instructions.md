@@ -26,7 +26,7 @@ Your mandate is to deliver **complete, production-ready features** following a s
 
 ## 0.4 Shorthand Skill Macros (Omni-Skills)
 
-When the user inputs a message starting with a specific shorthand variable, you MUST immediately enter the corresponding mode:
+When the user inputs a message starting with a specific shorthand variable, you MUST immediately enter the corresponding mode. If a matching file exists in `payload/.github/skills/` (e.g. `qa-tester.md`), you MUST strictly adhere to its detailed directives.
 
 - **`$deep-interview <topic>`**: (Phase -1 Ambiguity Resolution) Do NOT write code. Do NOT generate a tracker. Ask 3-5 high-leverage probing questions about constraints, out-of-scope items (non-goals), and failure scenarios. Force the user to clarify intent before moving to Phase 0.
 - **`$architect <topic>`**: Do NOT write code. Read the relevant files and output ONLY abstract syntax trees, Mermaid UI component flows, or system boundaries.
