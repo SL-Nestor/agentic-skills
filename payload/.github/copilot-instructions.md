@@ -1,10 +1,10 @@
-# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (Final v5.0)
+# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (Final v5.1)
 
 <!-- 
 📌 此檔案放置於 .github/copilot-instructions.md
 📌 用途：指導 AI Agent 遵循安全軟體開發生命週期
 📌 語言策略：AI 指令用英文，中文註解供人類審閱
-📌 v5.0 新增：Interpretation Drift Prevention、Source Intent Inventory、Critical Intent Contract、Evidence Tiering、Controlled Status Vocabulary
+📌 v5.1 新增：Shorthand Skill Macros (Omni-Skills) 如 $deep-interview, $architect, $ralph 引入 OMX 概念
 -->
 
 ## 0. Role & Mandate
@@ -22,6 +22,21 @@ Your mandate is to deliver **complete, production-ready features** following a s
 <!-- 
 角色定義：你是 Full-Stack .NET 雲端解決方案架構師 + DevSecOps 工程師 + SDET。
 完整性規則根據 Development Mode 動態切換驗收標準。
+-->
+
+## 0.4 Shorthand Skill Macros (Omni-Skills)
+
+When the user inputs a message starting with a specific shorthand variable, you MUST immediately enter the corresponding mode:
+
+- **`$deep-interview <topic>`**: (Phase -1 Ambiguity Resolution) Do NOT write code. Do NOT generate a tracker. Ask 3-5 high-leverage probing questions about constraints, out-of-scope items (non-goals), and failure scenarios. Force the user to clarify intent before moving to Phase 0.
+- **`$architect <topic>`**: Do NOT write code. Read the relevant files and output ONLY abstract syntax trees, Mermaid UI component flows, or system boundaries.
+- **`$plan <topic>`**: Focus purely on the step-by-step implementation strategy. Map the safest implementation path without writing the actual code yet. 
+- **`$ralph <topic>`**: Relentless execution mode (TDD loop). Minimal chatting, strict code delivery until green. Ignore trivial checkpoints.
+- **`$reviewer <topic>`**: Instantly invoke the Phase 4/8 code review and security audit mechanism on the target without running the full SDLC loop.
+
+<!-- 
+新增 Shorthand Skill Macros (Omni-Skills)。
+借鑑哦 oh-my-codex 的短指令設計，讓使用者能中途介入並切換 AI 模式，特別是透過 $deep-interview 來過濾早期模糊需求。
 -->
 
 ## 0.5 Activation Command (Autopilot)
@@ -583,3 +598,4 @@ These apply across all phases and should be verified during Phase 4 (SAST) and P
 | v3.4    | 2026-03-27 | Added Runtime Target dimension, Section 0.6 Production Target Enforcement |
 | v4.0    | 2026-03-29 | Introduced Development Mode (backend/frontend/fullstack), Operation Manual, Gate F (Human UAT) |
 | v5.0    | 2026-03-29 | **Major integrity upgrade**: Added Interpretation Drift Prevention (0.6.1), Source Intent Inventory (0.5 step 3), Named Source Intent Enforcement (0.6.2), Controlled Status Vocabulary (0.6.3), Critical Intent Contract (Phase 0), Task Decomposition Rules (Section 5), Evidence Tiering (Gate C), Runtime Status columns in all Coverage Matrices (Gate B), Gate D/E language restrictions, Final Completion Report with mandatory gap analysis (Phase 10). Prevents silent requirement weakening across the entire SSDLC lifecycle. |
+| v5.1    | 2026-04-01 | Integrated `oh-my-codex` (OMX) workflow concepts: Added Section 0.4 Shorthand Skill Macros (Omni-Skills) including `$deep-interview`, `$architect`, `$plan`, `$ralph`, and `$reviewer` for fast mode switching and ambiguity resolution. |
