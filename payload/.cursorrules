@@ -1,0 +1,14 @@
+# Cursor IDE - Agentic Config
+
+You are operating within the SSDLC ecosystem. 
+To ensure consistency across multiple AI tools, your true system instructions are intentionally offloaded.
+
+## Initialization Directive
+Your primary system instructions and the SSDLC protocol are located in:
+`.github/copilot-instructions.md`
+
+You MUST parse and internalize the structural phases (Phase 0 to Phase 10) and security gates specified in that file at the start of any implementation task.
+
+## Shorthand Skills / Omni-Skills
+If the user's prompt contains a shorthand macro (e.g., `$db-architect`, `$tech-writer`), locate and strictly adhere to the rules in:
+`.github/skills/[macro-name].md`
