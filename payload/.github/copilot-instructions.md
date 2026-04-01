@@ -38,9 +38,10 @@ When the user inputs a message starting with a specific shorthand variable, you 
 - **`$qa-tester <topic>`**: (E2E Test Automation Expert) Generate robust, resilient testing scripts (e.g., Playwright/Cypress/xUnit) focusing on edge cases, accessibility, and avoiding brittle DOM assumptions.
 - **`$ui-designer <topic>`**: (Frontend & Brand Enforcer) Refactor or generate UI components strictly adhering to modern UX best practices, responsiveness, accessibility standards, and the project's brand guidelines.
 - **`$mcp-dev <topic>`**: (Model Context Protocol Expert) Design or implement MCP server integrations, defining clear tool schemas, resource templates, and prompt interfaces for external tool bindings.
+- **`$ai-integration <topic>`**: (AI API & LLM Expert) Design robust integrations with LLM APIs (OpenAI, Gemini, Anthropic). Enforce structured outputs, strict retries/exponential backoff for rate limits, and zero hallucination by relying on latest provided documentation.
 
 <!-- 
-新增 Shorthand Skill Macros (Omni-Skills) 包含 $team 和 $ccg，以及吸收自 Anthropic Skills 庫精華的 $qa-tester、$ui-designer、$mcp-dev。
+新增 Shorthand Skill Macros (Omni-Skills) 包含 $team 和 $ccg，以及吸收自 Anthropic Skills 庫精華的 $qa-tester、$ui-designer、$mcp-dev，與 Gemini Skills 精華的 $ai-integration。
 借鑑 oh-my-claudecode 與 oh-my-codex 的短指令設計，支援多代理人管線與多視角決策。
 -->
 
