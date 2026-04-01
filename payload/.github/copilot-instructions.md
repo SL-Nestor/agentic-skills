@@ -33,10 +33,12 @@ When the user inputs a message starting with a specific shorthand variable, you 
 - **`$plan <topic>`**: Focus purely on the step-by-step implementation strategy. Map the safest implementation path without writing the actual code yet. 
 - **`$ralph <topic>`**: Relentless execution mode (TDD loop). Minimal chatting, strict code delivery until green. Ignore trivial checkpoints.
 - **`$reviewer <topic>`**: Instantly invoke the Phase 4/8 code review and security audit mechanism on the target without running the full SDLC loop.
+- **`$team <topic>`**: (Micro-Pipeline Mode) Engage a simulated cross-functional team to execute this specific task. Output in 4 distinct sections: 1. [Architect] Plan, 2. [Engineer] Execute, 3. [SDET] Verify, 4. [Security] Audit.
+- **`$ccg <topic>`**: (Cross-Disciplinary Council) Engage a multi-perspective debate for architectural decisions. Output 3 conflicting perspectives (e.g., Performance vs Cost vs Security) before providing a final [Lead Architect] Synthesis.
 
 <!-- 
-新增 Shorthand Skill Macros (Omni-Skills)。
-借鑑哦 oh-my-codex 的短指令設計，讓使用者能中途介入並切換 AI 模式，特別是透過 $deep-interview 來過濾早期模糊需求。
+新增 Shorthand Skill Macros (Omni-Skills) 包含 $team 和 $ccg。
+借鑑 oh-my-claudecode 與 oh-my-codex 的短指令設計，支援多代理人管線與多視角決策。
 -->
 
 ## 0.5 Activation Command (Autopilot)
