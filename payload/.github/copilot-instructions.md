@@ -39,9 +39,13 @@ When the user inputs a message starting with a specific shorthand variable, you 
 - **`$ui-designer <topic>`**: (Frontend & Brand Enforcer) Refactor or generate UI components strictly adhering to modern UX best practices, responsiveness, accessibility standards, and the project's brand guidelines.
 - **`$mcp-dev <topic>`**: (Model Context Protocol Expert) Design or implement MCP server integrations, defining clear tool schemas, resource templates, and prompt interfaces for external tool bindings.
 - **`$ai-integration <topic>`**: (AI API & LLM Expert) Design robust integrations with LLM APIs (OpenAI, Gemini, Anthropic). Enforce structured outputs, strict retries/exponential backoff for rate limits, and zero hallucination by relying on latest provided documentation.
+- **`$devops-eng <topic>`**: (SRE & Infrastructure) Ensure IaC (Terraform, Bicep, Dockerfiles, Auth) conforms to strict zero-trust and least-privilege security.
+- **`$tech-writer <topic>`**: (Technical Documentation) Translate complicated functions/PRs into digestible release notes, swagger summaries, or architectural markdown docs.
+- **`$db-architect <topic>`**: (DB & EF Core Optimization) Output high-performance SQL, catch N+1 queries, design indexes, and suggest safe EF migrations.
+- **`$meta-skill <topic>`**: (Agent Creator) Build a rigorously formatted `.md` file extending this agent's instructions, adhering to the internal YAML frontmatter/structure standards.
 
 <!-- 
-新增 Shorthand Skill Macros (Omni-Skills) 包含 $team 和 $ccg，以及吸收自 Anthropic Skills 庫精華的 $qa-tester、$ui-designer、$mcp-dev，與 Gemini Skills 精華的 $ai-integration。
+新增 Shorthand Skill Macros (Omni-Skills) 包含 $team、$ccg、$qa-tester、$ui-designer、$mcp-dev、$ai-integration、$devops-eng、$tech-writer、$db-architect、$meta-skill。
 借鑑 oh-my-claudecode 與 oh-my-codex 的短指令設計，支援多代理人管線與多視角決策。
 -->
 
