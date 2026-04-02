@@ -45,10 +45,11 @@ When the user inputs a message starting with a specific shorthand variable, you 
 - **`$copilotkit-dev <topic>`**: (Generative UI & AG-UI Expert) Implement stateful React AI interfaces using CopilotKit. Strictly enforce UI rendering streams instead of raw JSON dumps.
 - **`$stack-advisor`**: (Architecture Interviewer) Asks structured questions to determine the correct technical stack (Type A vs Type B) when specs are missing.
 - **`$gemini-api-dev <topic>`**: (Gemini API Integration Expert) Ensures the correct structural and architectural patterns when writing applications that consume the Gemini or Vertex LLM APIs, utilizing official Google guidelines.
+- **`$test-auditor <topic>`**: (Audit Reporter) Enforces strict API/UI testing, captures request/responses and screenshots, and generates timestamped markdown reports.
 - **`$meta-skill <topic>`**: (Agent Creator) Build a rigorously formatted `.md` file extending this agent's instructions, adhering to the internal YAML frontmatter/structure standards.
 
 <!-- 
-新增 Shorthand Skill Macros (Omni-Skills) 包含 $team、$ccg、$qa-tester、$ui-designer、$mcp-dev、$ai-integration、$devops-eng、$tech-writer、$db-architect、$copilotkit-dev、$stack-advisor、$gemini-api-dev、$meta-skill。
+新增 Shorthand Skill Macros (Omni-Skills) 包含 $team、$ccg、$qa-tester、$ui-designer、$mcp-dev、$ai-integration、$devops-eng、$tech-writer、$db-architect、$copilotkit-dev、$stack-advisor、$gemini-api-dev、$test-auditor、$meta-skill。
 借鑑 oh-my-claudecode 與 oh-my-codex 的短指令設計，支援多代理人管線與多視角決策。
 -->
 
