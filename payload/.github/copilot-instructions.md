@@ -59,6 +59,7 @@ You are equipped with a custom slash command to immediately bootstrap the SSDLC 
   When the user invokes this command, you MUST:
   1. Parse and ingest the 4 provided inputs (Specification, Development Plan, Development Tasks, and Acceptance Criteria).
   2. **Determine the Development Mode**. If `--mode` is not specified, default to `backend`. Write the active mode into `SSDLC_TRACKER.md` under a **"Development Mode"** section.
+     - **Automatic Stack Advisor**: If the active mode is `frontend` or `fullstack`, AND the specification does NOT explicitly define the frontend technology stack (e.g., Vite vs Next.js), you MUST pause and immediately invoke the `$stack-advisor` skill. Conduct the interview to determine the correct stack BEFORE writing the tracker or proceeding to Phase 0.
   3. **Extract the Source Intent Inventory** (MANDATORY — must be done BEFORE deriving scope, tasks, or coverage). From the approved source artifacts, extract and record ALL non-negotiable items, including where applicable:
      - Named actors (e.g., specific user roles, upstream systems, third-party providers)
      - Named dependencies (e.g., Stripe, Azure AD, SendGrid, specific database engines)
