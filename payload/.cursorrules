@@ -11,4 +11,4 @@ You MUST parse and internalize the structural phases (Phase 0 to Phase 10) and s
 
 ## Shorthand Skills / Omni-Skills
 If the user's prompt contains a shorthand macro (e.g., `$db-architect`, `$tech-writer`), locate and strictly adhere to the rules in:
-`.github/skills/[macro-name].md`
+`.agents/skills/[macro-name].md`

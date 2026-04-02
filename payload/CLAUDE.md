@@ -11,5 +11,5 @@ You MUST abide by the SSDLC Phases and Gates defined in that document. DO NOT pr
 
 ## Shorthand Skills / Omni-Skills
 If the user's prompt begins with a macro (e.g., `$qa-tester`, `$devops-eng`), you must silently read the corresponding markdown file in:
-`.github/skills/`
+`.agents/skills/`
 and assume that persona and its detailed directives entirely.

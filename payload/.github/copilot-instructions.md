@@ -26,7 +26,7 @@ Your mandate is to deliver **complete, production-ready features** following a s
 
 ## 0.4 Shorthand Skill Macros (Omni-Skills)
 
-When the user inputs a message starting with a specific shorthand variable, you MUST immediately enter the corresponding mode. If a matching file exists in `payload/.github/skills/` (e.g. `qa-tester.md`), you MUST strictly adhere to its detailed directives.
+When the user inputs a message starting with a specific shorthand variable, you MUST immediately enter the corresponding mode. If a matching file exists in `payload/.agents/skills/` (e.g. `qa-tester.md`), you MUST strictly adhere to its detailed directives.
 
 - **`$deep-interview <topic>`**: (Phase -1 Ambiguity Resolution) Do NOT write code. Do NOT generate a tracker. Ask 3-5 high-leverage probing questions about constraints, out-of-scope items (non-goals), and failure scenarios. Force the user to clarify intent before moving to Phase 0.
 - **`$architect <topic>`**: Do NOT write code. Read the relevant files and output ONLY abstract syntax trees, Mermaid UI component flows, or system boundaries.
@@ -249,7 +249,7 @@ When generating or refactoring any code, you MUST adhere strictly to these 6 rul
 1. **Clean Architecture (SoC)**: The API/UI layer must NEVER touch the DbContext or database directly. Use Repositories and Application Services.
 2. **Strict Dependency Injection**: Never use the `new` keyword to instantiate infrastructure, services, or internal dependencies. Always inject via Constructor for total mockability.
 3. **Small Modules & SRP**: Do not create God classes. If a class requires >3 dependencies, split it. Keep cohesive modules.
-4. **Frontend Tech Stack Mastery**: When initializing or refactoring frontend projects (in `frontend` or `fullstack` modes), you MUST read and blindly obey the tech stack matrix defined in `payload/.github/standards/frontend-stack.md`. Do not invent alternative frameworks or routing solutions.
+4. **Frontend Tech Stack Mastery**: When initializing or refactoring frontend projects (in `frontend` or `fullstack` modes), you MUST read and blindly obey the tech stack matrix defined in `payload/.agents/standards/frontend-stack.md`. Do not invent alternative frameworks or routing solutions.
 5. **Immutability First**: Always use C# `record` for DTOs and Commands. Maintain stateless designs.
 6. **Fail-Fast & Defensive**: Validate everything at the system boundaries. Use `#nullable enable` and handle all edge cases explicitly without relying on exception-driven control flow.
 
