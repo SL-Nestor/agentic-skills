@@ -93,3 +93,17 @@ src/Backend/
 
 4. **提高維護效率 (High Maintainability Efficiency)**：
    程式碼是用來給「人」讀的。強制要求有意義的變數命名、自動生成的 Swagger API 文件、以及清晰的回傳統一格式 (Standard Envelope)。當新進工程師 (或另外一個 AI Agent) 接手這個段落時，必須要在 5 分鐘內看懂其運作邏輯。
+
+---
+
+## 4. 資料庫部署與環境分層策略 (Database Strategy)
+
+為了兼顧開發效率與生產環境的絕對穩定性，資料庫的連線與 provider 設定必須嚴格依據執行環境切換，不得偷吃步：
+
+- **開發環境 (Local Development)**：
+  允許使用 **SQLite** 或是 **Local SQL Server (LocalDB/Docker)**。由工程師根據該微服務的特性自行決定，以最快能在本機進行 Migration 與跑通測試為核心。
+- **測試環境 (Test Environment / Stage)**：
+  可以依據驗收需求，繼續使用 **SQLite** 進行無狀態快速測試，或者預先串接 **Azure SQL Database (測試執行個體)** 以執行更接近生產環境的整合性測試。
+- **正式生產環境 (Production Environment)**：
+  **嚴格限制僅能連線至 `Azure SQL Database`**。
+  AI 在產出正式區部署腳本 (Deployment Guide) 或檢視 `appsettings.Production.json` 時，若發現使用 SQLite 或其他非 Azure SQL 的連線字串，必須立即提出警告並更正。嚴禁在 Production 中依賴檔案型資料庫。

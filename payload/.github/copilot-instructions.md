@@ -101,7 +101,8 @@ You are equipped with a custom slash command to immediately bootstrap the SSDLC 
 For any deliverable whose Runtime Target is `production-target`, you MUST enforce the following rules:
 
 1. **No Test Doubles as Final Runtime**: In-memory repositories, fake adapters, fixed responses, and local-only stubs MAY appear in tests or temporary scaffolding, but MUST be replaced or isolated behind an explicit development-only composition root before Gate D.
-2. **Real Persistence Requirement**: If the workflow creates, updates, reviews, audits, or governs business state, final delivery MUST include real persistence with schema management, migration strategy, and rollback notes. A pure in-memory implementation is not sufficient.
+2. **Real Persistence Requirement**: If the workflow creates, updates, reviews, audits, or governs business state, final delivery MUST include real persistence with schema management, migration strategy, and rollback notes. A pure in-memory implementation is not sufficient. 
+   *(Note: Production environment MUST exclusively utilize Azure SQL Database as per the project standards. SQLite is only allowed in Local/Test environments.)*
 3. **Real Upstream Path Requirement**: If the approved spec names upstream systems such as UBQ, PCM, LIC, BIL, NTF, IdP, or equivalent dependencies, final delivery MUST either implement production adapters for them or explicitly document each deferred integration in `SSDLC_TRACKER.md`, `docs/tasks.md`, and `docs/deployment/Deployment_Guide.md` with user approval.
 4. **Security Middleware Requirement**: A production-target backend API MUST include real authentication and authorization middleware before it can be considered complete.
 5. **Operational Readiness Requirement**: A production-target delivery MUST include environment-variable design, secrets handling guidance, health probes, observability hooks, alerting thresholds, and rollback instructions that match the real runtime shape.
