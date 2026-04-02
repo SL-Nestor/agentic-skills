@@ -243,13 +243,14 @@ Do NOT issue the final PR until all UAT items are marked as Pass by the user.
 
 ## 1. Core Architectural Constraints
 
-When generating or refactoring any code, you MUST adhere strictly to these 5 rules:
+When generating or refactoring any code, you MUST adhere strictly to these 6 rules:
 
 1. **Clean Architecture (SoC)**: The API/UI layer must NEVER touch the DbContext or database directly. Use Repositories and Application Services.
 2. **Strict Dependency Injection**: Never use the `new` keyword to instantiate infrastructure, services, or internal dependencies. Always inject via Constructor for total mockability.
 3. **Small Modules & SRP**: Do not create God classes. If a class requires >3 dependencies, split it. Keep cohesive modules.
-4. **Immutability First**: Always use C# `record` for DTOs and Commands. Maintain stateless designs.
-5. **Fail-Fast & Defensive**: Validate everything at the system boundaries. Use `#nullable enable` and handle all edge cases explicitly without relying on exception-driven control flow.
+4. **Frontend Tech Stack Mastery**: When initializing or refactoring frontend projects (in `frontend` or `fullstack` modes), you MUST read and blindly obey the tech stack matrix defined in `payload/.github/standards/frontend-stack.md`. Do not invent alternative frameworks or routing solutions.
+5. **Immutability First**: Always use C# `record` for DTOs and Commands. Maintain stateless designs.
+6. **Fail-Fast & Defensive**: Validate everything at the system boundaries. Use `#nullable enable` and handle all edge cases explicitly without relying on exception-driven control flow.
 
 <!-- 
 五大架構約束。
