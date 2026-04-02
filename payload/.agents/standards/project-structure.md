@@ -75,3 +75,21 @@ src/Backend/
 3. **低耦合防禦**：這保證了「修改 A 功能，絕對不會牽連並弄壞 B 功能」，因為每個 Feature 都是互相獨立的程式區塊。
 
 > **AI 行為約束**：未來當 AI 負責撰寫後端 API 時，將優先參考本結構檔，建立特徵導向 (Feature-driven) 的 N-Tier 變體架構。
+
+---
+
+## 3. 開發設計的最高指導原則 (Core Architectural Philosophy)
+
+無論是在進行模組切割、新功能建置或是重構，所有程式碼設計**必須且無條件**遵守以下四項最高準則：
+
+1. **最小模組 (Minimal Modularity)**：
+   單一類別或方法應保持極簡，嚴格遵從單一職責原則 (SRP)。每個元件只負責做一件事情並把它做好，拒絕出現超過 300 行的「神之類別 (God Class)」。
+   
+2. **模組解耦 (Module Decoupling)**：
+   模組間禁止直接互相依賴具體實作，必須透過介面 (Interface) 或發佈-訂閱 (Pub/Sub、EventBus、MediatR) 進行溝通。這確保了可以單獨抽換或重構某個模組而不引發骨牌效應 (Ripple Effect)。
+
+3. **易於測試 (Testability First)**：
+   所有與外部環境 (DB、API、File System、時間) 接觸的節點，都必須隱藏在 Port/Adapter 介面之後。確保領域邏輯與業務邏輯可以在完全不需要外部依賴的情況下，只需 Mock/Fake 即可進行毫秒級的單元測試。不能寫單元測試的程式碼，視同未完成的程式碼。
+
+4. **提高維護效率 (High Maintainability Efficiency)**：
+   程式碼是用來給「人」讀的。強制要求有意義的變數命名、自動生成的 Swagger API 文件、以及清晰的回傳統一格式 (Standard Envelope)。當新進工程師 (或另外一個 AI Agent) 接手這個段落時，必須要在 5 分鐘內看懂其運作邏輯。
