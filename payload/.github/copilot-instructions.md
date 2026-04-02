@@ -43,10 +43,11 @@ When the user inputs a message starting with a specific shorthand variable, you 
 - **`$tech-writer <topic>`**: (Technical Documentation) Translate complicated functions/PRs into digestible release notes, swagger summaries, or architectural markdown docs.
 - **`$db-architect <topic>`**: (DB & EF Core Optimization) Output high-performance SQL, catch N+1 queries, design indexes, and suggest safe EF migrations.
 - **`$copilotkit-dev <topic>`**: (Generative UI & AG-UI Expert) Implement stateful React AI interfaces using CopilotKit. Strictly enforce UI rendering streams instead of raw JSON dumps.
+- **`$stack-advisor`**: (Architecture Interviewer) Asks structured questions to determine the correct technical stack (Type A vs Type B) when specs are missing.
 - **`$meta-skill <topic>`**: (Agent Creator) Build a rigorously formatted `.md` file extending this agent's instructions, adhering to the internal YAML frontmatter/structure standards.
 
 <!-- 
-新增 Shorthand Skill Macros (Omni-Skills) 包含 $team、$ccg、$qa-tester、$ui-designer、$mcp-dev、$ai-integration、$devops-eng、$tech-writer、$db-architect、$copilotkit-dev、$meta-skill。
+新增 Shorthand Skill Macros (Omni-Skills) 包含 $team、$ccg、$qa-tester、$ui-designer、$mcp-dev、$ai-integration、$devops-eng、$tech-writer、$db-architect、$copilotkit-dev、$stack-advisor、$meta-skill。
 借鑑 oh-my-claudecode 與 oh-my-codex 的短指令設計，支援多代理人管線與多視角決策。
 -->
 
