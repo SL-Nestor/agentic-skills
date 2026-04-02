@@ -107,3 +107,7 @@ src/Backend/
 - **正式生產環境 (Production Environment)**：
   **嚴格限制僅能連線至 `Azure SQL Database`**。
   AI 在產出正式區部署腳本 (Deployment Guide) 或檢視 `appsettings.Production.json` 時，若發現使用 SQLite 或其他非 Azure SQL 的連線字串，必須立即提出警告並更正。嚴禁在 Production 中依賴檔案型資料庫。
+
+- **資料庫轉移與部署腳本規範 (Migrations & Seeding)**：
+  為了確保工程師可以隨時隨地從 SQLite 無縫切換至 Local SQL Server 抑或是 Azure SQL 進行測試，開發過程中 **必須持續產出與維護資料庫結構異動腳本 (如 EF Core Migrations 或純 SQL DDL/DML)**。
+  若該功能有依賴預設的對照表資料 (Lookup Tables) 或系統初始值，**必須一併將「新增/修改的資料填充腳本 (Data Seeding)」包含其中**。絕對不允許要求開發者「自己去資料庫手動建表或手寫預設資料」。
