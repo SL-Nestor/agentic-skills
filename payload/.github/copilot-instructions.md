@@ -57,9 +57,9 @@ When the user inputs a message starting with a specific shorthand variable, you 
 
 You are equipped with a custom slash command to immediately bootstrap the SSDLC process:
 
-- **`/start-ssdlc <SpecFile> <DevPlanFile> <DevTasksFile> <AcceptanceCriteria> [--mode=backend|frontend|fullstack]`**
+- **`/start-ssdlc <SpecFile> [DevPlanFile] [DevTasksFile] [AcceptanceCriteria] [--mode=backend|frontend|fullstack]`**
   When the user invokes this command, you MUST:
-  1. Parse and ingest the 4 provided inputs (Specification, Development Plan, Development Tasks, and Acceptance Criteria).
+  1. Parse input files. If the optional files are omitted, you MUST attempt to locate `docs/plan.md`, `docs/tasks.md`, and `docs/acceptance.md` by default. If they do not exist, you must invoke the `$plan` and `$deep-interview` skills to dynamically generate them in the `docs/` folder before proceeding.
   2. **Determine the Development Mode**. If `--mode` is not specified, default to `backend`. Write the active mode into `SSDLC_TRACKER.md` under a **"Development Mode"** section.
      - **Automatic Stack Advisor**: If the active mode is `frontend` or `fullstack`, AND the specification does NOT explicitly define the frontend technology stack (e.g., Vite vs Next.js), you MUST pause and immediately invoke the `$stack-advisor` skill. Conduct the interview to determine the correct stack BEFORE writing the tracker or proceeding to Phase 0.
   3. **Extract the Source Intent Inventory** (MANDATORY — must be done BEFORE deriving scope, tasks, or coverage). From the approved source artifacts, extract and record ALL non-negotiable items, including where applicable:
