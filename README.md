@@ -14,7 +14,7 @@
 ```bash
 git clone https://github.com/SL-Nestor/agentic-skills.git /tmp/ai-skills
 cd /tmp/ai-skills
-./install.sh /你的/目標專案/路徑
+bash ./install.sh /你的/目標專案/路徑
 rm -rf /tmp/ai-skills # 安裝完畢後可刪除暫存
 ```
 
