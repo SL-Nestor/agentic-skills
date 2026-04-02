@@ -24,3 +24,4 @@ Regardless of the chosen architecture (Type A or Type B), the following standard
 - **Performance**: 
   - All images must be processed and served in `WebP` format.
   - Strict implementation of Lazy Loading for below-the-fold assets and heavy components.
+- **AI UI Integration (AG-UI)**: If the application features a chatbot, AI assistant, or Generative UI components, you MUST strictly use `CopilotKit`, utilizing `useAgent` or `useCoAgent` hooks synchronized with `Zustand` state. Do not build custom AI UI streaming wrappers from scratch.
