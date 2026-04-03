@@ -61,6 +61,10 @@ When the user inputs a message starting with a specific shorthand variable, you 
 - **`$stitch-loop <topic>`**: (Multi-page Generator) Generates a complete multi-page website from a single prompt with automated structure.
 - **`$react-components <topic>`**: (UI to Code) Converts UI screens (from Stitch or other sources) into React component systems with automated validation and design token consistency.
 - **`$shadcn-ui <topic>`**: (Component Library Expert) Guides integration, customization, and optimal building with shadcn/ui components in React.
+- **`$cicd-builder <topic>`**: (DevOps Pipeline Expert) Generates secure, environment-aware CI/CD pipelines (GitHub Actions/GitLab) with zero-downtime deployment strategies.
+- **`$i18n-agent <topic>`**: (Localization Expert) Extracts hardcoded strings and implements robust internationalization across the application.
+- **`$a11y-seo-auditor <topic>`**: (Accessibility & SEO) Audits UI code for strict WCAG accessibility compliance and modern Technical SEO standards.
+- **`$api-documenter <topic>`**: (DX & Mocking) Generates OpenAPI docs, Postman collections, and realistic mock data seeders from backend code.
 - **`$meta-skill <topic>`**: (Agent Creator) Build a rigorously formatted `.md` file extending this agent's instructions, adhering to the internal YAML frontmatter/structure standards.
 
 <!-- 
