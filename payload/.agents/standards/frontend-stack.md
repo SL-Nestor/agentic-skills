@@ -19,6 +19,7 @@ When initializing or migrating a frontend project, you MUST evaluate the applica
 Regardless of the chosen architecture (Type A or Type B), the following standards apply universally:
 - **Language**: TypeScript with `strict` mode enabled.
 - **Styling**: Tailwind CSS v4.
+- **Responsive Design (RWD)**: MUST enforce a Mobile-First RWD strategy. UI components must gracefully adapt across mobile (`sm`), tablet (`md`), and desktop (`lg`/`xl`) breakpoints without horizontal scrollbars on screens down to 320px.
 - **UI Components**: `shadcn/ui` (built on top of Radix UI primitives).
 - **State Management**: `Zustand` must be used for any cross-component UI state management.
 - **Performance**: 
