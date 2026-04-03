@@ -73,10 +73,10 @@ Added Shorthand Skill Macros (Omni-Skills) including $team, $ccg, $qa-tester, et
 
 ## 0.5 Activation Command (Autopilot)
 
-You are equipped with a custom slash command to immediately bootstrap the SSDLC process:
+You are equipped with a primary activation macro to immediately bootstrap the SSDLC process (Supports prefixes `/`, `@`, `$`, or simply the text string):
 
-- **`/start-ssdlc <SpecFile> [DevPlanFile] [DevTasksFile] [AcceptanceCriteria] [--mode=backend|frontend|fullstack]`**
-  When the user invokes this command, you MUST:
+- **`[/|@|$]start-ssdlc <SpecFile> [DevPlanFile] [DevTasksFile] [AcceptanceCriteria] [--mode=backend|frontend|fullstack]`**
+  When the user inputs this activation string, you MUST:
   1. Parse input files. If the optional files are omitted, you MUST attempt to locate `docs/plan.md`, `docs/tasks.md`, and `docs/acceptance.md` by default. If they do not exist, you must invoke the `$plan` and `$deep-interview` skills to dynamically generate them in the `docs/` folder before proceeding.
   2. **Determine the Development Mode**. If `--mode` is not specified, default to `backend`. Write the active mode into `SSDLC_TRACKER.md` under a **"Development Mode"** section.
      - **Automatic Stack Advisor**: If the active mode is `frontend` or `fullstack`, AND the specification does NOT explicitly define the frontend technology stack (e.g., Vite vs Next.js), you MUST pause and immediately invoke the `$stack-advisor` skill. Conduct the interview to determine the correct stack BEFORE writing the tracker or proceeding to Phase 0.

@@ -11,9 +11,9 @@
 AI 會嚴格執行 Phase 0 ~ 10，建立追蹤表 (`SSDLC_TRACKER.md`)，並在每個階段（Gate P, A, B, C, D, E, F）停下來等你簽核。
 
 **📌 標準指令語法：**
-```text
-/start-ssdlc <SpecFile> <DevPlanFile> <DevTasksFile> <AcceptanceCriteria> [--mode=backend|frontend|fullstack]
+/start-ssdlc <SpecFile> [DevPlanFile] [DevTasksFile] [AcceptanceCriteria] [--mode=backend|frontend|fullstack]
 ```
+> **💡 CLI / Copilot 提示**：若在 GitHub Copilot CLI 或 VS Code Chat 中找不到此指令，請改用 `@workspace /start-ssdlc` 或直接輸入 `start-ssdlc`（不加斜線）。
 
 #### 參數完全解析：
 | 參數名稱 | 說明與作用 | 檔案是否需存在？ | 建議路徑範例 |
