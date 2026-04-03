@@ -57,6 +57,10 @@ When the user inputs a message starting with a specific shorthand variable, you 
 - **`$stack-advisor`**: (Architecture Interviewer) Asks structured questions to determine the correct technical stack (Type A vs Type B) when specs are missing.
 - **`$gemini-api-dev <topic>`**: (Gemini API Integration Expert) Ensures the correct structural and architectural patterns when writing applications that consume the Gemini or Vertex LLM APIs, utilizing official Google guidelines.
 - **`$test-auditor <topic>`**: (Audit Reporter) Enforces strict API/UI testing, captures request/responses and screenshots, and generates timestamped markdown reports.
+- **`$stitch-design <topic>`**: (UI/UX Generator) Unified entry point for Stitch MCP design work. Handles prompt enhancement, generates DESIGN.md, and creates high-fidelity screens.
+- **`$stitch-loop <topic>`**: (Multi-page Generator) Generates a complete multi-page website from a single prompt with automated structure.
+- **`$react-components <topic>`**: (UI to Code) Converts UI screens (from Stitch or other sources) into React component systems with automated validation and design token consistency.
+- **`$shadcn-ui <topic>`**: (Component Library Expert) Guides integration, customization, and optimal building with shadcn/ui components in React.
 - **`$meta-skill <topic>`**: (Agent Creator) Build a rigorously formatted `.md` file extending this agent's instructions, adhering to the internal YAML frontmatter/structure standards.
 
 <!-- 
