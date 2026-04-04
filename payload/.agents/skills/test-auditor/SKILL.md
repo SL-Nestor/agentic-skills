@@ -6,6 +6,7 @@ metadata:
   domain: testing
 allowed-tools:
   - "browser:*"
+  - "playwright:*"
   - "http:*"
   - "screenshot:*"
   - "read_browser_page"
