@@ -83,7 +83,6 @@ This phase requires the user to act on nuget.org — guide them with exact value
 
 1. Determine the **repo owner**, **repo name**, and the **workflow filename** that will publish.
 
-   > ❌ The policy requires the **exact workflow filename** (e.g., `publish.yml` or `publish.yaml`) — just the filename, no path prefix. Matching is case-insensitive. Don't use the workflow `name:` field.
 
 2. Guide the user to create the trusted publishing policy:
    > Go to [**nuget.org/account/trustedpublishing**](https://www.nuget.org/account/trustedpublishing) → **Add policy**

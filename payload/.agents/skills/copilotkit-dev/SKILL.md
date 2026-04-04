@@ -1,4 +1,5 @@
 ---
+name: copilotkit-dev
 description: Integrates CopilotKit for Generative UI (AG-UI), Shared State, and React-based Agentic workflows.
 ---
 # SKILL: CopilotKit UI Developer

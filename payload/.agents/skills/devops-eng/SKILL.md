@@ -1,4 +1,5 @@
 ---
+name: devops-eng
 description: Designs secure, resilient Infrastructure as Code (IaC) and CI/CD pipelines.
 ---
 # SKILL: DevOps & SRE Engineer

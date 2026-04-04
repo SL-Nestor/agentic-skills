@@ -1,4 +1,5 @@
 ---
+name: meta-skill
 description: Generates new AI SKILL markdown files to extend the agent's capabilities.
 ---
 # SKILL: Skill Creator (Meta-Skill)

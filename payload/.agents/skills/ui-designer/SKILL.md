@@ -1,4 +1,5 @@
 ---
+name: ui-designer
 description: Generates and refactors UI components strictly adhering to modern UX, accessibility, and brand design guidelines.
 ---
 # SKILL: UI Designer (Frontend & Brand Enforcer)

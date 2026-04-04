@@ -67,7 +67,6 @@ Each scenario needs a `name`, `prompt`, at least one `assertion`, and a `rubric`
 
 ```yaml
 scenarios:
-  - name: "Descriptive scenario name"
     prompt: "Natural language task description as a developer would phrase it"
     setup:
       copy_test_files: true          # OR use inline files

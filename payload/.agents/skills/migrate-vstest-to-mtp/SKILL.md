@@ -236,7 +236,6 @@ If CI scripts use TRX reporting, crash dumps, or hang dumps, add the correspondi
 
 # After (.NET Core CLI task)
 - task: DotNetCoreCLI@2
-  displayName: Run tests
   inputs:
     command: 'test'
     arguments: '--no-build --configuration Release'
@@ -246,7 +245,6 @@ If CI scripts use TRX reporting, crash dumps, or hang dumps, add the correspondi
 
 ```yaml
 - task: DotNetCoreCLI@2
-  displayName: Run tests
   inputs:
     command: 'test'
     arguments: '--no-build -- --report-trx --results-directory $(Agent.TempDirectory)'

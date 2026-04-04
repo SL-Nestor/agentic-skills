@@ -4,6 +4,12 @@ description: Drives mandatory test execution, captures request/responses, takes 
 metadata:
   pattern: pipeline
   domain: testing
+allowed-tools:
+  - "browser:*"
+  - "http:*"
+  - "screenshot:*"
+  - "read_browser_page"
+  - "capture_api_call"
 ---
 # SKILL: Test Execution & Audit Reporter
 
@@ -42,7 +48,8 @@ Depending on the scope, execute the tests and capture the proof:
 **For Frontend (UI) Scope:**
 - Execute the UI workflow against the target environment.
 - You MUST capture the input data typed into the UI.
-- You MUST capture screenshots or UI states of the final result. Save images into the `前端測試紀錄報告/記錄圖檔/` folder using relative paths.
+- **MCP Integration**: You MUST use your agent's **Browser/Screenshot MCP tools** (e.g., `screenshot`, `read_browser_page`, `screenshot_element`) to capture actual visual evidence of the final result. If these tools are available, do NOT rely purely on text-based descriptions of the "visual state."
+- Save images into the `前端測試紀錄報告/記錄圖檔/` folder using relative paths.
 
 ### Step 4: Markdown Audit Report Generation
 Generate the formal test report in the respective directory (e.g., `測試紀錄/YYYYMMDD/前端測試紀錄報告/Report.md`). 

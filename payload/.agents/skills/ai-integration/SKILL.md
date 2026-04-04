@@ -1,4 +1,5 @@
 ---
+name: ai-integration
 description: Designs robust LLM API integrations (Gemini, OpenAI, Anthropic), handling retries, prompts, and structure.
 ---
 # SKILL: AI Integration Expert

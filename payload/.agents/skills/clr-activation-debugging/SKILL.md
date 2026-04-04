@@ -37,7 +37,6 @@ The .NET Framework shim has two layers:
 - **mscoree.dll** (the "shell shim") — the public-facing DLL that is the registered `InprocServer32` for CLR-hosted COM objects and the entry point for `_CorExeMain`, legacy APIs, etc.
 - **mscoreei.dll** — the actual shim implementation where the runtime selection logic, logging, and activation decisions live. mscoree.dll forwards into mscoreei.dll.
 
-When reading logs, the `caller-name:mscoreei.dll` in FOD command lines reflects this — it's mscoreei.dll doing the work.
 
 ### .NET 3.5 / v2.0.50727 Version Mapping
 

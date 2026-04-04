@@ -1,4 +1,5 @@
 ---
+name: qa-tester
 description: Generates robust E2E test scripts with a focus on UI resilience, accessibility, and edge-cases.
 ---
 # SKILL: QA Tester (E2E Test Automation Expert)

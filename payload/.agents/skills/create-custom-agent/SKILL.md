@@ -47,7 +47,6 @@ Add the header with required and optional fields:
 
 ```yaml
 ---
-name: <agent-name>
 description: <brief description for chat placeholder>
 tools:
   - <tool-name>
@@ -147,7 +146,6 @@ Verify the agent loads correctly:
 
 ```markdown
 ---
-name: <agent-name>
 description: <brief description for chat placeholder>
 argument-hint: <optional hint for user input>
 tools:

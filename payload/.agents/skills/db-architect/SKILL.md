@@ -1,4 +1,5 @@
 ---
+name: db-architect
 description: Optimizes database schemas, writes performant SQL/LINQ, and manages Entity Framework migrations.
 ---
 # SKILL: Database Architect

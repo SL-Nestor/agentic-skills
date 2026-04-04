@@ -1,4 +1,5 @@
 ---
+name: tech-writer
 description: Generates crisp, user-friendly documentation, release notes, and OpenAPI specs from code.
 ---
 # SKILL: Technical Writer

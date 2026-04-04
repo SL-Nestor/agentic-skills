@@ -116,7 +116,6 @@ var json = JsonSerializer.Serialize(person, AppJsonContext.Default.Person);
 Console.WriteLine(json);
 
 var deserialized = JsonSerializer.Deserialize(json, AppJsonContext.Default.Person);
-Console.WriteLine($"Name: {deserialized!.Name}, Age: {deserialized.Age}");
 
 record Person(string Name, int Age);
 
