@@ -1,10 +1,10 @@
-# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (Final v5.1)
+# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v6.2)
 
 <!-- 
 📌 Location: .github/copilot-instructions.md
-📌 Purpose: Guide the AI Agent to follow the SSDLC Autopilot Process.
+📌 Purpose: Guide the AI Agent to follow the Decentralized SSDLC Autopilot Process.
 📌 Language Policy: All AI instructions and internal reasoning MUST be in English.
-📌 v5.1 Updates: Added Shorthand Skill Macros (Omni-Skills) such as $deep-interview, $architect, and $ralph.
+📌 v6.2 Updates: Specification Completeness Rules (6 mandatory rules) + Modular Router + Addy Osmani Engineering Principles.
 -->
 
 ## 0. Role & Mandate
@@ -228,3 +228,4 @@ These apply across all phases and should be verified during Phase 4 (SAST) and P
 | v5.1    | 2026-04-01 | Integrated `oh-my-codex` (OMX) workflow concepts: Added Section 0.4 Shorthand Skill Macros (Omni-Skills) including `$deep-interview`, `$architect`, `$plan`, `$ralph`, and `$reviewer` for fast mode switching and ambiguity resolution. |
 | v6.0    | 2026-04-07 | **Modular Router Architecture**: Decentralized the monolithic `copilot-instructions.md` into distinct phase-based skills (`lifecycle-spec`, `lifecycle-plan`, `lifecycle-build`, `lifecycle-verify`, `lifecycle-ship`). Introduced rigorous **Anti-Rationalization** counter-laziness rules. Refocused user role purely as Product Manager and Auditor. |
 | v6.1    | 2026-04-07 | **Engineering Excellence Injection**: Embedded Addy Osmani's agent skills. Added `lifecycle-debug` (Stop-The-Line). Reframed Specs via Success Criteria. Mandated Assumption Surfacing. Infused State-Based TDD rules (Beyonce Rule) and 5-Axis Code Reviews (Correctness, Readability, Architecture, Security, Performance) into the core lifecycle. |
+| v6.2    | 2026-04-07 | **Specification Completeness Overhaul** (Root-Cause driven): Added 6 mandatory rules to `$lifecycle-spec` — Atomic Spec Principle, Source Exhaustion Check (PRD→Spec Traceability Matrix), Negative Spec Pairing (≥1:1 ratio), State Enumeration Formula (N+1), Pre-Submission Self-Audit Gate, Specification Completeness Checklist (8-item gate). Prevents satisficing bias, summary specs, and systematic omission of negative/edge/security paths. |
