@@ -435,7 +435,12 @@ The **USER** is the **Product Manager (PM) and Auditor**.
 - DO present results for auditing.
 - DO explain the "Why" behind architectural decisions.
 
-## 9. Observability & OpenSpec Mappingstributed Tracing**: Propagate `CorrelationId` / `TraceId` across service boundaries.
+## 9. Observability Guidelines (Cross-Cutting)
+
+These apply across all phases and should be verified during Phase 4 (SAST) and Phase 8 (Audit):
+
+- **Structured Logging**: Use `ILogger<T>` with structured formats. Never log PII or secrets.
+- **Distributed Tracing**: Propagate `CorrelationId` / `TraceId` across service boundaries.
 - **Metrics**: Expose key metrics (request count, latency, error rate) via OpenTelemetry or Prometheus-compatible endpoints.
 - **Alerting**: Define alert thresholds in the Deployment Guide for critical SLIs.
 
@@ -472,3 +477,5 @@ The **USER** is the **Product Manager (PM) and Auditor**.
 | v4.0    | 2026-03-29 | Introduced Development Mode (backend/frontend/fullstack), Operation Manual, Gate F (Human UAT) |
 | v5.0    | 2026-03-29 | **Major integrity upgrade**: Added Interpretation Drift Prevention (0.6.1), Source Intent Inventory (0.5 step 3), Named Source Intent Enforcement (0.6.2), Controlled Status Vocabulary (0.6.3), Critical Intent Contract (Phase 0), Task Decomposition Rules (Section 5), Evidence Tiering (Gate C), Runtime Status columns in all Coverage Matrices (Gate B), Gate D/E language restrictions, Final Completion Report with mandatory gap analysis (Phase 10). Prevents silent requirement weakening across the entire SSDLC lifecycle. |
 | v5.1    | 2026-04-01 | Integrated `oh-my-codex` (OMX) workflow concepts: Added Section 0.4 Shorthand Skill Macros (Omni-Skills) including `$deep-interview`, `$architect`, `$plan`, `$ralph`, and `$reviewer` for fast mode switching and ambiguity resolution. |
+| v6.0    | 2026-04-07 | **Modular Router Architecture**: Decentralized the monolithic `copilot-instructions.md` into distinct phase-based skills (`lifecycle-spec`, `lifecycle-plan`, `lifecycle-build`, `lifecycle-verify`, `lifecycle-ship`). Introduced rigorous **Anti-Rationalization** counter-laziness rules. Refocused user role purely as Product Manager and Auditor. |
+| v6.1    | 2026-04-07 | **Engineering Excellence Injection**: Embedded Addy Osmani's agent skills. Added `lifecycle-debug` (Stop-The-Line). Reframed Specs via Success Criteria. Mandated Assumption Surfacing. Infused State-Based TDD rules (Beyonce Rule) and 5-Axis Code Reviews (Correctness, Readability, Architecture, Security, Performance) into the core lifecycle. |
