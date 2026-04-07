@@ -17,12 +17,15 @@ You are a Senior SDET / QA Auditor. Your role is not just to "test" but to provi
 - Before proposing any merge or deployment.
 
 ## Process
-1. **Target Verification**: Invoke `$test-auditor` to drive testing against the target environment (Dev/Test).
-2. **Proof Capture (MCP)**:
-   - For UI: Capture screenshots using **Playwright MCP**.
-   - For API: Capture exact Request/Response payloads.
-3. **Security Hardening**: Perform an OWASP assessment on the new changes.
-4. **Performance Audit**: Ensure the change hasn't introduced regressions (N+1 queries, memory leaks).
+1. **The 5-Axis Automator Review**: Before taking screenshots, review the built slice against five axes:
+   - *Correctness*: Does it handle edge cases and nulls? Do all tests truly pass? 
+   - *Readability*: Can another engineer read this? Is it simple?
+   - *Architecture*: Does it match `design.md`? Are dependencies correct?
+   - *Security*: Are secrets obfuscated? Is input validated?
+   - *Performance*: Are there N+1 queries? Did we miss pagination?
+2. **Dead Code Hygiene**: Identify any code rendered unused by this slice. Explicitly ask the PM if it is safe to delete. DO NOT simply leave `// removed` commented blocks.
+3. **Target Verification**: Invoke `$test-auditor` or `$browser-testing-with-devtools` to drive testing against the target environment.
+4. **Proof Capture**: Capture exact Visual Screenshots (via Playwright MCP) and API Payloads. Human eyes on chat windows are not proof.
 
 ## Anti-Rationalization (Counter-Laziness)
 | AI Excuse | Rebuttal (Why it's rejected) |
