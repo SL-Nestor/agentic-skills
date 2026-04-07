@@ -1,10 +1,10 @@
-# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v6.2)
+# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v6.3)
 
 <!-- 
 📌 Location: .github/copilot-instructions.md
 📌 Purpose: Guide the AI Agent to follow the Decentralized SSDLC Autopilot Process.
 📌 Language Policy: All AI instructions and internal reasoning MUST be in English.
-📌 v6.2 Updates: Specification Completeness Rules (6 mandatory rules) + Modular Router + Addy Osmani Engineering Principles.
+📌 v6.3 Updates: Mandatory interactive confirmation for Development Mode and Technology Stack before Phase 0.
 -->
 
 ## 0. Role & Mandate
@@ -78,9 +78,20 @@ You are equipped with a primary activation macro to immediately bootstrap the SS
 - **`[/|@|$]start-ssdlc <SpecFile> [DevPlanFile] [DevTasksFile] [AcceptanceCriteria] [--mode=backend|frontend|fullstack]`**
   When the user inputs this activation string, you MUST:
   1. Parse input files. If the optional files are omitted, you MUST attempt to locate `docs/plan.md`, `docs/tasks.md`, and `docs/acceptance.md` by default. If they do not exist, you must invoke the `$plan` and `$deep-interview` skills to dynamically generate them in the `docs/` folder before proceeding.
-  2. **Determine the Development Mode**. If `--mode` is not specified, default to `backend`. Write the active mode into `SSDLC_TRACKER.md` under a **"Development Mode"** section.
-     - **Automatic Stack Advisor**: If the active mode is `frontend` or `fullstack`, AND the specification does NOT explicitly define the frontend technology stack (e.g., Vite vs Next.js), you MUST pause and immediately invoke the `$stack-advisor` skill. Conduct the interview to determine the correct stack BEFORE writing the tracker or proceeding to Phase 0.
-  3. **Extract the Source Intent Inventory** (MANDATORY — must be done BEFORE deriving scope, tasks, or coverage). From the approved source artifacts, extract and record ALL non-negotiable items, including where applicable:
+  2. **Determine the Development Mode (MANDATORY CONFIRMATION)**:
+     - If `--mode` is explicitly provided → use it.
+     - If `--mode` is **NOT** provided → you MUST **STOP** and ask the user:
+       > 「請確認本次開發模式：`backend` / `frontend` / `fullstack`？」
+       DO NOT silently default to any mode. Wait for the user's explicit answer before proceeding.
+     - Write the confirmed mode into `SSDLC_TRACKER.md` under a **"Development Mode"** section.
+  3. **Technology Stack Confirmation (MANDATORY)**:
+     - Scan the specification files for explicit technology stack declarations (e.g., framework, language, database, frontend library).
+     - If the spec **clearly defines** the full tech stack → proceed.
+     - If the tech stack is **missing, ambiguous, or incomplete** → you MUST **STOP** and present what you detected, then ask the user to confirm or supplement:
+       > 「我在規格中偵測到以下技術棧：[列出已知項目]。以下項目未指定：[列出缺漏]。請確認或補充。」
+     - For `frontend` or `fullstack` modes, if the frontend framework is not specified (e.g., Vite vs Next.js vs Remix), you MUST invoke the `$stack-advisor` skill to conduct an interactive interview.
+     - **DO NOT proceed to Phase 0 until both the development mode AND the technology stack are explicitly confirmed by the user.**
+  4. **Extract the Source Intent Inventory** (MANDATORY — must be done BEFORE deriving scope, tasks, or coverage). From the approved source artifacts, extract and record ALL non-negotiable items, including where applicable:
      - Named actors (e.g., specific user roles, upstream systems, third-party providers)
      - Named dependencies (e.g., Stripe, Azure AD, SendGrid, specific database engines)
      - Named environments (e.g., staging, production, air-gapped)
@@ -90,7 +101,7 @@ You are equipped with a primary activation macro to immediately bootstrap the SS
      - Performance or security constraints (e.g., "P99 < 200ms", "all PII encrypted at rest")
      - Explicit production assumptions (e.g., "runs behind Azure Front Door", "uses Managed Identity")
      Write this inventory into `SSDLC_TRACKER.md` under a **"Source Intent Inventory"** section as binding constraints. You MUST NOT derive tasks, coverage matrices, or Delivery Scope before this inventory is completed.
-  4. **Infer and declare the Delivery Scope** from the spec, plan files, AND the Source Intent Inventory. Explicitly classify each deliverable as one of:
+  5. **Infer and declare the Delivery Scope** from the spec, plan files, AND the Source Intent Inventory. Explicitly classify each deliverable as one of:
      - `backend-api` — ASP.NET Core API endpoints with real or seam-based persistence *(applicable in `backend` and `fullstack` modes)*
      - `frontend-ui` — UI components with API integration and rendered screens *(applicable in `frontend` and `fullstack` modes)*
      - `integration` — Adapter implementations for external systems
@@ -99,8 +110,8 @@ You are equipped with a primary activation macro to immediately bootstrap the SS
     - `production-target` — intended to be deployable beyond local validation
     - `validation-only` — intentionally limited to local/demo/test-double usage
     If the spec mentions user-facing or system-facing workflows, the default Delivery Scope and Runtime Target MUST follow the mode defaults (see Section 0.7). Write the classified scope into `SSDLC_TRACKER.md` under a **"Delivery Scope"** section. Mark any item explicitly deferred with justification.
-  5. Automatically create/update the `SSDLC_TRACKER.md`.
-  6. Immediately execute **Phase 0** using the provided files as your strict context, and automatically pause at **GATE P** to await approval. Do not ask for further instructions before reaching the first gate.
+  6. Automatically create/update the `SSDLC_TRACKER.md`.
+  7. Immediately execute **Phase 0** using the provided files as your strict context, and automatically pause at **GATE P** to await approval. Do not ask for further instructions before reaching the first gate.
 
 <!-- 
 Added Source Intent Inventory (Step 3) as a mandatory startup sequence.
@@ -229,3 +240,4 @@ These apply across all phases and should be verified during Phase 4 (SAST) and P
 | v6.0    | 2026-04-07 | **Modular Router Architecture**: Decentralized the monolithic `copilot-instructions.md` into distinct phase-based skills (`lifecycle-spec`, `lifecycle-plan`, `lifecycle-build`, `lifecycle-verify`, `lifecycle-ship`). Introduced rigorous **Anti-Rationalization** counter-laziness rules. Refocused user role purely as Product Manager and Auditor. |
 | v6.1    | 2026-04-07 | **Engineering Excellence Injection**: Embedded Addy Osmani's agent skills. Added `lifecycle-debug` (Stop-The-Line). Reframed Specs via Success Criteria. Mandated Assumption Surfacing. Infused State-Based TDD rules (Beyonce Rule) and 5-Axis Code Reviews (Correctness, Readability, Architecture, Security, Performance) into the core lifecycle. |
 | v6.2    | 2026-04-07 | **Specification Completeness Overhaul** (Root-Cause driven): Added 6 mandatory rules to `$lifecycle-spec` — Atomic Spec Principle, Source Exhaustion Check (PRD→Spec Traceability Matrix), Negative Spec Pairing (≥1:1 ratio), State Enumeration Formula (N+1), Pre-Submission Self-Audit Gate, Specification Completeness Checklist (8-item gate). Prevents satisficing bias, summary specs, and systematic omission of negative/edge/security paths. |
+| v6.3    | 2026-04-07 | **Mandatory Startup Confirmation**: Removed silent `--mode=backend` default. If `--mode` is not provided, AI must STOP and ask the user to choose (`backend`/`frontend`/`fullstack`). Added Step 3 Technology Stack Confirmation — AI must scan specs for tech stack declarations, present findings, and get explicit user confirmation before proceeding. Invokes `$stack-advisor` for frontend/fullstack when framework is unspecified. |
