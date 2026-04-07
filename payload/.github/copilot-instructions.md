@@ -363,243 +363,71 @@ Where applicable, tasks MUST distinguish between:
 - API behavior (endpoint routing, request/response contracts, middleware)
 - Persistence behavior (schema design, migration, query optimization)
 - Integration behavior (adapter implementation for external systems)
-- Security enforcement (authentication, authorization, input sanitization)
-- Deployment configuration (environment variables, secrets, infrastructure)
-- Validation evidence (test type, evidence tier, coverage scope)
+- ## 6. The SSDLC v6.0 Modular Workflow (Phase 0–10)
 
-<!-- 
-任務拆解規則。
-禁止產出模糊任務如「實作付款功能」，必須拆成領域邏輯、API、持久化、整合、安全等子任務。
--->
+You MUST execute the SSDLC phases sequentially. For each phase, you MUST load the corresponding **Lifecycle Skill** for detailed "How-To" instructions and **Anti-Rationalization** checks.
 
-## 6. The SSDLC Workflow (Phase 0–10 + UAT)
-
-### [Phase 0] OpenSpec Specification Structuring
-
-- **Environment Check (OpenSpec)**: Check if OpenSpec is available. If the `openspec` or `/opsx` commands are not recognized, default to using `npx openspec` to execute it directly (this guarantees compatibility as long as Node.js is installed), or install it locally.
-- Use OpenSpec to structurize raw specifications into actionable artifacts.
-- Output the following under `openspec/changes/{CHANGE_NAME}/`:
-  - `proposal.md` — Intent, scope, and rollback considerations.
-  - `specs/` — Structured requirements using Given/When/Then format.
-  - `design.md` — Technical approach mapped to Clean Architecture layers. **When mode includes `frontend` or `fullstack`**: MUST also include UI Component Tree or Page Flow Diagram (Mermaid).
-  - `tasks.md` — Implementation checklist derived from specs. MUST follow Section 5 Task Decomposition Rules.
-- These artifacts become the **primary input** for all subsequent SSDLC phases.
-- If Runtime Target is `production-target`, Phase 0 artifacts MUST explicitly declare: persistence strategy, upstream integrations, authentication/authorization approach, deployment assumptions, and any approved deferrals. Missing production assumptions are a Phase 0 incompletion.
-- **Critical Intent Contract**: Phase 0 artifacts MUST include a `Critical_Intent_Contract.md` table for every source item from the Source Intent Inventory whose loss or weakening would materially change implementation or production-readiness.
-
-  Required columns:
-  | Source Intent Item | Concrete Meaning | Affected Scope | Runtime Target | Required Runtime Behavior | Required Evidence | Current Status | Deferred Approval |
-  |---|---|---|---|---|---|---|---|
-
-  Missing this table is a Phase 0 incompletion.
-
-> **🛑 GATE P**: Stop and ask the user to approve the structured specification artifacts AND the Critical Intent Contract.
-
-<!-- 
-Phase 0 新增 Critical Intent Contract。
-把高風險的來源意圖項目從散文描述提升為正式表格，成為所有後續階段的共同基線。
--->
+### [Phase 0-1] Define: Spec & Threat Model
+- **Trigger**: `/start-ssdlc` or Phase 0 start.
+- **Skill**: Load and follow **`$lifecycle-spec`**.
+- **Key Artifacts**: `proposal.md`, `specs/`, `design.md`, `docs/security/Threat_Model.md`.
+- **Exit Criteria**: `Critical_Intent_Contract.md` signed off.
+> **🛑 GATE P**: Stop and ask for Spec Approval.
 
 ---
 
-### [Phase 1] Secure Spec & Threat Modeling
-
-- Read Phase 0 artifacts: `specs/`, `design.md`, `proposal.md`, and `Critical_Intent_Contract.md`.
-- Output `docs/security/Threat_Model.md` identifying STRIDE threats, input validation rules, and actionable Dev Tasks.
-- Merge Phase 0 `tasks.md` with Threat Model Dev Tasks into a consolidated task list.
-- **Skills Leverage**: Invoke the `.agents/skills/ssdlc-threat-modeling` file locally to support this threat modeling phase.
-- **When mode includes `frontend` or `fullstack`**: Threat model MUST also cover client-side threats (XSS, CSRF, insecure storage, open redirect, sensitive data in browser state).
-
-> **🛑 GATE A**: Stop and ask the user to approve the Threat Model, consolidated task list.
-
-<!-- 
-Phase 1 現在也讀取 Critical Intent Contract 作為威脅建模的輸入。
--->
+### [Phase 2-3] Plan: Atomic Breakdown
+- **Trigger**: Gate P Approval.
+- **Skill**: Load and follow **`$lifecycle-plan`**.
+- **Key Artifacts**: `docs/tasks.md`, `docs/acceptance.md`.
+- **Exit Criteria**: Numbered, atomic tasks with Given/When/Then criteria.
+> **🛑 GATE A/B**: Stop and ask for Plan & Task list Approval.
 
 ---
 
-### [Phase 2] Independent Unit Testing (TDD — Red Phase)
-
-- **Plan**: Output `tests/docs/Unit_Test_Plan.md`.
-- **When mode includes `backend`**: Write independent `xUnit` tests in a **failing (Red)** state. Test scenarios MUST map directly to `specs/` Given/When/Then. Strictly mock all DB/IO/External APIs using `Moq`, `NSubstitute`, or the team-agreed mocking framework.
-- **When mode includes `frontend`**: Write independent `Jest` or `Vitest` component tests in a **failing (Red)** state. Test scenarios MUST map directly to `specs/` Given/When/Then. Mock all API calls.
-- **Report**: Output `tests/docs/Unit_Test_Report.md` confirming all tests are in Red status.
-- **Leverage installed skills**: Consult relevant `.agents/skills/` SKILL.md files for best practices when writing tests for specific frameworks.
-
-<!-- 
-Phase 2 根據模式選擇不同測試框架。
--->
+### [Phase 5-6] Build: TDD Implementation
+- **Trigger**: Gate B Approval.
+- **Skill**: Load and follow **`$lifecycle-build`**.
+- **Key Rules**: Beyonce Rule (test it), Chesterton's Fence (don't break it), TDD Red-Green loop.
+- **Vertical Slicing**: Implement one functional slice at a time.
+- **Exit Criteria**: Code passes tests, labeled with Controlled Status Vocabulary.
+> **🛑 GATE C**: Stop and present Implementation Coverage Matrix.
 
 ---
 
-### [Phase 3] Defensive Implementation (TDD — Green → Refactor)
-
-- Write the actual code to make all Phase 2 tests **pass (Green)**.
-- Strictly adhere to the **Core Architectural Constraints**.
-- Prevent SQL Injection (use parameterized EF queries) and avoid logging sensitive PII.
-- After all tests are Green, **Refactor** for clarity, naming, and duplication removal while maintaining Green status.
-- **Leverage installed skills**: Follow patterns from installed skills for framework-specific implementation.
-- **When mode includes `backend`** — **API Endpoint Coverage Rule**: For every acceptance scenario in `specs/`, if the Delivery Scope includes `backend-api`, there MUST be a corresponding HTTP endpoint in the API project. An application service method without an API route is a **Phase 3 incompletion**.
-- **When mode includes `frontend`** — **UI Component Coverage Rule**: For every acceptance scenario in `specs/`, if the Delivery Scope includes `frontend-ui`, there MUST be a corresponding UI component/page that renders the expected user interaction. A UI component that exists but has no route/navigation path is a **Phase 3 incompletion**.
-
-> **🛑 GATE B** (after Phase 2+3): Before requesting approval, you MUST produce a **Coverage Matrix** appropriate to the Development Mode. All coverage matrices MUST include **Runtime Status** and **Evidence Type** columns to prevent implementation surfaces from being mistaken for runtime completeness.
->
-> **`backend` mode — Delivery Coverage Matrix:**
-> | Acceptance Scenario | Source Intent Item | App Service Method | API Endpoint | Runtime Status | Evidence Type | Status |
-> |---|---|---|---|---|---|---|
->
-> **`frontend` mode — UI Coverage Matrix:**
-> | Acceptance Scenario | Source Intent Item | UI Component | UI Route/Page | API Call Function | Runtime Status | Evidence Type | Status |
-> |---|---|---|---|---|---|---|---|
->
-> **`fullstack` mode — Full-Stack Coverage Matrix:**
-> | Acceptance Scenario | Source Intent Item | App Service Method | API Endpoint | UI Component | UI Route/Page | Runtime Status | Evidence Type | Status |
-> |---|---|---|---|---|---|---|---|---|
->
-> **Runtime Status** must use Controlled Status Vocabulary (Section 0.6.3):
-> `implemented-live` | `implemented-partially` | `simulated-only` | `validation-only` | `deferred-with-approval` | `blocked`
->
-> **Evidence Type** must be one of:
-> `unit-or-contract-only` | `simulated-runtime` | `controlled-sandbox` | `live-dependency`
->
-> If any scenario is implemented only as a simulated path, mocked path, validation-only path, or workflow shell, the matrix MUST state that explicitly.
-> If any row shows MISSING for an in-scope deliverable, you MUST either implement it or explicitly flag it as deferred.
-> Present the matrix to the user as part of the Gate B review.
-
-<!-- 
-Gate B 覆蓋矩陣現在包含 Source Intent Item、Runtime Status、Evidence Type 三個新欄位。
-防止 AI 用「有 UI 頁面」或「API 端點存在」就宣稱完成，必須明確標示真實的運行時狀態。
--->
+### [Phase 7-8] Verify: Proof of Work
+- **Trigger**: Gate C Approval.
+- **Skill**: Load and follow **`$lifecycle-verify`**.
+- **MCP Integration**: Capture irrefutable evidence via Playwright/Screenshot MCP.
+- **Hardening**: DAST (ZAP) and Security Audit.
+- **Exit Criteria**: Timestamped Audit Report with attached evidence.
+> **🛑 GATE D**: Stop and present Verification Proof.
 
 ---
 
-### [Phase 4] SAST & Self Code Review
-
-- Act as a Security Reviewer. Fix `.editorconfig` warnings.
-- Review Phase 3 implementation to ensure it mitigates threats identified in Phase 1.
-- **When mode includes `frontend`**: Also review for XSS vectors, insecure `innerHTML` usage, hardcoded secrets in client code, and CORS misconfigurations.
-- Output `docs/security/SAST_Report.md` summarizing findings and fixes applied.
-
-<!-- 
-Phase 4 前端模式下額外審查客戶端安全問題。
--->
+### [Phase 9-10] Ship: Release & Support
+- **Trigger**: Gate D Approval.
+- **Skill**: Load and follow **`$lifecycle-ship`**.
+- **Living Docs**: Zero drift between Code and Spec.
+- **Handoff**: Traditional Chinese summary for the PM.
+- **Exit Criteria**: VCS Checkpoint committed, Tracker 100%.
+> **🛑 GATE E/F**: Final Sign-Off and UAT.
 
 ---
 
-### [Phase 5] Independent Integration Testing
+## 7. Anti-Rationalization Directive (Critical)
 
-- **Plan**: Output `tests/docs/Integration_Test_Plan.md`.
-- **When mode includes `backend`**: Write Integration tests using `Testcontainers` or `InMemory` databases (NO dev/prod DB connections). MUST include `WebApplicationFactory<Program>`-based tests when `backend-api` is in scope. When Runtime Target is `production-target`, MUST use Testcontainers or production-like harness (InMemory alone is insufficient).
-- **When mode includes `frontend`**: Write E2E integration tests using `Playwright` or `Cypress` that exercise full user workflows through a browser against the running application (or a mocked API server if `backend` is not in scope).
-- **Report**: Output `tests/docs/Integration_Test_Report.md`.
+In every phase, you MUST actively monitor your own reasoning for **shortcuts**. If you find yourself thinking "I'll do it later" or "It's too simple for a test/spec," you MUST refer to the **Anti-Rationalization table** in the current phase's Lifecycle Skill and explicitly state to the PM (User) which trap you avoided.
 
-> **🛑 GATE C** (after Phase 4+5): Stop and present results. For each critical requirement in the Critical Intent Contract, Gate C MUST classify validation evidence as one or more of:
->
-> | Evidence Tier | Definition |
-> |---|---|
-> | `unit-or-contract-only` | Verified via mocks, stubs, or contract tests only |
-> | `simulated-runtime` | Verified against fakes, InMemory, or local stubs |
-> | `controlled-sandbox` | Verified against Testcontainers, ephemeral infra, or equivalent sandbox |
-> | `live-dependency` | Verified against real external dependency (staging or production) |
->
-> The agent MUST NOT imply that lower evidence tiers prove higher runtime completeness.
-> Ask the user to review SAST results, Integration Test coverage, and the Evidence Tier classification.
+## 8. PM Context (User Role)
 
-<!-- 
-Gate C 新增 Evidence Tiering。
-防止 AI 用 Mock 測試通過來暗示真實依賴已完整驗證。
--->
+The **USER** is the **Product Manager (PM) and Auditor**.
+- Do NOT ask the user to help you code.
+- Do NOT ask the user for technical implementation details.
+- DO present results for auditing.
+- DO explain the "Why" behind architectural decisions.
 
----
-
-### [Phase 6] Performance Baseline
-
-- **Plan**: Output `tests/docs/Performance_Test_Plan.md` defining target endpoints, latency thresholds (P50/P95/P99), and throughput targets.
-- **When mode includes `backend`**: Design benchmarks using `BenchmarkDotNet`, `k6`, or `NBomber` targeting core API endpoints.
-- **When mode includes `frontend`**: Measure Core Web Vitals (LCP, FID, CLS) and page load performance using Lighthouse or equivalent tooling.
-- **Report**: Output `tests/docs/Performance_Test_Report.md` with baseline numbers.
-
-<!-- 
-Phase 6 前端模式下使用 Lighthouse 測量 Core Web Vitals。
--->
-
----
-
-### [Phase 7] Smoke Testing
-
-- **Plan**: Output `tests/docs/Smoke_Test_Plan.md`.
-- **When mode includes `backend`**: Write HTTP requests (`.http` files) covering **every API endpoint declared in the Coverage Matrix**. Health checks and boot paths are baseline — they do NOT substitute for business workflow coverage.
-- **When mode includes `frontend`**: Write browser-based E2E smoke tests that navigate through every critical user flow, capturing **screenshots and screen recordings** for each acceptance scenario.
-- **When mode is `fullstack`**: Both `.http` API smoke AND browser-based UI smoke are required. Additionally, produce `tests/docs/UI_Validation_Report.md` — an automated UI validation report with embedded screenshots and passing/failing status for each acceptance scenario.
-- **Report**: Output `tests/docs/Smoke_Test_Report.md`.
-
-<!-- 
-Phase 7 全端模式下必須產出 UI_Validation_Report.md。
--->
-
----
-
-### [Phase 8] Final Security Audit & DAST Execution
-
-- Output `docs/security/Final_Audit.md` summarizing OWASP Top 10 mitigations applied across the stack.
-- **Execute DAST**: Run `OWASP ZAP` (or team-agreed DAST tool) against the running application in a staging/test environment.
-- Output `docs/security/DAST_Report.md` with findings, severity ratings (Critical/High/Medium/Low), and remediation status.
-- **All Critical and High findings MUST be remediated before proceeding.**
-
-<!-- 
-Phase 8 動態安全掃描。
--->
-
----
-
-### [Phase 9] Secure Deployment Specs
-
-- **When mode includes `backend`**: Output `docs/deployment/Deployment_Guide.md` specifying: Required Secrets and Environment Variables, EF Core Migrations and rollback procedures, Health check endpoints, Container image registry and tag strategy. For Runtime Target `production-target`, MUST describe real runtime topology.
-- **When mode includes `frontend`**: Output `docs/deployment/Frontend_Deployment_Guide.md` specifying: Build pipeline (npm/yarn build), CDN/hosting configuration, Environment variable injection strategy, Cache invalidation approach, CSP (Content Security Policy) headers.
-
-> **🛑 GATE D** (after Phase 6+7+8+9): Stop and present results. If any critical item in the Critical Intent Contract remains `implemented-partially`, `simulated-only`, `validation-only`, `deferred-with-approval`, or `blocked`, the gate summary MUST restate that limitation explicitly. The gate summary MUST NOT use "complete", "done", or "production-ready" language for the overall feature if any critical requirement remains below `implemented-live`. Ask the user to review Performance, Smoke, DAST, and Deployment artifacts.
-
-<!-- 
-Gate D 嚴禁在有未完成的關鍵項目時使用「完成」或「生產就緒」等詞彙。
--->
-
----
-
-### [Phase 10] Documentation Sync & Handover (Living Docs & VCS Checkpoint)
-
-- **Living Documentation Synchronization**: You MUST review the final implemented code and retroactively update `docs/specs/*`, `docs/plan.md`, and `docs/tasks.md` to perfectly match reality. Do NOT allow specification drift. The specs must mirror the exact state of the shipped code.
-- **Required Artifacts (all modes):**
-  1. `CHANGELOG.md` entry — What changed and why.
-  2. `docs/api/API_Diff.md` — Breaking changes and new endpoints.
-  3. Updated Swagger/OpenAPI XML remarks matching implementation *(backend/fullstack modes)*.
-- **When mode is `backend`**: Produce `docs/api/Frontend_Handoff.md` — TypeScript interfaces for all DTOs, API route mapping, JSON payload examples, authorization headers. Designed for downstream frontend AI agents.
-- **When mode is `frontend`**: Produce `docs/api/Backend_Contract.md` — All API endpoints consumed, expected request/response shapes, authentication requirements. Designed for downstream backend AI agents.
-- **When mode includes `frontend` or `fullstack`**: Produce `docs/user/Operation_Manual.md` — End-user facing operation manual with step-by-step screenshots (see Section 0.8).
-- Execute `/opsx:archive {CHANGE_NAME}` to merge delta specs back into main specs.
-- **Automated VCS Checkpoint**: You MUST execute a `git add .` and `git commit -m "chore(ssdlc): Phase 10 SDLC wrap-up and living doc sync"` to secure the milestone before closing the loop.
-- **Final Completion Report**: The final report MUST separate deliverables into the following categories using Controlled Status Vocabulary:
-  - `implemented-live` items
-  - `implemented-partially` items
-  - `simulated-only` items
-  - `deferred-with-approval` items
-  - `blocked` items
-  The final report MUST identify any gap between approved source intent (from the Source Intent Inventory and Critical Intent Contract) and current runtime completeness. The report MUST NOT collapse limitations into a positive summary.
-
-> **🛑 GATE E**: Final Sign-Off. Present a summary of all phases and their status in `SSDLC_TRACKER.md` using the Controlled Status Vocabulary. If any critical item remains below `implemented-live`, the summary MUST restate that limitation. The agent MUST NOT use "complete", "done", or "production-ready" for the overall feature unless ALL critical items are `implemented-live`. Ask the user to accept the completed SDLC loop.
-
-> **🛑 GATE F** *(fullstack mode only)*: Human UAT Sign-Off. Present the UAT Checklist (see Section 0.9). Do NOT issue the final PR until all UAT items are marked as Pass.
-
-<!-- 
-Phase 10 最終報告必須將交付物分類為五種受控狀態。
-Gate E 嚴禁在有任何關鍵項目未達 implemented-live 時宣稱整體「完成」。
--->
-
-## 7. Observability Guidelines (Cross-Cutting)
-
-These apply across all phases and should be verified during Phase 4 (SAST) and Phase 8 (Audit):
-
-- **Structured Logging**: Use `ILogger<T>` with structured formats. Never log PII or secrets.
-- **Distributed Tracing**: Propagate `CorrelationId` / `TraceId` across service boundaries.
+## 9. Observability & OpenSpec Mappingstributed Tracing**: Propagate `CorrelationId` / `TraceId` across service boundaries.
 - **Metrics**: Expose key metrics (request count, latency, error rate) via OpenTelemetry or Prometheus-compatible endpoints.
 - **Alerting**: Define alert thresholds in the Deployment Guide for critical SLIs.
 
