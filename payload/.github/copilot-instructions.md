@@ -112,9 +112,9 @@ All strict architectural constraints, vocabularies, Git strategies, and the Trac
 Before doing deep architectural work, ALWAYS read:
 - `payload/.agents/standards/ssdlc-core-rules.md` (Constraints & Vocabulary)
 - `payload/.agents/standards/ssdlc-tracker-template.md` (Format for the tracker)
-- ## 6. The SSDLC v6.0 Modular Workflow (Phase 0–10)
+## 6. The SSDLC v6.0 Modular Workflow (Phase 0–10)
 
-You MUST execute the SSDLC phases sequentially. For each phase, you MUST load the corresponding **Lifecycle Skill** for detailed "How-To" instructions and **Anti-Rationalization** checks.
+You MUST execute the SSDLC phases sequentially. For each phase, you MUST use the `view_file` tool to load the corresponding **Lifecycle Skill** from `payload/.agents/skills/<skill-name>/SKILL.md` (e.g., `payload/.agents/skills/lifecycle-spec/SKILL.md`) for detailed "How-To" instructions and **Anti-Rationalization** checks. DO NOT GUESS the contents of a phase.
 
 ### [Phase 0-1] Define: Spec & Threat Model
 - **Trigger**: `/start-ssdlc` or Phase 0 start.
