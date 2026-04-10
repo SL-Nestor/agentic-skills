@@ -1,10 +1,10 @@
-# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v6.4)
+# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v6.5)
 
 <!-- 
 📌 Location: .github/copilot-instructions.md
 📌 Purpose: Guide the AI Agent to follow the Decentralized SSDLC Autopilot Process.
 📌 Language Policy: All AI instructions and internal reasoning MUST be in English.
-📌 v6.4 Updates: Integrated Rapid Software Testing (RST) psychology (Bolton & Bach). Mandatory Critical Distance, Heuristic Pauses, and "No-Assumption" debugging.
+📌 v6.5 Updates: Added Vercel React Best Practices. Mandatory History Documentation rule for all future protocol changes.
 -->
 
 ## 0. Role & Mandate
@@ -132,6 +132,12 @@ All strict architectural constraints, vocabularies, Git strategies, and the Trac
 Before doing deep architectural work, ALWAYS read:
 - `payload/.agents/standards/ssdlc-core-rules.md` (Constraints & Vocabulary)
 - `payload/.agents/standards/ssdlc-tracker-template.md` (Format for the tracker)
+- `payload/.agents/standards/react-best-practices.md` (Vercel React/Next.js Standards)
+
+### 0.7 Protocol Maintenance (Documentation Mandate)
+**CRITICAL**: Every time this `copilot-instructions.md` or any underlying **Lifecycle Skill** is modified (version bump), you MUST create/update a corresponding record in:
+👉 `docs/ssdlc/history/vX.X-<feature-name>.md`
+Failure to document the evolution of the protocol is considered a breach of engineering discipline.
 ## 6. The SSDLC v6.0 Modular Workflow (Phase 0–10)
 
 You MUST execute the SSDLC phases sequentially. For each phase, you MUST use the `view_file` tool to load the corresponding **Lifecycle Skill** from `payload/.agents/skills/<skill-name>/SKILL.md` (e.g., `payload/.agents/skills/lifecycle-spec/SKILL.md`) for detailed "How-To" instructions and **Anti-Rationalization** checks. DO NOT GUESS the contents of a phase.
@@ -251,3 +257,4 @@ These apply across all phases and should be verified during Phase 4 (SAST) and P
 | v6.2    | 2026-04-07 | **Specification Completeness Overhaul** (Root-Cause driven): Added 6 mandatory rules to `$lifecycle-spec` — Atomic Spec Principle, Source Exhaustion Check (PRD→Spec Traceability Matrix), Negative Spec Pairing (≥1:1 ratio), State Enumeration Formula (N+1), Pre-Submission Self-Audit Gate, Specification Completeness Checklist (8-item gate). Prevents satisficing bias, summary specs, and systematic omission of negative/edge/security paths. |
 | v6.3    | 2026-04-07 | **Mandatory Startup Confirmation**: Removed silent `--mode=backend` default. If `--mode` is not provided, AI must STOP and ask the user to choose (`backend`/`frontend`/`fullstack`). Added Step 3 Technology Stack Confirmation — AI must scan specs for tech stack declarations, present findings, and get explicit user confirmation before proceeding. Invokes `$stack-advisor` for frontend/fullstack when framework is unspecified. |
 | v6.4    | 2026-04-09 | **RST Psychology Integration**: Embedded Michael Bolton & James Bach's Testing Principles. Added "The Skeptic's Manifesto" (Section 0) to fight System 1 bias and the Turkey Fallacy. Updated `$lifecycle-verify` with mandatory Heuristic Pauses (Really? / And?) and `$lifecycle-debug` with Inference vs. Assumption triage. |
+| v6.5    | 2026-04-10 | **Vercel React Excellence & Documentation Mandate**: Integrated Vercel's React/Next.js performance best practices. Established a mandatory rule: every future SSDLC protocol change MUST be documented in the version history library (`docs/ssdlc/history/`). |

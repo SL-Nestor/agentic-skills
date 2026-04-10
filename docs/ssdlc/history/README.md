@@ -6,6 +6,7 @@
 
 | 版本 | 日期 | 核心主旨 | 完整紀錄 |
 | :--- | :--- | :--- | :--- |
+| **v6.5** | 2024-04-10 | **React 效能卓越與文件記錄強制化**：整合 Vercel React Standards | [查看 v6.5](v6.5-react-excellence.md) |
 | **v6.4** | 2024-04-09 | **專業懷疑者覺醒**：整合 RST 測試心理學 (Bolton & Bach) | [查看 v6.4](v6.4-rst-psychology.md) |
 | **v6.3** | 2024-04-07 | **防禦性啟動**：強制開發模式與技術棧對帳 | [查看 v6.3](v6.3-mandatory-confirmation.md) |
 | **v6.2** | 2024-04-07 | **規格完整性革命**：原子規格與源頭窮舉矩陣 | [查看 v6.2](v6.2-spec-completeness.md) |
