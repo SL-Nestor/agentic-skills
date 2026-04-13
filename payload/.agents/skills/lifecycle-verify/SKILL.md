@@ -58,6 +58,7 @@ When operating in Enterprise Mode (`--enterprise`):
 - [ ] A timestamped Audit Report exists in `測試紀錄/YYYYMMDD/`.
 - [ ] Evidence (JSON logs or Screenshots) is attached to the report.
 - [ ] All Acceptance Criteria are marked as PASS.
+- [ ] Observability validated (Tracing configured, Logs structured, Metrics emitted).
 - [ ] Gate D (System Test) and Gate E (Audit) are signed off.
 - [ ] (Enterprise) Every contract endpoint has integration test coverage.
 - [ ] (Enterprise) Performance Budget deviations documented (if applicable).

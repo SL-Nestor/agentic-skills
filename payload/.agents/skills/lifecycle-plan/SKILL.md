@@ -41,6 +41,7 @@ When operating in Enterprise Mode (`--enterprise`):
 - **Contract-Adherence (NOT Contract-First)**: You MUST NOT design new API contracts. The contract already exists in the `contract_baseline_ref` OpenAPI. Your job is to plan tasks that **implement** the existing contract, not invent new endpoints.
 - **Slicing Strategy**: Use `Vertical Slice` or `Risk-First` only. `Contract-First` is forbidden in Enterprise Mode (the contract is already done by REQ).
 - **Acceptance Criteria**: Must trace back to `acceptance-spec` from the REQ delivery package, not be invented from scratch.
+- **Deployment vs Release**: You MUST specify a Feature Flag strategy for the new module. You MUST document a clear Rollback Plan if the deployment fails.
 
 ## Verification (Exit Criteria)
 - [ ] `docs/tasks.md` exists with clear, numbered, atomic tasks.
@@ -48,3 +49,4 @@ When operating in Enterprise Mode (`--enterprise`):
 - [ ] Architectural Decision Records (ADRs) are created for any non-obvious choices.
 - [ ] PM (User) has signed off on Gate A (Plan) and Gate B (Tasks).
 - [ ] (Enterprise) All tasks map to existing contract endpoints; no new API surface planned.
+- [ ] (Enterprise) Feature Flag strategy and Rollback Plan are documented.

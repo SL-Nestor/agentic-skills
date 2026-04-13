@@ -1,6 +1,6 @@
-# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v7.3)
+# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v7.4)
 
-<!-- v7.3: Skill-Enterprise Sync, Hotfix Lane, Step renumbering, HTML cleanup -->
+<!-- v7.4: Large-Scale Dev (PR Boundary, Rollback, Observability Gate, Token Optimization) -->
 
 ## 0. Role & Mandate
 
@@ -61,36 +61,16 @@ Every line of code designed or written MUST adhere to these four pillars:
 
 ## 0.4 Shorthand Skill Macros (Omni-Skills)
 
-When the user inputs a message starting with a specific shorthand variable, you MUST immediately enter the corresponding mode. If a matching file exists in `payload/.agents/skills/` (e.g. `qa-tester.md`), you MUST strictly adhere to its detailed directives.
+When the user inputs a message starting with a specific shorthand variable, you MUST immediately enter the corresponding mode. If a matching file exists in `payload/.agents/skills/`, strictly adhere to it.
 
-- **`$deep-interview <topic>`**: (Phase -1 Ambiguity Resolution) Do NOT write code. Do NOT generate a tracker. Ask 3-5 high-leverage probing questions about constraints, out-of-scope items (non-goals), and failure scenarios. Force the user to clarify intent before moving to Phase 0.
-- **`$architect <topic>`**: Do NOT write code. Read the relevant files and output ONLY abstract syntax trees, Mermaid UI component flows, or system boundaries.
-- **`$plan <topic>`**: Focus purely on the step-by-step implementation strategy. Map the safest implementation path without writing the actual code yet. 
+> **Governance Notice (GOV-012)**: The authoritative registry for all company skills is `TwReuse/sl_company-platform-governance/docs/governance/skill-registry.md` (GOV-PLATFORM-AI-012). This prompt only definitions core SSDLC macros to preserve token limits. For domain-specific skills (e.g., UI, DB, DevOps), query the registry.
+
+**Core SSDLC Macros**:
+- **`$deep-interview <topic>`**: (Phase -1) Ask 3-5 high-leverage probing questions about constraints and failure scenarios before coding.
+- **`$architect <topic>`**: Output ONLY Mermaid UI component flows, sequence diagrams, or system boundaries.
+- **`$plan <topic>`**: Focus purely on step-by-step implementation strategy without writing actual code yet. 
 - **`$ralph <topic>`**: Relentless execution mode (TDD loop). Minimal chatting, strict code delivery until green. Ignore trivial checkpoints.
-- **`$reviewer <topic>`**: Instantly invoke the Phase 4/8 code review and security audit mechanism on the target without running the full SDLC loop.
-- **`$team <topic>`**: (Micro-Pipeline Mode) Engage a simulated cross-functional team to execute this specific task. Output in 4 distinct sections: 1. [Architect] Plan, 2. [Engineer] Execute, 3. [SDET] Verify, 4. [Security] Audit.
-- **`$ccg <topic>`**: (Cross-Disciplinary Council) Engage a multi-perspective debate for architectural decisions. Output 3 conflicting perspectives (e.g., Performance vs Cost vs Security) before providing a final [Lead Architect] Synthesis.
-- **`$qa-tester <topic>`**: (E2E Test Automation Expert) Generate robust, resilient testing scripts (e.g., Playwright/Cypress/xUnit) focusing on edge cases, accessibility, and avoiding brittle DOM assumptions.
-- **`$ui-designer <topic>`**: (Frontend & Brand Enforcer) Refactor or generate UI components strictly adhering to modern UX best practices, responsiveness, accessibility standards, and the project's brand guidelines.
-- **`$mcp-dev <topic>`**: (Model Context Protocol Expert) Design or implement MCP server integrations, defining clear tool schemas, resource templates, and prompt interfaces for external tool bindings.
-- **`$ai-integration <topic>`**: (AI API & LLM Expert) Design robust integrations with LLM APIs (OpenAI, Gemini, Anthropic). Enforce structured outputs, strict retries/exponential backoff for rate limits, and zero hallucination by relying on latest provided documentation.
-- **`$devops-eng <topic>`**: (SRE & Infrastructure) Ensure IaC (Terraform, Bicep, Dockerfiles, Auth) conforms to strict zero-trust and least-privilege security.
-- **`$tech-writer <topic>`**: (Technical Documentation) Translate complicated functions/PRs into digestible release notes, swagger summaries, or architectural markdown docs.
-- **`$db-architect <topic>`**: (DB & EF Core Optimization) Output high-performance SQL, catch N+1 queries, design indexes, and suggest safe EF migrations.
-- **`$copilotkit-dev <topic>`**: (Generative UI & AG-UI Expert) Implement stateful React AI interfaces using CopilotKit. Strictly enforce UI rendering streams instead of raw JSON dumps.
-- **`$stack-advisor`**: (Architecture Interviewer) Asks structured questions to determine the correct technical stack (Type A vs Type B) when specs are missing.
-- **`$gemini-api-dev <topic>`**: (Gemini API Integration Expert) Ensures the correct structural and architectural patterns when writing applications that consume the Gemini or Vertex LLM APIs, utilizing official Google guidelines.
-- **`$test-auditor <topic>`**: (Audit Reporter) Enforces strict API/UI testing, captures request/responses and screenshots, and generates timestamped markdown reports.
-- **`$stitch-design <topic>`**: (UI/UX Generator) Unified entry point for Stitch MCP design work. Handles prompt enhancement, generates DESIGN.md, and creates high-fidelity screens.
-- **`$stitch-loop <topic>`**: (Multi-page Generator) Generates a complete multi-page website from a single prompt with automated structure.
-- **`$react-components <topic>`**: (UI to Code) Converts UI screens (from Stitch or other sources) into React component systems with automated validation and design token consistency.
-- **`$shadcn-ui <topic>`**: (Component Library Expert) Guides integration, customization, and optimal building with shadcn/ui components in React.
-- **`$cicd-builder <topic>`**: (DevOps Pipeline Expert) Generates secure, environment-aware CI/CD pipelines (GitHub Actions/GitLab) with zero-downtime deployment strategies.
-- **`$i18n-agent <topic>`**: (Localization Expert) Extracts hardcoded strings and implements robust internationalization across the application.
-- **`$a11y-seo-auditor <topic>`**: (Accessibility & SEO) Audits UI code for strict WCAG accessibility compliance and modern Technical SEO standards.
-- **`$api-documenter <topic>`**: (DX & Mocking) Generates OpenAPI docs, Postman collections, and realistic mock data seeders from backend code.
-- **`$meta-skill <topic>`**: (Agent Creator) Build a rigorously formatted `.md` file extending this agent's instructions, adhering to the internal YAML frontmatter/structure standards.
-
+- **`$reviewer <topic>`**: Instantly invoke the Phase 4/8 code review and security audit mechanism.
 <!-- 
 Added Shorthand Skill Macros (Omni-Skills) including $team, $ccg, $qa-tester, etc., to support multi-agent pipelines and cross-disciplinary decision making.
 -->
@@ -252,12 +232,12 @@ You MUST execute the SSDLC phases sequentially. For each phase, you MUST use the
 - **Trigger**: Gate D Approval.
 - **Skill**: Load and follow **`$lifecycle-ship`**.
 - **Living Docs**: Zero drift between Code and Spec.
-- **Handoff**: Traditional Chinese summary for the PM.
+- **PR Boundary**: Do NOT commit directly to `main`. You must push to a `feature/*` branch and generate a Pull Request description.
 - **Enterprise Mode (Additional Exit Criteria)**:
   1. Verify final code matches the `contract_baseline_ref` OpenAPI exactly.
   2. Update the Handoff Checklist status to `delivered`.
   3. Produce a Delivery Report for the REQ repository.
-- **Exit Criteria**: VCS Checkpoint committed, Tracker 100%.
+- **Exit Criteria**: Feature Branch pushed, PR Draft created, Tracker 100%.
 > **🛑 GATE E/F**: Final Sign-Off and UAT.
 
 ---
@@ -313,4 +293,5 @@ These apply across all phases and should be verified during Phase 4 (Architectur
 | v7.0    | 2026-04-13 | **Governance Alignment**: Dual-Track, Writeback (GOV-004), Monorepo. |
 | v7.1    | 2026-04-13 | **Deep Audit Fix**: Phase 4, Section dedup, Regression Protocol, Concurrency, Dependency Gate, Migration Safety. |
 | v7.2    | 2026-04-13 | **Formal GOV Alignment**: Official GOV templates, P-06, YAML metadata, `tpl_writeback_note`, GOV-015 reference. |
-| v7.3    | 2026-04-13 | **Skill-Enterprise Sync**: Fixed Step numbering (two Step 3s). Removed HTML comment remnants. Added `--hotfix` fast-lane (GOV-004 §12.1). Added Agile→Enterprise boundary detection. Rewrote Artifact Mapping with Agile/Enterprise dual-table. All 6 Lifecycle Skills updated with Enterprise Mode Override. |
+| v7.3    | 2026-04-13 | **Skill-Enterprise Sync**: Fixed Step numbering, removed HTML, added `--hotfix` fast-lane, Agile boundary detection. |
+| v7.4    | 2026-04-13 | **Large-Scale Dev Focus**: Token optimization (removed 22 omni-skills, relies on GOV-012). Replaced "VCS Checkpoint" with "Pull Request Draft" boundary in Phase 9-10. Added Observability Gate to Phase 7-8. Added Rollback/Feature Flag rules to Phase 2-3. |

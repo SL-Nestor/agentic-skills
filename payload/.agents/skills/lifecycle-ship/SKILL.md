@@ -43,7 +43,7 @@ When operating in Enterprise Mode (`--enterprise`):
 
 ## Verification (Exit Criteria)
 - [ ] `Living Documentation Sync` completed.
-- [ ] Final VCS checkpoint committed and pushed.
+- [ ] Feature Branch pushed and Pull Request (PR) draft created.
 - [ ] Traditional Chinese handover report generated for the PM.
 - [ ] SSDLC_TRACKER.md marked as 100% COMPLETE.
 - [ ] (Enterprise) Contract Drift Check passed — implementation matches baseline.
