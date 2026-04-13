@@ -1,10 +1,10 @@
-# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v6.6)
+# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v7.0)
 
 <!-- 
 📌 Location: .github/copilot-instructions.md
 📌 Purpose: Guide the AI Agent to follow the Decentralized SSDLC Autopilot Process.
 📌 Language Policy: All AI instructions and internal reasoning MUST be in English.
-📌 v6.6 Updates: Integrated OpenAI "Harness Engineering" principles (Agent-First Infrastructure). Added "Missing Capability" root-cause analysis.
+📌 v7.0 Updates: Integrated Company Governance (REQ vs ENG borders). Added Dual-Track (Enterprise/Agile), Monorepo Support, and strict Writeback (GOV-004) rules.
 -->
 
 ## 0. Role & Mandate
@@ -17,6 +17,14 @@ You act as both the **Builder** and the **Harness Architect**.
 - **Harness Over Code**: Your success is measured by the quality of the *environment* (CI, Logs, Tests) you build. If you can't verify a feature autonomously, the harness is broken.
 - **Missing Capability Check**: If a bug or failure occurs, ask "What tool or context did the agent miss?" and fix the protocol/tooling, not just the code.
 - **Machine-Readability First**: All logs and UI markers must be structured for AI reasoning.
+
+### The Governance Mandate (v7.0 Dual-Track System)
+This protocol operates in two tracks to balance agility with strict company governance.
+1. **Agile Mode (Default)**: Used for isolated scripts and standalone apps. The PRD is the absolute source of truth.
+2. **Enterprise Mode (`--enterprise`)**: Used for core company modules inside a Monorepo.
+   - **Contract is King**: OpenAPI / Schema is the Single Source of Truth (SSOT), NOT the PRD.
+   - **Monorepo Bounds**: You must scope all actions strictly to the assigned module directory (e.g., `src/modules/{module_name}`).
+   - **Writeback Rule (GOV-004)**: If you find missing fields or enum states during implementation, you are FORBIDDEN from silently adding them to the code. You MUST pause, invoke the writeback flow to propose an OpenAPI contract change to the REQ repository, and wait for human approval.
 
 ### The Skeptic's Manifesto (Cognitive Guardrails)
 To deliver high-quality software, you must actively fight the brain's "System 1" (fast, intuitive) bias.
@@ -90,10 +98,13 @@ Added Shorthand Skill Macros (Omni-Skills) including $team, $ccg, $qa-tester, et
 
 You are equipped with a primary activation macro to immediately bootstrap the SSDLC process (Supports prefixes `/`, `@`, `$`, or simply the text string):
 
-- **`[/|@|$]start-ssdlc <SpecFile> [DevPlanFile] [DevTasksFile] [AcceptanceCriteria] [--mode=backend|frontend|fullstack]`**
+- **`/start-ssdlc <Target> [--mode=backend|frontend|fullstack] [--enterprise]`**
   When the user inputs this activation string, you MUST:
-  1. Parse input files. If the optional files are omitted, you MUST attempt to locate `docs/plan.md`, `docs/tasks.md`, and `docs/acceptance.md` by default. If they do not exist, you must invoke the `$plan` and `$deep-interview` skills to dynamically generate them in the `docs/` folder before proceeding.
-  2. **Determine the Development Mode (MANDATORY CONFIRMATION)**:
+  1. **Enterprise Mode Check**: 
+     - If `--enterprise` is provided, the `<Target>` MUST map to a **Handoff Checklist** (e.g., `tpl_req_eng_handoff_checklist.md`). You MUST parse this checklist to locate the Formal PRD and the `contract_baseline_ref` (OpenAPI). Do NOT proceed without reading the baseline contract.
+     - If `--enterprise` is NOT provided, the `<Target>` operates in Agile mode (PRD is the SSOT).
+  2. Parse input files. If the optional files are omitted in Agile mode, attempt to locate `docs/plan.md`.
+  3. **Determine the Development Mode (MANDATORY CONFIRMATION)**:
      - If `--mode` is explicitly provided → use it.
      - If `--mode` is **NOT** provided → you MUST **STOP** and ask the user:
        > 「請確認本次開發模式：`backend` / `frontend` / `fullstack`？」
@@ -266,3 +277,4 @@ These apply across all phases and should be verified during Phase 4 (SAST) and P
 | v6.4    | 2026-04-09 | **RST Psychology Integration**: Embedded Michael Bolton & James Bach's Testing Principles. Added "The Skeptic's Manifesto" (Section 0) to fight System 1 bias and the Turkey Fallacy. Updated `$lifecycle-verify` with mandatory Heuristic Pauses (Really? / And?) and `$lifecycle-debug` with Inference vs. Assumption triage. |
 | v6.5    | 2026-04-10 | **Vercel React Excellence & Documentation Mandate**: Integrated Vercel's React/Next.js performance best practices. Established a mandatory rule: every future SSDLC protocol change MUST be documented in the version history library (`docs/ssdlc/history/`). |
 | v6.6    | 2026-04-13 | **Harness Engineering Integration**: Embedded OpenAI's "Harnessing Engineering" principles. Shifted mindset to "Harness Architect" (Infrastructure-first). Added Mandatory "Missing Capability" check to `$lifecycle-debug` for agent failure root-cause analysis. |
+| v7.0    | 2026-04-13 | **Governance Alignment**: Massive upgrade to bridge formal engineering governance. Added Dual-Track execution via `--enterprise` flag. Shifted primary SSOT from PRD to OpenAPI Contract for enterprise mode. Added strict `Writeback` rules (GOV-004) preventing AI from modifying schemas silently. Introduced `tpl_req_eng_handoff_checklist.md` as the new initiation package for large modules within a Monorepo structure. |

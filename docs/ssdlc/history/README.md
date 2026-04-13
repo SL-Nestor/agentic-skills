@@ -6,6 +6,7 @@
 
 | 版本 | 日期 | 核心主旨 | 完整紀錄 |
 | :--- | :--- | :--- | :--- |
+| **v7.0** | 2024-04-13 | **治理架構整合與雙軌制**：支援企業 Monorepo 與 SSOT 回寫 | [查看 v7.0](v7.0-governance-integration.md) |
 | **v6.6** | 2024-04-13 | **支架工程與代理人能力進化**：整合 OpenAI Harness Engineering | [查看 v6.6](v6.6-harness-engineering.md) |
 | **v6.5** | 2024-04-10 | **React 效能卓越與文件記錄強制化**：整合 Vercel React Standards | [查看 v6.5](v6.5-react-excellence.md) |
 | **v6.4** | 2024-04-09 | **專業懷疑者覺醒**：整合 RST 測試心理學 (Bolton & Bach) | [查看 v6.4](v6.4-rst-psychology.md) |
