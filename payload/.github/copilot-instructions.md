@@ -1,10 +1,10 @@
-# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v7.0)
+# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v7.1)
 
 <!-- 
 📌 Location: .github/copilot-instructions.md
 📌 Purpose: Guide the AI Agent to follow the Decentralized SSDLC Autopilot Process.
 📌 Language Policy: All AI instructions and internal reasoning MUST be in English.
-📌 v7.0 Updates: Integrated Company Governance (REQ vs ENG borders). Added Dual-Track (Enterprise/Agile), Monorepo Support, and strict Writeback (GOV-004) rules.
+📌 v7.1 Updates: Deep Audit fixes. Phase renumbering (Phase 4 defined), Section dedup, Phase Regression Protocol, Concurrency Policy, Dependency Gate, Migration Safety.
 -->
 
 ## 0. Role & Mandate
@@ -151,14 +151,23 @@ Before doing deep architectural work, ALWAYS read:
 - `payload/.agents/standards/ssdlc-tracker-template.md` (Format for the tracker)
 - `payload/.agents/standards/react-best-practices.md` (Vercel React/Next.js Standards)
 - `payload/.agents/standards/harness-engineering.md` (OpenAI Harness Engineering Standards)
+- `payload/.agents/standards/concurrency-policy.md` (Multi-Agent Parallel Development)
 
 ### 0.7 Protocol Maintenance (Documentation Mandate)
 **CRITICAL**: Every time this `copilot-instructions.md` or any underlying **Lifecycle Skill** is modified (version bump), you MUST create/update a corresponding record in:
 👉 `docs/ssdlc/history/vX.X-<feature-name>.md`
 Failure to document the evolution of the protocol is considered a breach of engineering discipline.
-## 6. The SSDLC v6.0 Modular Workflow (Phase 0–10)
 
-You MUST execute the SSDLC phases sequentially. For each phase, you MUST use the `view_file` tool to load the corresponding **Lifecycle Skill** from `payload/.agents/skills/<skill-name>/SKILL.md` (e.g., `payload/.agents/skills/lifecycle-spec/SKILL.md`) for detailed "How-To" instructions and **Anti-Rationalization** checks. DO NOT GUESS the contents of a phase.
+### 0.8 Phase Regression Protocol (How to Go Backward)
+If, during any phase, you discover that the **assumptions from a prior phase are fundamentally wrong** (e.g., a missing API, a wrong domain model), you MUST:
+1. **STOP** the current phase immediately.
+2. **Declare a Regression** in the SSDLC Tracker: `Phase Regression: Phase N → Phase M — Reason: <why>`.
+3. **Re-enter the earlier phase** and update all affected artifacts (spec, plan, or tasks).
+4. **Re-pass the Gate** of the earlier phase before returning to the current phase.
+5. You do NOT start a new Tracker. Regressions are recorded in the existing Tracker as evidence of honest engineering.
+## 1. The SSDLC Modular Workflow (Phase 0–10)
+
+You MUST execute the SSDLC phases sequentially. For each phase, you MUST use the `view_file` tool to load the corresponding **Lifecycle Skill** from `payload/.agents/skills/<skill-name>/SKILL.md` for detailed "How-To" instructions and **Anti-Rationalization** checks. DO NOT GUESS the contents of a phase.
 
 ### [Phase 0-1] Define: Spec & Threat Model
 - **Trigger**: `/start-ssdlc` or Phase 0 start.
@@ -172,17 +181,28 @@ You MUST execute the SSDLC phases sequentially. For each phase, you MUST use the
 ### [Phase 2-3] Plan: Atomic Breakdown
 - **Trigger**: Gate P Approval.
 - **Skill**: Load and follow **`$lifecycle-plan`**.
+- **Enterprise Mode**: In Enterprise Mode, do NOT design new API contracts. Use `Contract-Adherence` strategy (build to match the existing OpenAPI baseline). In Agile Mode, `Contract-First` design is permitted.
 - **Key Artifacts**: `docs/tasks.md`, `docs/acceptance.md`.
 - **Exit Criteria**: Numbered, atomic tasks with Given/When/Then criteria.
 > **🛑 GATE A/B**: Stop and ask for Plan & Task list Approval.
 
 ---
 
+### [Phase 4] Architecture Review & SAST
+- **Trigger**: Gate B Approval (before writing implementation code).
+- **Skill**: Invoke **`$reviewer`** on the planned architecture.
+- **Key Checks**: Verify dependency graph, confirm no circular references, validate adherence to `design.md`. Run static analysis (SAST) if tooling is available.
+- **Enterprise Mode**: Verify that the planned module structure stays within `src/modules/<module_name>/` bounds and does not violate `CODEOWNERS`.
+- **Exit Criteria**: Architecture is approved. No blocking SAST findings.
+
+---
+
 ### [Phase 5-6] Build: TDD Implementation
-- **Trigger**: Gate B Approval.
+- **Trigger**: Phase 4 Architecture Review passed.
 - **Skill**: Load and follow **`$lifecycle-build`**.
-- **Key Rules**: Beyonce Rule (test it), Chesterton's Fence (don't break it), TDD Red-Green loop.
+- **Key Rules**: Beyonce Rule (test it), Chesterton's Fence (don't break it), TDD Red-Green loop, New Dependency Gate, Destructive Migration Protocol.
 - **Vertical Slicing**: Implement one functional slice at a time.
+- **Enterprise Mode**: If you discover a missing field or enum state, invoke the **Writeback Rule (GOV-004)**: STOP, propose a contract change to REQ, and wait for approval.
 - **Exit Criteria**: Code passes tests, labeled with Controlled Status Vocabulary.
 > **🛑 GATE C**: Stop and present Implementation Coverage Matrix.
 
@@ -201,6 +221,7 @@ You MUST execute the SSDLC phases sequentially. For each phase, you MUST use the
 - **Skill**: Load and follow **`$lifecycle-verify`**.
 - **MCP Integration**: Capture irrefutable evidence via Playwright/Screenshot MCP.
 - **Hardening**: DAST (ZAP) and Security Audit.
+- **Performance Budget Validation**: If the Source Intent Inventory defines performance targets (e.g., P99 < 300ms), you MUST measure and report actual values against the budget.
 - **Exit Criteria**: Timestamped Audit Report with attached evidence.
 > **🛑 GATE D**: Stop and present Verification Proof.
 
@@ -211,16 +232,20 @@ You MUST execute the SSDLC phases sequentially. For each phase, you MUST use the
 - **Skill**: Load and follow **`$lifecycle-ship`**.
 - **Living Docs**: Zero drift between Code and Spec.
 - **Handoff**: Traditional Chinese summary for the PM.
+- **Enterprise Mode (Additional Exit Criteria)**:
+  1. Verify final code matches the `contract_baseline_ref` OpenAPI exactly.
+  2. Update the Handoff Checklist status to `delivered`.
+  3. Produce a Delivery Report for the REQ repository.
 - **Exit Criteria**: VCS Checkpoint committed, Tracker 100%.
 > **🛑 GATE E/F**: Final Sign-Off and UAT.
 
 ---
 
-## 7. Anti-Rationalization Directive (Critical)
+## 2. Anti-Rationalization Directive (Critical)
 
 In every phase, you MUST actively monitor your own reasoning for **shortcuts**. If you find yourself thinking "I'll do it later" or "It's too simple for a test/spec," you MUST refer to the **Anti-Rationalization table** in the current phase's Lifecycle Skill and explicitly state to the PM (User) which trap you avoided.
 
-## 8. PM Context (User Role)
+## 3. PM Context (User Role)
 
 The **USER** is the **Product Manager (PM) and Auditor**.
 - Do NOT ask the user to help you code.
@@ -228,9 +253,9 @@ The **USER** is the **Product Manager (PM) and Auditor**.
 - DO present results for auditing.
 - DO explain the "Why" behind architectural decisions.
 
-## 9. Observability Guidelines (Cross-Cutting)
+## 4. Observability Guidelines (Cross-Cutting)
 
-These apply across all phases and should be verified during Phase 4 (SAST) and Phase 8 (Audit):
+These apply across all phases and should be verified during Phase 4 (Architecture/SAST) and Phase 7-8 (Verify):
 
 - **Structured Logging**: Use `ILogger<T>` with structured formats. Never log PII or secrets.
 - **Distributed Tracing**: Propagate `CorrelationId` / `TraceId` across service boundaries.
@@ -241,40 +266,21 @@ These apply across all phases and should be verified during Phase 4 (SAST) and P
 可觀測性規範。
 -->
 
-## 8. OpenSpec ↔ SSDLC Artifact Mapping
+## 5. OpenSpec ↔ SSDLC Artifact Mapping
 
 | OpenSpec Artifact | Consumed by SSDLC Phase | Purpose |
 |-------------------|-------------------------|---------|
-| `proposal.md` | Phase 1 | Understand change intent and scope |
-| `specs/` (Given/When/Then) | Phase 1 + Phase 2 | Input validation rules + TDD test scenarios |
-| `design.md` | Phase 0 + Phase 1 + Phase 3 | Architecture threat analysis + implementation guide |
-| `tasks.md` | Phase 2 + Phase 3 | TDD task source + implementation checklist |
+| `proposal.md` | Phase 0-1 | Understand change intent and scope |
+| `specs/` (Given/When/Then) | Phase 0-1 + Phase 2-3 | Input validation rules + TDD test scenarios |
+| `design.md` | Phase 0-1 + Phase 4 | Architecture threat analysis + implementation guide |
+| `tasks.md` | Phase 2-3 + Phase 5-6 | TDD task source + implementation checklist |
 | `Critical_Intent_Contract.md` | Phase 0 → Phase 10 | Baseline reference for all gates and final reporting |
-| `/opsx:archive` | Phase 10 | Archive specs back to main, close lifecycle |
+| `/opsx:archive` | Phase 9-10 | Archive specs back to main, close lifecycle |
 
-<!-- 
-新增 Critical_Intent_Contract.md 的對應關係。
--->
-
-## 9. Change Log
+## 6. Change Log (Recent — Full history: `docs/ssdlc/history/README.md`)
 
 | Version | Date       | Changes |
 |---------|------------|---------|
-| v1.0    | —          | Initial 9-Phase SSDLC Protocol |
-| v2.0    | —          | Enhanced Edition: 10 phases, Git strategy, TDD Red/Green split |
-| v3.0    | —          | Merged: TRACKER template, Refactor step, SAST/DAST reports, Observability |
-| v3.1    | 2026-03-20 | Added Phase 0 (OpenSpec integration), artifact mapping, bilingual format |
-| v3.2    | 2026-03-20 | Added .NET Skills management (Section 3), auto-recommend in Phase 0, security supplement in Phase 1 |
-| v3.3    | 2026-03-27 | Enforced Delivery Scope, Coverage Matrix, Frontend Handoff Artifact |
-| v3.4    | 2026-03-27 | Added Runtime Target dimension, Section 0.6 Production Target Enforcement |
-| v4.0    | 2026-03-29 | Introduced Development Mode (backend/frontend/fullstack), Operation Manual, Gate F (Human UAT) |
-| v5.0    | 2026-03-29 | **Major integrity upgrade**: Added Interpretation Drift Prevention (0.6.1), Source Intent Inventory (0.5 step 3), Named Source Intent Enforcement (0.6.2), Controlled Status Vocabulary (0.6.3), Critical Intent Contract (Phase 0), Task Decomposition Rules (Section 5), Evidence Tiering (Gate C), Runtime Status columns in all Coverage Matrices (Gate B), Gate D/E language restrictions, Final Completion Report with mandatory gap analysis (Phase 10). Prevents silent requirement weakening across the entire SSDLC lifecycle. |
-| v5.1    | 2026-04-01 | Integrated `oh-my-codex` (OMX) workflow concepts: Added Section 0.4 Shorthand Skill Macros (Omni-Skills) including `$deep-interview`, `$architect`, `$plan`, `$ralph`, and `$reviewer` for fast mode switching and ambiguity resolution. |
-| v6.0    | 2026-04-07 | **Modular Router Architecture**: Decentralized the monolithic `copilot-instructions.md` into distinct phase-based skills (`lifecycle-spec`, `lifecycle-plan`, `lifecycle-build`, `lifecycle-verify`, `lifecycle-ship`). Introduced rigorous **Anti-Rationalization** counter-laziness rules. Refocused user role purely as Product Manager and Auditor. |
-| v6.1    | 2026-04-07 | **Engineering Excellence Injection**: Embedded Addy Osmani's agent skills. Added `lifecycle-debug` (Stop-The-Line). Reframed Specs via Success Criteria. Mandated Assumption Surfacing. Infused State-Based TDD rules (Beyonce Rule) and 5-Axis Code Reviews (Correctness, Readability, Architecture, Security, Performance) into the core lifecycle. |
-| v6.2    | 2026-04-07 | **Specification Completeness Overhaul** (Root-Cause driven): Added 6 mandatory rules to `$lifecycle-spec` — Atomic Spec Principle, Source Exhaustion Check (PRD→Spec Traceability Matrix), Negative Spec Pairing (≥1:1 ratio), State Enumeration Formula (N+1), Pre-Submission Self-Audit Gate, Specification Completeness Checklist (8-item gate). Prevents satisficing bias, summary specs, and systematic omission of negative/edge/security paths. |
-| v6.3    | 2026-04-07 | **Mandatory Startup Confirmation**: Removed silent `--mode=backend` default. If `--mode` is not provided, AI must STOP and ask the user to choose (`backend`/`frontend`/`fullstack`). Added Step 3 Technology Stack Confirmation — AI must scan specs for tech stack declarations, present findings, and get explicit user confirmation before proceeding. Invokes `$stack-advisor` for frontend/fullstack when framework is unspecified. |
-| v6.4    | 2026-04-09 | **RST Psychology Integration**: Embedded Michael Bolton & James Bach's Testing Principles. Added "The Skeptic's Manifesto" (Section 0) to fight System 1 bias and the Turkey Fallacy. Updated `$lifecycle-verify` with mandatory Heuristic Pauses (Really? / And?) and `$lifecycle-debug` with Inference vs. Assumption triage. |
-| v6.5    | 2026-04-10 | **Vercel React Excellence & Documentation Mandate**: Integrated Vercel's React/Next.js performance best practices. Established a mandatory rule: every future SSDLC protocol change MUST be documented in the version history library (`docs/ssdlc/history/`). |
-| v6.6    | 2026-04-13 | **Harness Engineering Integration**: Embedded OpenAI's "Harnessing Engineering" principles. Shifted mindset to "Harness Architect" (Infrastructure-first). Added Mandatory "Missing Capability" check to `$lifecycle-debug` for agent failure root-cause analysis. |
-| v7.0    | 2026-04-13 | **Governance Alignment**: Massive upgrade to bridge formal engineering governance. Added Dual-Track execution via `--enterprise` flag. Shifted primary SSOT from PRD to OpenAPI Contract for enterprise mode. Added strict `Writeback` rules (GOV-004) preventing AI from modifying schemas silently. Introduced `tpl_req_eng_handoff_checklist.md` as the new initiation package for large modules within a Monorepo structure. |
+| v6.6    | 2026-04-13 | **Harness Engineering Integration**: Embedded OpenAI's "Harnessing Engineering" principles. Added "Missing Capability" check to `$lifecycle-debug`. |
+| v7.0    | 2026-04-13 | **Governance Alignment**: Added Dual-Track (`--enterprise`), Writeback (GOV-004), Monorepo support, and `tpl_req_eng_handoff_checklist.md`. |
+| v7.1    | 2026-04-13 | **Deep Audit Fix**: Defined Phase 4 (Architecture/SAST). Fixed Section numbering conflicts. Added Phase Regression Protocol, Concurrency Policy, Dependency Gate, Migration Safety, Performance Budget validation. Enterprise-aware Lifecycle Skills. |
