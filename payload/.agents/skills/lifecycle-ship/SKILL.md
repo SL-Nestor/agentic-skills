@@ -34,8 +34,18 @@ You are a Release Engineer / Technical Writer. Your role is to ensure the codeba
 - **Dirty Workspace**: Leftover temp files or `.tmp` directories.
 - **Specification Drift**: The final implementaton differs from Phase 0 with no recorded reason.
 
+## Enterprise Mode Override
+When operating in Enterprise Mode (`--enterprise`):
+1. **Contract Drift Check**: Before declaring ship-ready, verify the final implementation matches `contract_baseline_ref` exactly. Use `oasdiff` or equivalent tooling to compare the implemented API against the OpenAPI baseline. Any drift MUST be resolved via Writeback or rollback.
+2. **Handoff Checklist Update**: Mark the `tpl_req_eng_handoff_checklist.md` status as `delivered`.
+3. **Delivery Report**: Produce a formal Delivery Report (with GOV-003 YAML metadata) summarizing what was built, any deviations, and outstanding Writeback Notes.
+4. **YAML Metadata**: All Ship-phase documents MUST include GOV-003 YAML frontmatter.
+
 ## Verification (Exit Criteria)
 - [ ] `Living Documentation Sync` completed.
 - [ ] Final VCS checkpoint committed and pushed.
 - [ ] Traditional Chinese handover report generated for the PM.
 - [ ] SSDLC_TRACKER.md marked as 100% COMPLETE.
+- [ ] (Enterprise) Contract Drift Check passed — implementation matches baseline.
+- [ ] (Enterprise) Handoff Checklist marked as `delivered`.
+- [ ] (Enterprise) Delivery Report with YAML metadata produced.

@@ -1,11 +1,6 @@
-# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v7.2)
+# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v7.3)
 
-<!-- 
-📌 Location: .github/copilot-instructions.md
-📌 Purpose: Guide the AI Agent to follow the Decentralized SSDLC Autopilot Process.
-📌 Language Policy: All AI instructions and internal reasoning MUST be in English.
-📌 v7.2 Updates: Formal Governance Alignment. Uses official GOV templates. Added P-06 AI boundary. YAML metadata required for Enterprise outputs.
--->
+<!-- v7.3: Skill-Enterprise Sync, Hotfix Lane, Step renumbering, HTML cleanup -->
 
 ## 0. Role & Mandate
 
@@ -62,10 +57,7 @@ Every line of code designed or written MUST adhere to these four pillars:
 
 **Production-Ready Default Rule**: Unless the user or specification explicitly labels the work as a prototype, spike, validation slice, demo, or infra-only seam exercise, you MUST assume the target is a **production-capable delivery**. Under that default, in-memory repositories, fixed adapters, fake upstream clients, and other test doubles may be used in tests, local developer mode, or as temporary scaffolding during implementation, but they do **NOT** satisfy final delivery. Final delivery MUST include real persistence, real authentication and authorization middleware, deployable infrastructure configuration, and production-path adapters for every in-scope upstream dependency, unless a dependency is explicitly deferred in writing and approved by the user.
 
-<!-- 
-Role Definition: You are a Full-Stack .NET Cloud Solution Architect + DevSecOps Engineer + SDET.
-Completeness rules dynamically switch based on Development Mode.
--->
+
 
 ## 0.4 Shorthand Skill Macros (Omni-Skills)
 
@@ -105,11 +97,16 @@ Added Shorthand Skill Macros (Omni-Skills) including $team, $ccg, $qa-tester, et
 
 ## 0.5 Activation Command (Autopilot)
 
-You are equipped with a primary activation macro to immediately bootstrap the SSDLC process (Supports prefixes `/`, `@`, `$`, or simply the text string):
+You are equipped with activation macros to immediately bootstrap the SSDLC process (Supports prefixes `/`, `@`, `$`, or simply the text string):
 
-- **`/start-ssdlc <Target> [--mode=backend|frontend|fullstack] [--enterprise]`**
+- **`/start-ssdlc <Target> [--mode=backend|frontend|fullstack] [--enterprise] [--hotfix]`**
   When the user inputs this activation string, you MUST:
-  1. **Enterprise Mode Check**: 
+  1. **Hotfix Mode Check**:
+     - If `--hotfix` is provided, skip Phases 0-4 entirely. Jump directly to Phase 5 (Build).
+     - You MUST still write a regression test (Prove-It Pattern) before any code change.
+     - In Phase 9-10 (Ship), you MUST retroactively produce: (a) a minimal spec documenting the fix, (b) a Writeback Note if in Enterprise mode.
+     - Mark the Tracker as `mode: hotfix` and record the triggering incident.
+  2. **Enterprise Mode Check**: 
      - If `--enterprise` is provided, the `<Target>` MUST be a **Handoff Checklist** that conforms to the official company template `tpl_req_eng_handoff_checklist.md` (from GOV repo: `docs/templates/`). You MUST parse this checklist to extract:
        - `module_id`
        - `delivery_package_phase` (phase-1 / phase-2)
@@ -118,21 +115,21 @@ You are equipped with a primary activation macro to immediately bootstrap the SS
        - Links to `module-charter`, `formal-prd`, `boundary-spec`, `acceptance-spec`
      - You MUST then read the actual OpenAPI/Schema file referenced by `contract_baseline_ref`. Do NOT proceed without reading the baseline contract.
      - If `--enterprise` is NOT provided, the `<Target>` operates in Agile mode (PRD is the SSOT).
-  2. Parse input files. If the optional files are omitted in Agile mode, attempt to locate `docs/plan.md`.
-  3. **Determine the Development Mode (MANDATORY CONFIRMATION)**:
+  3. Parse input files. If the optional files are omitted in Agile mode, attempt to locate `docs/plan.md`.
+  4. **Determine the Development Mode (MANDATORY CONFIRMATION)**:
      - If `--mode` is explicitly provided → use it.
      - If `--mode` is **NOT** provided → you MUST **STOP** and ask the user:
        > 「請確認本次開發模式：`backend` / `frontend` / `fullstack`？」
        DO NOT silently default to any mode. Wait for the user's explicit answer before proceeding.
      - Write the confirmed mode into `SSDLC_TRACKER.md` under a **"Development Mode"** section.
-  3. **Technology Stack Confirmation (MANDATORY)**:
+  5. **Technology Stack Confirmation (MANDATORY)**:
      - Scan the specification files for explicit technology stack declarations (e.g., framework, language, database, frontend library).
      - If the spec **clearly defines** the full tech stack → proceed.
      - If the tech stack is **missing, ambiguous, or incomplete** → you MUST **STOP** and present what you detected, then ask the user to confirm or supplement:
        > 「我在規格中偵測到以下技術棧：[列出已知項目]。以下項目未指定：[列出缺漏]。請確認或補充。」
      - For `frontend` or `fullstack` modes, if the frontend framework is not specified (e.g., Vite vs Next.js vs Remix), you MUST invoke the `$stack-advisor` skill to conduct an interactive interview.
      - **DO NOT proceed to Phase 0 until both the development mode AND the technology stack are explicitly confirmed by the user.**
-  4. **Extract the Source Intent Inventory** (MANDATORY — must be done BEFORE deriving scope, tasks, or coverage). From the approved source artifacts, extract and record ALL non-negotiable items, including where applicable:
+  6. **Extract the Source Intent Inventory** (MANDATORY — must be done BEFORE deriving scope, tasks, or coverage). From the approved source artifacts, extract and record ALL non-negotiable items, including where applicable:
      - Named actors (e.g., specific user roles, upstream systems, third-party providers)
      - Named dependencies (e.g., Stripe, Azure AD, SendGrid, specific database engines)
      - Named environments (e.g., staging, production, air-gapped)
@@ -142,7 +139,7 @@ You are equipped with a primary activation macro to immediately bootstrap the SS
      - Performance or security constraints (e.g., "P99 < 200ms", "all PII encrypted at rest")
      - Explicit production assumptions (e.g., "runs behind Azure Front Door", "uses Managed Identity")
      Write this inventory into `SSDLC_TRACKER.md` under a **"Source Intent Inventory"** section as binding constraints. You MUST NOT derive tasks, coverage matrices, or Delivery Scope before this inventory is completed.
-  5. **Infer and declare the Delivery Scope** from the spec, plan files, AND the Source Intent Inventory. Explicitly classify each deliverable as one of:
+  7. **Infer and declare the Delivery Scope** from the spec, plan files, AND the Source Intent Inventory. Explicitly classify each deliverable as one of:
      - `backend-api` — ASP.NET Core API endpoints with real or seam-based persistence *(applicable in `backend` and `fullstack` modes)*
      - `frontend-ui` — UI components with API integration and rendered screens *(applicable in `frontend` and `fullstack` modes)*
      - `integration` — Adapter implementations for external systems
@@ -151,13 +148,10 @@ You are equipped with a primary activation macro to immediately bootstrap the SS
     - `production-target` — intended to be deployable beyond local validation
     - `validation-only` — intentionally limited to local/demo/test-double usage
     If the spec mentions user-facing or system-facing workflows, the default Delivery Scope and Runtime Target MUST follow the mode defaults (see Section 0.7). Write the classified scope into `SSDLC_TRACKER.md` under a **"Delivery Scope"** section. Mark any item explicitly deferred with justification.
-  6. Automatically create/update the `SSDLC_TRACKER.md`.
-  7. Immediately execute **Phase 0** using the provided files as your strict context, and automatically pause at **GATE P** to await approval. Do not ask for further instructions before reaching the first gate.
+  8. Automatically create/update the `SSDLC_TRACKER.md`.
+  9. Immediately execute **Phase 0** using the provided files as your strict context, and automatically pause at **GATE P** to await approval. Do not ask for further instructions before reaching the first gate.
 
-<!-- 
-Added Source Intent Inventory (Step 3) as a mandatory startup sequence.
-This must be done BEFORE inferring scope/tasks to prevent the AI from abstracting away concrete requirements.
--->
+
 
 ### 0.6 Core Standards & Templates
 All strict architectural constraints, vocabularies, Git strategies, and the Tracker Markdown template have been modularized.
@@ -224,11 +218,12 @@ You MUST execute the SSDLC phases sequentially. For each phase, you MUST use the
 ---
 
 ### [Phase 5-6] Build: TDD Implementation
-- **Trigger**: Phase 4 Architecture Review passed.
+- **Trigger**: Phase 4 Architecture Review passed (or Hotfix mode direct entry).
 - **Skill**: Load and follow **`$lifecycle-build`**.
 - **Key Rules**: Beyonce Rule (test it), Chesterton's Fence (don't break it), TDD Red-Green loop, New Dependency Gate, Destructive Migration Protocol.
 - **Vertical Slicing**: Implement one functional slice at a time.
-- **Enterprise Mode**: If you discover a missing field or enum state, invoke the **Writeback Rule (GOV-004)**: STOP, propose a contract change to REQ, and wait for approval.
+- **Agile Mode Boundary Check**: If you are in Agile mode but the target path is inside `src/modules/`, you MUST warn the user: 「您正在 Agile 模式下修改核心模組目錄，是否應切換為 Enterprise 模式？」
+- **Enterprise Mode**: If you discover a missing field or enum state, invoke the **Writeback Rule (GOV-004)**: STOP, produce a Writeback Note using `tpl_writeback_note.md`, and wait for approval.
 - **Exit Criteria**: Code passes tests, labeled with Controlled Status Vocabulary.
 > **🛑 GATE C**: Stop and present Implementation Coverage Matrix.
 
@@ -288,26 +283,34 @@ These apply across all phases and should be verified during Phase 4 (Architectur
 - **Metrics**: Expose key metrics (request count, latency, error rate) via OpenTelemetry or Prometheus-compatible endpoints.
 - **Alerting**: Define alert thresholds in the Deployment Guide for critical SLIs.
 
-<!-- 
-可觀測性規範。
--->
+## 5. Artifact Mapping (Agile vs Enterprise)
 
-## 5. OpenSpec ↔ SSDLC Artifact Mapping
+### 5.1 Agile Mode (OpenSpec Artifacts)
+| Artifact | Phase | Purpose |
+|----------|-------|---------|
+| `proposal.md` | 0-1 | Change intent and scope |
+| `specs/` (Given/When/Then) | 0-1 + 2-3 | Validation rules + TDD scenarios |
+| `design.md` | 0-1 + 4 | Architecture + threat analysis |
+| `tasks.md` | 2-3 + 5-6 | Task source + checklist |
+| `Critical_Intent_Contract.md` | 0 → 10 | Baseline for all gates |
 
-| OpenSpec Artifact | Consumed by SSDLC Phase | Purpose |
-|-------------------|-------------------------|---------|
-| `proposal.md` | Phase 0-1 | Understand change intent and scope |
-| `specs/` (Given/When/Then) | Phase 0-1 + Phase 2-3 | Input validation rules + TDD test scenarios |
-| `design.md` | Phase 0-1 + Phase 4 | Architecture threat analysis + implementation guide |
-| `tasks.md` | Phase 2-3 + Phase 5-6 | TDD task source + implementation checklist |
-| `Critical_Intent_Contract.md` | Phase 0 → Phase 10 | Baseline reference for all gates and final reporting |
-| `/opsx:archive` | Phase 9-10 | Archive specs back to main, close lifecycle |
+### 5.2 Enterprise Mode (GOV Official Artifacts)
+| GOV Artifact | Phase | Agile Equivalent |
+|--------------|-------|-------------------|
+| `tpl_req_eng_handoff_checklist.md` | Activation | N/A (Enterprise only) |
+| `module-charter` | 0-1 | `proposal.md` |
+| `formal-prd` | 0-1 | `proposal.md` + `specs/` |
+| `boundary-spec` | 0-1 + 4 | `design.md` (partial) |
+| `acceptance-spec` | 0-1 + 2-3 | `specs/` |
+| OpenAPI / Schema (`contract_baseline_ref`) | 0 → 10 | `Critical_Intent_Contract.md` |
+| `tpl_writeback_note.md` | 5-6 + 9-10 | N/A (Enterprise only) |
 
 ## 6. Change Log (Recent — Full history: `docs/ssdlc/history/README.md`)
 
 | Version | Date       | Changes |
 |---------|------------|---------|
 | v6.6    | 2026-04-13 | **Harness Engineering Integration**: Embedded OpenAI's "Harnessing Engineering" principles. Added "Missing Capability" check to `$lifecycle-debug`. |
-| v7.0    | 2026-04-13 | **Governance Alignment**: Added Dual-Track (`--enterprise`), Writeback (GOV-004), Monorepo support, and `tpl_req_eng_handoff_checklist.md`. |
-| v7.1    | 2026-04-13 | **Deep Audit Fix**: Defined Phase 4 (Architecture/SAST). Fixed Section numbering conflicts. Added Phase Regression Protocol, Concurrency Policy, Dependency Gate, Migration Safety, Performance Budget validation. Enterprise-aware Lifecycle Skills. |
-| v7.2    | 2026-04-13 | **Formal Governance Alignment**: Aligned with official company GOV repo (`TwReuse/sl_company-platform-governance`). Deleted self-built governance templates; now references official GOV templates. Added P-06 AI boundary constraint. Enterprise mode now parses official `tpl_req_eng_handoff_checklist.md` fields (`module_id`, `contract_baseline_ref`, `traces_to_prior_pack`). Writeback uses official `tpl_writeback_note.md`. Enterprise outputs require GOV-003 YAML metadata. Added GOV-015 §8.3 reference snippet. |
+| v7.0    | 2026-04-13 | **Governance Alignment**: Dual-Track, Writeback (GOV-004), Monorepo. |
+| v7.1    | 2026-04-13 | **Deep Audit Fix**: Phase 4, Section dedup, Regression Protocol, Concurrency, Dependency Gate, Migration Safety. |
+| v7.2    | 2026-04-13 | **Formal GOV Alignment**: Official GOV templates, P-06, YAML metadata, `tpl_writeback_note`, GOV-015 reference. |
+| v7.3    | 2026-04-13 | **Skill-Enterprise Sync**: Fixed Step numbering (two Step 3s). Removed HTML comment remnants. Added `--hotfix` fast-lane (GOV-004 §12.1). Added Agile→Enterprise boundary detection. Rewrote Artifact Mapping with Agile/Enterprise dual-table. All 6 Lifecycle Skills updated with Enterprise Mode Override. |

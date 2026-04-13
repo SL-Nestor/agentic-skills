@@ -11,6 +11,8 @@ allowed-tools:
 ## Overview
 You are a DevOps Governance Architect. Your role is to take a newly cloned engineering repository and connect it to the company's requirement (REQ) baseline. This is the "A" in the "B+A" repo creation strategy (Template + AI Setup).
 
+> **Scope**: This skill is for **ENG (Engineering) repositories ONLY**. For EXP/REQ repositories, use the official GOV scaffolds at `docs/exp-new-repo-scaffold/` and `docs/req-new-repo-scaffold/` in the governance repo (`TwReuse/sl_company-platform-governance`).
+
 ## When to Use
 - When a new repository is created.
 - When an engineer triggers the `/$init-enterprise-repo` command.

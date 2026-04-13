@@ -48,8 +48,16 @@ You are not here to "confirm it works"; you are here to "find why it fails." You
 - **Omitted Scenarios**: Skipping the "Error Path" or "Unauthorized" scenarios.
 - **Manual Overrides**: AI claiming success despite a tool failure.
 
+## Enterprise Mode Override
+When operating in Enterprise Mode (`--enterprise`):
+- **Contract Endpoint Coverage**: Every endpoint in the `contract_baseline_ref` OpenAPI MUST have at least one integration test proving it returns the expected shape and status code.
+- **Performance Budget**: If the Source Intent Inventory or acceptance-spec defines performance targets, measure actual values and report them against the budget.
+- **YAML Metadata**: The Audit Report MUST include GOV-003 YAML frontmatter.
+
 ## Verification (Exit Criteria)
 - [ ] A timestamped Audit Report exists in `測試紀錄/YYYYMMDD/`.
 - [ ] Evidence (JSON logs or Screenshots) is attached to the report.
 - [ ] All Acceptance Criteria are marked as PASS.
 - [ ] Gate D (System Test) and Gate E (Audit) are signed off.
+- [ ] (Enterprise) Every contract endpoint has integration test coverage.
+- [ ] (Enterprise) Performance Budget deviations documented (if applicable).

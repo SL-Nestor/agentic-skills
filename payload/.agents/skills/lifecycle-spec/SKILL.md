@@ -109,6 +109,12 @@ Every spec submission to the PM MUST include this checklist. **ALL items must be
 - Producing fewer specs than the `feature_count × 4` floor estimate without justification.
 - Missing the PRD → Spec Traceability Matrix in the Gate P submission.
 
+## Enterprise Mode Override
+When operating in Enterprise Mode (`--enterprise`):
+- **Input Source**: Your primary inputs are the GOV official delivery package: `module-charter`, `formal-prd`, `boundary-spec`, `acceptance-spec`, and the OpenAPI `contract_baseline_ref`. NOT a single PRD file.
+- **Spec ≠ Design**: You do NOT design the API. The API is already defined by the `contract_baseline_ref`. Your spec work is to verify **completeness** of the delivery package and identify any gaps that require a Writeback to REQ.
+- **Gap Report**: If you find missing scenarios, undefined edge cases, or ambiguous boundaries in the delivery package, produce a **Gap Report** and present it at Gate P. Do NOT invent the answers.
+
 ## Verification (Exit Criteria)
 - [ ] Assumptions list is posted and approved by the PM.
 - [ ] Vague requirements are reframed into testable Success Criteria.
@@ -119,3 +125,4 @@ Every spec submission to the PM MUST include this checklist. **ALL items must be
 - [ ] Specification Completeness Checklist is fully checked (8/8).
 - [ ] Pre-Submission Self-Audit is executed and documented.
 - [ ] PM (User) has signed off on Gate P.
+- [ ] (Enterprise) Delivery package gap report produced (if gaps found).
