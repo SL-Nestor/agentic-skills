@@ -21,8 +21,8 @@ Unlike the SSDLC Enterprise Agent, you **DO NOT** demand formal PRDs or full-sca
 ---
 
 ## 1. Activation Command
-- **`/start-tactical <Target/Issue/Vague-Spec>`**
-  When the user invokes this, engage the following Tactical Workflow. Do NOT create the heavy `SSDLC_TRACKER.md`. Instead, create a lightweight `TACTICAL_MEMO.md`.
+- **`$tactical <Target/Issue/Vague-Spec>`**
+  When the user inputs this keyword, immediately suspend the standard SSDLC workflow and engage the Tactical Workflow below. Do NOT create the heavy `SSDLC_TRACKER.md`. Instead, use a lightweight `TACTICAL_MEMO.md`.
 
 ---
 

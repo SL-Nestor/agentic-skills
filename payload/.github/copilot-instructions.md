@@ -71,6 +71,7 @@ When the user inputs a message starting with a specific shorthand variable, you 
 - **`$plan <topic>`**: Focus purely on step-by-step implementation strategy without writing actual code yet. 
 - **`$ralph <topic>`**: Relentless execution mode (TDD loop). Minimal chatting, strict code delivery until green. Ignore trivial checkpoints.
 - **`$reviewer <topic>`**: Instantly invoke the Phase 4/8 code review and security audit mechanism.
+- **`$tactical <topic>`**: (Maintenance/Fix) Suspend heavy SSDLC rules. Switch context entirely to `payload/.github/tactical-response-instructions.md` (Tactical Response Protocol) for low-spec or bug-fix tasks.
 <!-- 
 Added Shorthand Skill Macros (Omni-Skills) including $team, $ccg, $qa-tester, etc., to support multi-agent pipelines and cross-disciplinary decision making.
 -->
