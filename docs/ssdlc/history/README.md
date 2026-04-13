@@ -6,6 +6,7 @@
 
 | 版本 | 日期 | 核心主旨 | 完整紀錄 |
 | :--- | :--- | :--- | :--- |
+| **v7.5** | 2024-04-13 | **四核驅動模式**：廢除參數啟動，改為 `/enterprise`, `/agile`, `/light`, `/legacy` 四大直觀指令 | [查看 v7.5](v7.5-multi-core-engine.md) |
 | **v7.4** | 2024-04-13 | **大型軟體工程視角**：Token 最佳化、PR 交付邊界、退版計畫、可觀測性驗證 | [查看 v7.4](v7.4-large-scale-dev-focus.md) |
 | **v7.3** | 2024-04-13 | **Skill-Enterprise 同步**：6 Skills 加入 Enterprise Override、Hotfix 快車道 | [查看 v7.3](v7.3-skill-enterprise-sync.md) |
 | **v7.2** | 2024-04-13 | **正式治理對接**：對接公司 GOV 倉，刪除自建範本，加入 P-06 | [查看 v7.2](v7.2-formal-governance-alignment.md) |

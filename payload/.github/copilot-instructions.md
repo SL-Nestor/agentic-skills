@@ -76,63 +76,47 @@ When the user inputs a message starting with a specific shorthand variable, you 
 Added Shorthand Skill Macros (Omni-Skills) including $team, $ccg, $qa-tester, etc., to support multi-agent pipelines and cross-disciplinary decision making.
 -->
 
-## 0.5 Activation Command (Autopilot)
+## 0.5 AI 協作引擎：四核驅動模式 (The Four-Core Activation)
 
-You are equipped with activation macros to immediately bootstrap the SSDLC process (Supports prefixes `/`, `@`, `$`, or simply the text string):
+為因應不同規模的工程需求，你有四種主要的啟動指令。當輸入以下任一指令時，你必須立刻切換到對應的心智模型：
 
-- **`/start-ssdlc <Target> [--mode=backend|frontend|fullstack] [--enterprise] [--hotfix]`**
-  When the user inputs this activation string, you MUST:
-  1. **Hotfix Mode Check**:
-     - If `--hotfix` is provided, skip Phases 0-4 entirely. Jump directly to Phase 5 (Build).
-     - You MUST still write a regression test (Prove-It Pattern) before any code change.
-     - In Phase 9-10 (Ship), you MUST retroactively produce: (a) a minimal spec documenting the fix, (b) a Writeback Note if in Enterprise mode.
-     - Mark the Tracker as `mode: hotfix` and record the triggering incident.
-  2. **Enterprise Mode Check**: 
-     - If `--enterprise` is provided, the `<Target>` MUST be a **Handoff Checklist** that conforms to the official company template `tpl_req_eng_handoff_checklist.md` (from GOV repo: `docs/templates/`). You MUST parse this checklist to extract:
-       - `module_id`
-       - `delivery_package_phase` (phase-1 / phase-2)
-       - `contract_baseline_ref` (OpenAPI tag/commit — the absolute SSOT)
-       - `traces_to_prior_pack` (if Phase 2)
-       - Links to `module-charter`, `formal-prd`, `boundary-spec`, `acceptance-spec`
-     - You MUST then read the actual OpenAPI/Schema file referenced by `contract_baseline_ref`. Do NOT proceed without reading the baseline contract.
-     - If `--enterprise` is NOT provided, the `<Target>` operates in Agile mode (PRD is the SSOT).
-  3. Parse input files. If the optional files are omitted in Agile mode, attempt to locate `docs/plan.md`.
-  4. **Determine the Development Mode (MANDATORY CONFIRMATION)**:
-     - If `--mode` is explicitly provided → use it.
-     - If `--mode` is **NOT** provided → you MUST **STOP** and ask the user:
-       > 「請確認本次開發模式：`backend` / `frontend` / `fullstack`？」
-       DO NOT silently default to any mode. Wait for the user's explicit answer before proceeding.
-     - Write the confirmed mode into `SSDLC_TRACKER.md` under a **"Development Mode"** section.
-  5. **Technology Stack Confirmation (MANDATORY)**:
-     - Scan the specification files for explicit technology stack declarations (e.g., framework, language, database, frontend library).
-     - If the spec **clearly defines** the full tech stack → proceed.
-     - If the tech stack is **missing, ambiguous, or incomplete** → you MUST **STOP** and present what you detected, then ask the user to confirm or supplement:
-       > 「我在規格中偵測到以下技術棧：[列出已知項目]。以下項目未指定：[列出缺漏]。請確認或補充。」
-     - For `frontend` or `fullstack` modes, if the frontend framework is not specified (e.g., Vite vs Next.js vs Remix), you MUST invoke the `$stack-advisor` skill to conduct an interactive interview.
-     - **DO NOT proceed to Phase 0 until both the development mode AND the technology stack are explicitly confirmed by the user.**
-  6. **Extract the Source Intent Inventory** (MANDATORY — must be done BEFORE deriving scope, tasks, or coverage). From the approved source artifacts, extract and record ALL non-negotiable items, including where applicable:
-     - Named actors (e.g., specific user roles, upstream systems, third-party providers)
-     - Named dependencies (e.g., Stripe, Azure AD, SendGrid, specific database engines)
-     - Named environments (e.g., staging, production, air-gapped)
-     - Invariants (e.g., "password must be 12+ chars", "invoice numbers are immutable")
-     - Runtime targets (production-target vs validation-only)
-     - Compliance obligations (e.g., GDPR, PCI-DSS, SOC2)
-     - Performance or security constraints (e.g., "P99 < 200ms", "all PII encrypted at rest")
-     - Explicit production assumptions (e.g., "runs behind Azure Front Door", "uses Managed Identity")
-     Write this inventory into `SSDLC_TRACKER.md` under a **"Source Intent Inventory"** section as binding constraints. You MUST NOT derive tasks, coverage matrices, or Delivery Scope before this inventory is completed.
-  7. **Infer and declare the Delivery Scope** from the spec, plan files, AND the Source Intent Inventory. Explicitly classify each deliverable as one of:
-     - `backend-api` — ASP.NET Core API endpoints with real or seam-based persistence *(applicable in `backend` and `fullstack` modes)*
-     - `frontend-ui` — UI components with API integration and rendered screens *(applicable in `frontend` and `fullstack` modes)*
-     - `integration` — Adapter implementations for external systems
-     - `infra-only` — Repository/adapter seams with test doubles only (no real persistence)
-    In the same section, you MUST also declare the **Runtime Target** for each deliverable as either:
-    - `production-target` — intended to be deployable beyond local validation
-    - `validation-only` — intentionally limited to local/demo/test-double usage
-    If the spec mentions user-facing or system-facing workflows, the default Delivery Scope and Runtime Target MUST follow the mode defaults (see Section 0.7). Write the classified scope into `SSDLC_TRACKER.md` under a **"Delivery Scope"** section. Mark any item explicitly deferred with justification.
-  8. Automatically create/update the `SSDLC_TRACKER.md`.
-  9. Immediately execute **Phase 0** using the provided files as your strict context, and automatically pause at **GATE P** to await approval. Do not ask for further instructions before reaching the first gate.
+### 1. 🏢 企業模式 (Enterprise Mode)
+- **指令**: `/enterprise <Handoff-Checklist>`
+- **目標**: 公司級核心模組開發。
+- **規則**: 載入 `copilot-instructions.md` 並套用所有的 Enterprise Overrides。SSOT 是合約 (OpenAPI)。必須解析 `tpl_req_eng_handoff_checklist.md`，如果遇規格缺口，暫停並觸發 GOV-004 `tpl_writeback_note` 回寫。產出必須帶有 YAML metadata。
+- **後續動作**: 執行 Global Startup Protocol (見下方)，然後進入 Phase 0。
 
+### 2. 📝 規格開發模式 (Agile Spec Mode)
+- **指令**: `/agile <Proposal/Issue>`
+- **目標**: 中型獨立應用或模組。
+- **規則**: 載入 `copilot-instructions.md` (忽略 Enterprise Overrides)。SSOT 是 PRD。遵守標準 SSDLC，產出 `SSDLC_TRACKER.md`。
+- **後續動作**: 執行 Global Startup Protocol (見下方)，然後進入 Phase 0。
 
+### 3. 🪶 輕量開發模式 (Lightweight Mode)
+- **指令**: `/light <Topic>`
+- **目標**: 快速雛形、小腳本或單次型小任務。
+- **規則**: 暫停一切重量級 Tracker 與反覆驗收 (Gate) 機制。不限制於 Phase 0-10。流程：1. 釐清意圖 2. 寫核心防禦測試 (TDD) 3. 實作功能 4. 產出簡單 Markdown 總結 (無 YAML 負擔)。不要把簡單任務過度工程化。
+
+### 4. 🧰 舊產品維護模式 (Legacy Maintenance Mode)
+- **指令**: `/legacy <Bug/Issue>` (別名：`$tactical`)
+- **目標**: 舊系統維護、修復弱規格/無規格的 Bug。
+- **規則**: 暫停標準 SSDLC。強制載入 `payload/.github/tactical-response-instructions.md` (TRP)。跳過 PRD/架構設計。核心迴圈：代碼考古推測意圖 -> 寫特徵測試 (Pinning Test) 鎖定現狀 -> 手術刀式打擊修復 -> 童子軍清理撤離。不建立 Tracker，只產出 `TACTICAL_MEMO.md`。
+
+---
+### 🛠️ Global Startup Protocol (For `/enterprise` and `/agile` ONLY)
+當使用者啟動 `/enterprise` 或 `/agile` 時，在進入 Phase 0 之前，你必須依序執行以下 5 個啟動步驟：
+
+1. **Hotfix Mode Check**: 如果使用者附加 `--hotfix` 標籤，跳過 Phase 0-4，直接進入 Phase 5 (Build)，並在 Tracker 標記為 Hotfix。
+2. **Determine the Development Mode (MANDATORY)**:
+   - 詢問並確認：「請確認本次開發模式：`backend` / `frontend` / `fullstack`？」DO NOT default.
+3. **Technology Stack Confirmation (MANDATORY)**:
+   - 掃描提供的文件。如果技術棧 (Framework, DB 等) 不完整，**STOP** 並要求使用者補充。
+4. **Extract the Source Intent Inventory (MANDATORY)**:
+   - 提取所有硬性規定、限制、依賴、效能預算。寫入 Tracker 的 "Source Intent Inventory"。
+5. **Infer and declare the Delivery Scope (MANDATORY)**:
+   - 分類產出為：`backend-api` / `frontend-ui` / `integration` / `infra-only`。
+   - 分配 Runtime Target：`production-target` 或 `validation-only`。
+   - 自動化建立 `SSDLC_TRACKER.md` 並在 Gate P 暫停等待簽署。
 
 ### 0.6 Core Standards & Templates
 All strict architectural constraints, vocabularies, Git strategies, and the Tracker Markdown template have been modularized.
