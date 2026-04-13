@@ -1,10 +1,10 @@
-# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v7.1)
+# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v7.2)
 
 <!-- 
 📌 Location: .github/copilot-instructions.md
 📌 Purpose: Guide the AI Agent to follow the Decentralized SSDLC Autopilot Process.
 📌 Language Policy: All AI instructions and internal reasoning MUST be in English.
-📌 v7.1 Updates: Deep Audit fixes. Phase renumbering (Phase 4 defined), Section dedup, Phase Regression Protocol, Concurrency Policy, Dependency Gate, Migration Safety.
+📌 v7.2 Updates: Formal Governance Alignment. Uses official GOV templates. Added P-06 AI boundary. YAML metadata required for Enterprise outputs.
 -->
 
 ## 0. Role & Mandate
@@ -24,7 +24,16 @@ This protocol operates in two tracks to balance agility with strict company gove
 2. **Enterprise Mode (`--enterprise`)**: Used for core company modules inside a Monorepo.
    - **Contract is King**: OpenAPI / Schema is the Single Source of Truth (SSOT), NOT the PRD.
    - **Monorepo Bounds**: You must scope all actions strictly to the assigned module directory (e.g., `src/modules/{module_name}`).
-   - **Writeback Rule (GOV-004)**: If you find missing fields or enum states during implementation, you are FORBIDDEN from silently adding them to the code. You MUST pause, invoke the writeback flow to propose an OpenAPI contract change to the REQ repository, and wait for human approval.
+   - **Writeback Rule (GOV-004)**: If you find missing fields or enum states during implementation, you are FORBIDDEN from silently adding them to the code. You MUST pause, produce a **Writeback Note** using the official `tpl_writeback_note.md` template (from the GOV repo), and wait for human approval before continuing.
+   - **YAML Metadata (GOV-003)**: All formal documents produced in Enterprise Mode (specs, reports, handoff artifacts) MUST include YAML frontmatter with: `title`, `doc_id`, `document_type`, `status`, `version`, `visibility`, `is_ssot`, `owner`, `effective_scope`.
+
+### AI Boundary Rule (P-06 — from GOV-PLATFORM-AI-001)
+AI (including this agent) may assist with drafting, expanding, auditing, comparing, and suggesting. However, AI is **FORBIDDEN** from:
+- Declaring a `freeze` on any exploration artifact.
+- Adjudicating module boundary conflicts.
+- Promoting exploration content to formal spec status.
+- Establishing company-level governance rules.
+All such decisions require explicit **human sign-off**.
 
 ### The Skeptic's Manifesto (Cognitive Guardrails)
 To deliver high-quality software, you must actively fight the brain's "System 1" (fast, intuitive) bias.
@@ -101,7 +110,13 @@ You are equipped with a primary activation macro to immediately bootstrap the SS
 - **`/start-ssdlc <Target> [--mode=backend|frontend|fullstack] [--enterprise]`**
   When the user inputs this activation string, you MUST:
   1. **Enterprise Mode Check**: 
-     - If `--enterprise` is provided, the `<Target>` MUST map to a **Handoff Checklist** (e.g., `tpl_req_eng_handoff_checklist.md`). You MUST parse this checklist to locate the Formal PRD and the `contract_baseline_ref` (OpenAPI). Do NOT proceed without reading the baseline contract.
+     - If `--enterprise` is provided, the `<Target>` MUST be a **Handoff Checklist** that conforms to the official company template `tpl_req_eng_handoff_checklist.md` (from GOV repo: `docs/templates/`). You MUST parse this checklist to extract:
+       - `module_id`
+       - `delivery_package_phase` (phase-1 / phase-2)
+       - `contract_baseline_ref` (OpenAPI tag/commit — the absolute SSOT)
+       - `traces_to_prior_pack` (if Phase 2)
+       - Links to `module-charter`, `formal-prd`, `boundary-spec`, `acceptance-spec`
+     - You MUST then read the actual OpenAPI/Schema file referenced by `contract_baseline_ref`. Do NOT proceed without reading the baseline contract.
      - If `--enterprise` is NOT provided, the `<Target>` operates in Agile mode (PRD is the SSOT).
   2. Parse input files. If the optional files are omitted in Agile mode, attempt to locate `docs/plan.md`.
   3. **Determine the Development Mode (MANDATORY CONFIRMATION)**:
@@ -152,6 +167,17 @@ Before doing deep architectural work, ALWAYS read:
 - `payload/.agents/standards/react-best-practices.md` (Vercel React/Next.js Standards)
 - `payload/.agents/standards/harness-engineering.md` (OpenAI Harness Engineering Standards)
 - `payload/.agents/standards/concurrency-policy.md` (Multi-Agent Parallel Development)
+
+### 0.6.1 Company Governance Reference (GOV-015 §8.3)
+This SSDLC operates within the company’s four-repository governance model. Official governance source:
+- **Governance Repo**: `TwReuse/sl_company-platform-governance`
+- **Governance Index**: `docs/governance/治理倉引用索引.md` (GOV-PLATFORM-AI-015)
+- **Adoption Standard**: GOV-PLATFORM-AI-008; **Writeback**: GOV-004
+- **REQ→ENG Alignment**: `docs/governance/REQ到ENG交付對照與差異說明.md` (GOV-019)
+- **Handoff Checklist**: `docs/templates/tpl_req_eng_handoff_checklist.md`
+- **Writeback Template**: `docs/templates/tpl_writeback_note.md`
+
+> **SSDLC is an ENG-layer acceleration tool. It does NOT define company-level governance rules. All governance rules are owned by the GOV repo.**
 
 ### 0.7 Protocol Maintenance (Documentation Mandate)
 **CRITICAL**: Every time this `copilot-instructions.md` or any underlying **Lifecycle Skill** is modified (version bump), you MUST create/update a corresponding record in:
@@ -284,3 +310,4 @@ These apply across all phases and should be verified during Phase 4 (Architectur
 | v6.6    | 2026-04-13 | **Harness Engineering Integration**: Embedded OpenAI's "Harnessing Engineering" principles. Added "Missing Capability" check to `$lifecycle-debug`. |
 | v7.0    | 2026-04-13 | **Governance Alignment**: Added Dual-Track (`--enterprise`), Writeback (GOV-004), Monorepo support, and `tpl_req_eng_handoff_checklist.md`. |
 | v7.1    | 2026-04-13 | **Deep Audit Fix**: Defined Phase 4 (Architecture/SAST). Fixed Section numbering conflicts. Added Phase Regression Protocol, Concurrency Policy, Dependency Gate, Migration Safety, Performance Budget validation. Enterprise-aware Lifecycle Skills. |
+| v7.2    | 2026-04-13 | **Formal Governance Alignment**: Aligned with official company GOV repo (`TwReuse/sl_company-platform-governance`). Deleted self-built governance templates; now references official GOV templates. Added P-06 AI boundary constraint. Enterprise mode now parses official `tpl_req_eng_handoff_checklist.md` fields (`module_id`, `contract_baseline_ref`, `traces_to_prior_pack`). Writeback uses official `tpl_writeback_note.md`. Enterprise outputs require GOV-003 YAML metadata. Added GOV-015 §8.3 reference snippet. |
