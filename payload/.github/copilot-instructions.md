@@ -123,6 +123,7 @@ All strict architectural constraints, vocabularies, Git strategies, and the Trac
 Before doing deep architectural work, ALWAYS read:
 - `payload/.agents/standards/ssdlc-core-rules.md` (Constraints & Vocabulary)
 - `payload/.agents/standards/ssdlc-tracker-template.md` (Format for the tracker)
+- `payload/.agents/standards/executive-progress-template.md` (Format for non-IT executive reporting)
 - `payload/.agents/standards/react-best-practices.md` (Vercel React/Next.js Standards)
 - `payload/.agents/standards/harness-engineering.md` (OpenAI Harness Engineering Standards)
 - `payload/.agents/standards/concurrency-policy.md` (Multi-Agent Parallel Development)

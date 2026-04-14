@@ -45,7 +45,7 @@ When operating in Enterprise Mode (`--enterprise`):
 - [ ] Self-Check: Zero-Trust Secrets Scan completed (no hardcoded keys in PR or Tracker).
 - [ ] `Living Documentation Sync` completed.
 - [ ] Feature Branch pushed and Pull Request (PR) draft created.
-- [ ] Traditional Chinese handover report generated for the PM.
+- [ ] **Executive Progress Report (`Executive_Progress_Report.md`) generated based on `executive-progress-template.md` (Strictly translating engineering achievements to non-IT business value).**
 - [ ] SSDLC_TRACKER.md marked as 100% COMPLETE.
 - [ ] (Enterprise) Contract Drift Check passed — implementation matches baseline.
 - [ ] (Enterprise) Handoff Checklist marked as `delivered`.
