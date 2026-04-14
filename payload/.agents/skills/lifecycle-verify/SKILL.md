@@ -59,6 +59,7 @@ When operating in Enterprise Mode (`--enterprise`):
 - [ ] Evidence (JSON logs or Screenshots) is attached to the report.
 - [ ] All Acceptance Criteria are marked as PASS.
 - [ ] Observability validated (Tracing configured, Logs structured, Metrics emitted).
+- [ ] **Security Review: `OWASP_Validation_Report.md` generated with evidence of defense against OWASP Top 10 vulnerabilities (e.g. SAST proxy results, param mapping checks).**
 - [ ] Gate D (System Test) and Gate E (Audit) are signed off.
 - [ ] (Enterprise) Every contract endpoint has integration test coverage.
 - [ ] (Enterprise) Performance Budget deviations documented (if applicable).

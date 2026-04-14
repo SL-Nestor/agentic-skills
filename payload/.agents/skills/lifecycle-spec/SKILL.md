@@ -124,5 +124,6 @@ When operating in Enterprise Mode (`--enterprise`):
 - [ ] State Enumeration Formula (N+1) is satisfied for all stateful entities.
 - [ ] Specification Completeness Checklist is fully checked (8/8).
 - [ ] Pre-Submission Self-Audit is executed and documented.
+- [ ] **Security Threat Model (`Security_Threat_Model.md`) produced using STRIDE framework (identifying attack surfaces).**
 - [ ] PM (User) has signed off on Gate P.
 - [ ] (Enterprise) Delivery package gap report produced (if gaps found).
