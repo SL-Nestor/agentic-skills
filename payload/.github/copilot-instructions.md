@@ -81,30 +81,30 @@ Added Shorthand Skill Macros (Omni-Skills) including $team, $ccg, $qa-tester, et
 為因應不同規模的工程需求，你有四種主要的啟動指令。當輸入以下任一指令時，你必須立刻切換到對應的心智模型：
 
 ### 1. 🏢 企業模式 (Enterprise Mode)
-- **指令**: `/enterprise <Handoff-Checklist>`
+- **指令**: `$enterprise <Handoff-Checklist>`
 - **目標**: 公司級核心模組開發。
 - **規則**: 載入 `copilot-instructions.md` 並套用所有的 Enterprise Overrides。SSOT 是合約 (OpenAPI)。必須解析 `tpl_req_eng_handoff_checklist.md`，如果遇規格缺口，暫停並觸發 GOV-004 `tpl_writeback_note` 回寫。產出必須帶有 YAML metadata。
 - **後續動作**: 執行 Global Startup Protocol (見下方)，然後進入 Phase 0。
 
 ### 2. 📝 規格開發模式 (Agile Spec Mode)
-- **指令**: `/agile <Proposal/Issue>`
+- **指令**: `$agile <Proposal/Issue>`
 - **目標**: 中型獨立應用或模組。
 - **規則**: 載入 `copilot-instructions.md` (忽略 Enterprise Overrides)。SSOT 是 PRD。遵守標準 SSDLC，產出 `SSDLC_TRACKER.md`。
 - **後續動作**: 執行 Global Startup Protocol (見下方)，然後進入 Phase 0。
 
 ### 3. 🪶 輕量開發模式 (Lightweight Mode)
-- **指令**: `/light <Topic>`
+- **指令**: `$light <Topic>`
 - **目標**: 快速雛形、小腳本或單次型小任務。
 - **規則**: 暫停一切重量級 Tracker 與反覆驗收 (Gate) 機制。不限制於 Phase 0-10。流程：1. 釐清意圖 2. 寫核心防禦測試 (TDD) 3. 實作功能 4. 產出簡單 Markdown 總結 (無 YAML 負擔)。不要把簡單任務過度工程化。
 
 ### 4. 🧰 舊產品維護模式 (Legacy Maintenance Mode)
-- **指令**: `/legacy <Bug/Issue>` (別名：`$tactical`)
+- **指令**: `$legacy <Bug/Issue>` (別名：`$tactical`)
 - **目標**: 舊系統維護、修復弱規格/無規格的 Bug。
 - **規則**: 暫停標準 SSDLC。強制載入 `payload/.github/tactical-response-instructions.md` (TRP)。跳過 PRD/架構設計。核心迴圈：代碼考古推測意圖 -> 寫特徵測試 (Pinning Test) 鎖定現狀 -> 手術刀式打擊修復 -> 童子軍清理撤離。不建立 Tracker，只產出 `TACTICAL_MEMO.md`。
 
 ---
-### 🛠️ Global Startup Protocol (For `/enterprise` and `/agile` ONLY)
-當使用者啟動 `/enterprise` 或 `/agile` 時，在進入 Phase 0 之前，你必須依序執行以下 5 個啟動步驟：
+### 🛠️ Global Startup Protocol (For `$enterprise` and `$agile` ONLY)
+當使用者啟動 `$enterprise` 或 `$agile` 時，在進入 Phase 0 之前，你必須依序執行以下 5 個啟動步驟：
 
 1. **Hotfix Mode Check**: 如果使用者附加 `--hotfix` 標籤，跳過 Phase 0-4，直接進入 Phase 5 (Build)，並在 Tracker 標記為 Hotfix。
 2. **Determine the Development Mode (MANDATORY)**:
