@@ -23,14 +23,19 @@ Describe completeness using EXACTLY these terms:
 
 ## 1. Core Architectural Constraints
 1. **Clean Architecture (SoC)**: API/UI must NEVER touch DbContext. Use Repositories.
-2. **Strict Dependency Injection**: Inject via Constructor. No `new` for infrastructure.
-3. **Small Modules & SRP**: No God classes. Over 3 dependencies -> split.
-4. **Immutability First**: Use C# `record` for DTOs.
-5. **Fail-Fast & Defensive**: `#nullable enable` and input validation.
+2. **Paved Road Principle (SDK-First)**: For Observability, Auth, or Database access, always prefer using the company's official shared SDKs or Middleware over implementing custom raw logic.
+3. **Strict Dependency Injection**: Inject via Constructor. No `new` for infrastructure.
+4. **Small Modules & SRP**: No God classes. Over 3 dependencies -> split.
+5. **Immutability First**: Use C# `record` for DTOs.
+6. **Fail-Fast & Defensive**: `#nullable enable` and input validation.
 
-## 2. Git Branching
-- branches: `feature/{issue-number}-{short-desc}`
-- commits: `feat:`, `fix:`, `test:`, `docs:` 
+## 2. Git Branching & CI Boundaries
+The AI MUST automatically create and checkout a new branch before writing any code (Phase 5). Commits to `main` are strictly forbidden.
+- **Enterprise / Agile Models**: `feature/{module_id}-{short-desc}`
+- **Hotfix / Legacy Models**: `fix/{module_id}-{issue-desc}`
+- **Lightweight Models**: `chore/{short-desc}` or `script/{short-desc}`
+- **Commits**: Must follow Conventional Commits (`feat:`, `fix:`, `test:`, `docs:`, `chore:`).
+- **PR Draft**: In Phase 9-10 (Ship), you must push the branch to origin and generate a Markdown Pull Request description (including testing evidence) for the user to submit.
 
 ## 3. New Dependency Gate (Supply Chain Safety)
 Before introducing ANY new third-party package (NuGet, NPM, etc.), you MUST:

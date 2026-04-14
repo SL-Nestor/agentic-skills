@@ -42,6 +42,7 @@ When operating in Enterprise Mode (`--enterprise`):
 - **Slicing Strategy**: Use `Vertical Slice` or `Risk-First` only. `Contract-First` is forbidden in Enterprise Mode (the contract is already done by REQ).
 - **Acceptance Criteria**: Must trace back to `acceptance-spec` from the REQ delivery package, not be invented from scratch.
 - **Deployment vs Release**: You MUST specify a Feature Flag strategy for the new module. You MUST document a clear Rollback Plan if the deployment fails.
+- **Shift-Left Data Defense**: If the plan involves database schema changes (Entity Framework Migrations, raw SQL), you MUST isolate these as a distinct Phase 2 task for DBA review before executing Phase 5 Build.
 
 ## Verification (Exit Criteria)
 - [ ] `docs/tasks.md` exists with clear, numbered, atomic tasks.

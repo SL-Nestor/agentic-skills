@@ -48,6 +48,7 @@ When operating in Enterprise Mode (`--enterprise`):
 - **Contract Adherence**: You MUST NOT create or modify API surface (endpoints, DTOs, enums) beyond what the `contract_baseline_ref` OpenAPI defines. If you need a field that doesn't exist, invoke the **Writeback Rule (GOV-004)**: STOP, produce a `tpl_writeback_note.md`, and wait for PM approval.
 - **Module Bounds**: All code changes MUST stay within `src/modules/<module_id>/`. If you need to modify shared code, follow `concurrency-policy.md` §2.
 - **YAML Metadata**: Any formal document you produce (implementation notes, etc.) MUST include GOV-003 YAML frontmatter.
+- **Telemetry Defaults (Observability-As-Code)**: You MUST NOT rely on manual `logger.Info()` for request tracing. You MUST use or implement Middleware/Interceptors to automatically inject `TraceId` and `CorrelationId` into all incoming requests and outgoing database/API calls.
 
 ## Standards Cross-References
 Before adding new dependencies, follow `ssdlc-core-rules.md` §3 (Dependency Gate).

@@ -22,5 +22,13 @@
 | 7-8   | Verify: Proof of Work          | 🔲 | | | |
 | 9-10  | Ship: Release & Support        | 🔲 | | | |
 
+## DORA Metrics Telemetry
+| Metric | Timestamp | Notes |
+|---|---|---|
+| Handover (Lead Time Start) | | |
+| Active Development Started | | |
+| PR / Feature Branch Created | | |
+| DORA Blocked Duration | | (Used for recording time blocked by Writebacks) |
+
 Status Legend: 🔲 Not Started | 🔄 In Progress | ✅ Completed | 🛑 Blocked
 ```
