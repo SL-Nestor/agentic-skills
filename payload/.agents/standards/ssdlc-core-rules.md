@@ -37,14 +37,19 @@ The AI MUST automatically create and checkout a new branch before writing any co
 - **Commits**: Must follow Conventional Commits (`feat:`, `fix:`, `test:`, `docs:`, `chore:`).
 - **PR Draft**: In Phase 9-10 (Ship), you must push the branch to origin and generate a Markdown Pull Request description (including testing evidence) for the user to submit.
 
-## 3. New Dependency Gate (Supply Chain Safety)
+## 3. Zero-Trust & Secrets Prevention (CRITICAL)
+- **NO HARDCODING**: You MUST NOT hardcode any credentials, production connection strings, API tokens, or secrets into source code `(*.cs, *.js, dockerfile, etc.)`.
+- **NO TRACKER LEAKAGE**: You MUST NOT print real secrets in any Markdown file, including `SSDLC_TRACKER.md` or PR descriptions. Use dummy values like `<REDACTED_API_KEY>` or `[Inject_Via_Azure_KeyVault]`.
+- **CONFIGURATION**: All secret references must defer to Managed Identities, Azure Key Vault, or local `.env` variables via standard configuration injection.
+
+## 4. New Dependency Gate (Supply Chain Safety)
 Before introducing ANY new third-party package (NuGet, NPM, etc.), you MUST:
 1. **License Check**: Verify the license is compatible (MIT, Apache-2.0 are safe; GPL requires escalation).
 2. **Maintenance Check**: Last publish date < 12 months, open issues are triaged, no known CVEs.
 3. **Minimality Check**: Can the same outcome be achieved with existing dependencies or stdlib?
 4. If any check fails, STOP and escalate to the PM before adding the dependency.
 
-## 4. Destructive Migration Protocol (Data Safety)
+## 5. Destructive Migration Protocol (Data Safety)
 When a database schema change involves **dropping columns, renaming tables, or changing data types** on entities with existing production data:
 1. **Multi-Phase Migration**: Split into (a) Add new column → (b) Backfill data → (c) Switch code → (d) Drop old column. Never do (a) and (d) in the same migration.
 2. **Backward Compatibility Window**: The old column/API must remain functional for at least one deployment cycle.

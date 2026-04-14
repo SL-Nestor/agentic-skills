@@ -42,6 +42,7 @@ When operating in Enterprise Mode (`--enterprise`):
 4. **YAML Metadata**: All Ship-phase documents MUST include GOV-003 YAML frontmatter.
 
 ## Verification (Exit Criteria)
+- [ ] Self-Check: Zero-Trust Secrets Scan completed (no hardcoded keys in PR or Tracker).
 - [ ] `Living Documentation Sync` completed.
 - [ ] Feature Branch pushed and Pull Request (PR) draft created.
 - [ ] Traditional Chinese handover report generated for the PM.
