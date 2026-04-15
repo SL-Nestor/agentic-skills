@@ -115,10 +115,11 @@ Added Shorthand Skill Macros (Omni-Skills) including $team, $ccg, $qa-tester, et
    - 提取所有硬性規定、限制、依賴、效能預算。寫入 Tracker。
 5. **Infer and declare the Delivery Scope (MANDATORY)**:
    - 自動化建立實體檔案 `SSDLC_TRACKER.md` (依據 `ssdlc-tracker-template.md`)。
-6. **Observability Rule (CRITICAL)**:
-   - **MUST START** every single response in the chat with a bold header: `### [🎯 Current SSDLC Phase: X]`
-   - **MUST NOT** jump phases. You must physically update `SSDLC_TRACKER.md` checking off the `[ ]` boxes before declaring a Phase complete.
-   - **MUST STOP** and wait for user confirmation at every Gate (e.g., Gate P, Gate D). Do NOT simulate user approval.
+6. **One-Shot Auto-Run & Observability Rule (CRITICAL)**:
+   - **THE ANXIETY CURE (Real-Time Broadcast)**: Users suffer from anxiety when you run silently in One-Shot mode. To cure this, before you perform ANY major file change or transition between phases, you MUST output a clear "Progress Status Log" directly into the UI chat (e.g., `▶️ [Phase 1] Analyzing Spec... ⏳ Generating rules...`).
+   - **MUST START** every single response block in the chat with a bold header: `### [🎯 Current SSDLC Phase: X]`.
+   - **PHYSICAL CHECKPOINT**: You MUST physically save and update the `SSDLC_TRACKER.md` file (checking off the `[x]` boxes) before declaring any Phase complete.
+   - **Auto-Run Gates**: If the user commands a one-shot uninterrupted run (e.g., "一次跑完"), you may automatically sign off on Gates to keep moving. Otherwise, **MUST STOP** at every Gate (Gate P, Gate D).
 
 ### 0.6 Core Standards & Templates
 All strict architectural constraints, vocabularies, Git strategies, and the Tracker Markdown template have been modularized.
