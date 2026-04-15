@@ -2,7 +2,7 @@
 title: Project Folder Structure & Backend Architecture
 status: Active
 scope: global
-version: 1.1
+version: 1.2
 ---
 
 # Project Structure & Backend Architecture Standard
@@ -23,20 +23,37 @@ All new projects initialized via `SSDLC Autopilot` MUST strictly conform to the 
 ```text
 /Project_Root
  ├── .agents/                 # AI 的大腦、技能與架構標準規範 (不可更動)
+ │   ├── agents/              # ✨ [v1.2 新增] VS Code .agent.md 多模型 Agent 定義
+ │   ├── skills/              # Agent 技能 (SKILL.md)
+ │   ├── standards/           # 全域架構標準（本文件、agent-network.md 等）
+ │   └── templates/           # 可複用範本（AGENT_HANDOFF.md 等）
  ├── docs/                    # 開發文件集中區 (強制約定)
- │   ├── specs/               # 需求規格書、PRD 等
- │   ├── plan.md              # [約定] 預設開發計畫
- │   ├── tasks.md             # [約定] 預設開發任務書
- │   └── acceptance.md        # [約定] 預設驗收標準
+ │   ├── specs/               # 需求規格書
+ │   │   └── requirements.md  # ✨ [v1.2 新增] requirement-analyst 產出
+ │   ├── security/            # ✨ [v1.2 新增] 安全相關文件
+ │   │   ├── Threat_Model.md  # threat-modeler 產出
+ │   │   └── security-gate-[date].md  # security-gate 產出
+ │   ├── reviews/             # ✨ [v1.2 新增] Code Review 報告
+ │   │   └── code-review-[date].md    # code-reviewer 產出
+ │   ├── plan.md              # [約定] 開發計畫 (spec-architect 產出)
+ │   ├── tasks.md             # [約定] 開發任務書 (spec-architect 產出)
+ │   └── acceptance.md        # [約定] BDD 驗收標準 (spec-architect 產出)
  ├── src/                     # 原始碼主目錄
- │   ├── Backend/             # (如有) 後端方案目錄 (Vertical Slice Architecture)
- │   └── Frontend/            # (如有) 前端專案目錄 (Vite 或 Next.js)
+ │   ├── Backend/             # 後端方案目錄 (Vertical Slice Architecture)
+ │   └── Frontend/            # 前端專案目錄 (Vite 或 Next.js)
  ├── tests/                   # 自動化測試程式碼 (單元/整合/E2E)
- ├── 測試紀錄/                # QA 人工/自動化 查核報告與截圖匯出區 (由 $test-auditor 產出)
+ ├── 測試紀錄/                # QA 人工/自動化 查核報告
  ├── .gitignore
  ├── README.md                # 專案入口文件
+ ├── AGENT_HANDOFF.md         # ✨ [v1.2 新增] Agent 間狀態傳遞文件（每個功能一份）
  └── SSDLC_TRACKER.md         # AI 自動產生的開發狀態追蹤器
 ```
+
+**[給人類開發者的說明 — v1.2 新增說明]**
+- `.agents/agents/` 目錄存放所有 `.agent.md` 檔案，定義了 9 個 Agent 各自使用的 AI 模型（Claude/GPT-4o/Gemini）
+- `AGENT_HANDOFF.md` 是 Agent 之間傳遞上下文的標準媒介，從範本複製 `.agents/templates/AGENT_HANDOFF.md` 並在每個功能開發開始時由 `$coordinator` 建立
+- `docs/security/` 存放所有安全相關文件，由 `$threat-modeler` 和 `$security-gate` 兩個不同 AI 模型共同維護
+- `docs/reviews/` 存放 Code Review 報告，由 Gemini 模型（`$code-reviewer`）產出，確保與程式碼作者（GPT-4o）的獨立性
 
 ---
 
