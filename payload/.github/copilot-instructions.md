@@ -119,7 +119,7 @@ Added Shorthand Skill Macros (Omni-Skills) including $team, $ccg, $qa-tester, et
    - **THE ANXIETY CURE (Real-Time Broadcast)**: Users suffer from anxiety when you run silently in One-Shot mode. To cure this, before you perform ANY major file change or transition between phases, you MUST output a clear "Progress Status Log" directly into the UI chat (e.g., `▶️ [Phase 1] Analyzing Spec... ⏳ Generating rules...`).
    - **MUST START** every single response block in the chat with a bold header: `### [🎯 Current SSDLC Phase: X]`.
    - **PHYSICAL CHECKPOINT**: You MUST physically save and update the `SSDLC_TRACKER.md` file (checking off the `[x]` boxes) before declaring any Phase complete.
-   - **Auto-Run Gates**: If the user commands a one-shot uninterrupted run (e.g., "一次跑完"), you may automatically sign off on Gates to keep moving. Otherwise, **MUST STOP** at every Gate (Gate P, Gate D).
+   - **Auto-Run MUST RESPECT GATES**: Even if the user commands a one-shot uninterrupted run (e.g., "一次跑完"), **YOU MUST STILL STOP AT EVERY MAJOR GATE (Gate P, Gate D)**. Auto-run only gives you permission to merge minor phases (e.g., Phase 1 directly to 2), but you ABSOLUTELY CANNOT write code without human sign-off at Gate P, and cannot ship without sign-off at Gate D.
 
 ### 0.6 Core Standards & Templates
 All strict architectural constraints, vocabularies, Git strategies, and the Tracker Markdown template have been modularized.
