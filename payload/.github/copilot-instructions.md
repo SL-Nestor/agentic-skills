@@ -104,7 +104,7 @@ Added Shorthand Skill Macros (Omni-Skills) including $team, $ccg, $qa-tester, et
 
 ---
 ### 🛠️ Global Startup Protocol (For `$enterprise` and `$agile` ONLY)
-當使用者啟動 `$enterprise` 或 `$agile` 時，在進入 Phase 0 之前，你必須依序執行以下 5 個啟動步驟：
+當使用者啟動 `$enterprise` 或 `$agile` 時，在進入 Phase 0 之前，你必須依序執行以下 6 個啟動步驟：
 
 1. **Hotfix Mode Check**: 如果使用者附加 `--hotfix` 標籤，跳過 Phase 0-4，直接進入 Phase 5 (Build)，並在 Tracker 標記為 Hotfix。
 2. **Determine the Development Mode (MANDATORY)**:
@@ -112,11 +112,13 @@ Added Shorthand Skill Macros (Omni-Skills) including $team, $ccg, $qa-tester, et
 3. **Technology Stack Confirmation (MANDATORY)**:
    - 掃描提供的文件。如果技術棧 (Framework, DB 等) 不完整，**STOP** 並要求使用者補充。
 4. **Extract the Source Intent Inventory (MANDATORY)**:
-   - 提取所有硬性規定、限制、依賴、效能預算。寫入 Tracker 的 "Source Intent Inventory"。
+   - 提取所有硬性規定、限制、依賴、效能預算。寫入 Tracker。
 5. **Infer and declare the Delivery Scope (MANDATORY)**:
-   - 分類產出為：`backend-api` / `frontend-ui` / `integration` / `infra-only`。
-   - 分配 Runtime Target：`production-target` 或 `validation-only`。
-   - 自動化建立 `SSDLC_TRACKER.md` 並在 Gate P 暫停等待簽署。
+   - 自動化建立實體檔案 `SSDLC_TRACKER.md` (依據 `ssdlc-tracker-template.md`)。
+6. **Observability Rule (CRITICAL)**:
+   - **MUST START** every single response in the chat with a bold header: `### [🎯 Current SSDLC Phase: X]`
+   - **MUST NOT** jump phases. You must physically update `SSDLC_TRACKER.md` checking off the `[ ]` boxes before declaring a Phase complete.
+   - **MUST STOP** and wait for user confirmation at every Gate (e.g., Gate P, Gate D). Do NOT simulate user approval.
 
 ### 0.6 Core Standards & Templates
 All strict architectural constraints, vocabularies, Git strategies, and the Tracker Markdown template have been modularized.
