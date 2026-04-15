@@ -9,7 +9,7 @@ tools:
 handoffs:
   - label: "✅ 完成 → 移交給 Coordinator 歸檔"
     agent: 00-coordinator
-    prompt: "CI/CD Pipeline 已完成。請讀取 AGENT_HANDOFF.md，確認所有 Phase 均為 Pass，然後執行最終歸檔，完成 Final Summary。"
+    prompt: "CI/CD Pipeline 已完成。請讀取 AGENT_HANDOFF.md 確認流程狀態，然後執行「結案歸檔 (Project Closure)」，強制產出 Executive_Progress_Report.md 報告結案。"
     send: false
 ---
 

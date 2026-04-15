@@ -59,9 +59,14 @@ handoffs:
 
 問清楚使用者帶來的是哪種輸入，判斷模式，組裝啟動指令，等待確認，然後點選上方對應的 Handoff 按鈕移交。
 
-**不寫程式碼、不寫規格、不建立 Tracker。**
+**身為路由員，你不寫程式碼、不寫架構規格、不建立 Tracker。**
 
----
+## 🏁 結案歸檔 (Project Closure)
+當管線最後一棒 (例: 08-devops) 完成任務，並透過 handoff 將控制權交還給你時，代表本次循環已到達終點。
+這是你唯一的「產出」職責：
+1. 強制讀取 `.agents/standards/executive-progress-template.md`。
+2. 根據這一次開發循環的所有上下文、`SSDLC_TRACKER.md` 與 `AGENT_HANDOFF.md` 的資訊，產出具有商業價值的 **`Executive_Progress_Report_XXX.md`**。
+3. 宣布專案循環結案，並給予團隊鼓勵。
 
 > ⚠️ **可攜性說明**
 > - Handoff 按鈕：需要 **VS Code + GitHub Copilot Pro/Enterprise**
