@@ -7,8 +7,8 @@ tools:
   - write
   - codebase
 handoffs:
-  - label: "✅ 完成 → 移交給 Coordinator 歸檔"
-    agent: 00-coordinator
+  - label: "✅ 完成 → 移交給 PM 歸檔"
+    agent: 00-pm
     prompt: "CI/CD Pipeline 已完成。請讀取 AGENT_HANDOFF.md 確認流程狀態，然後執行「結案歸檔 (Project Closure)」，強制產出 Executive_Progress_Report.md 報告結案。"
     send: false
 ---

@@ -66,7 +66,7 @@ When the user inputs a message starting with a specific shorthand variable, you 
 > **Governance Notice (GOV-012)**: The authoritative registry for all company skills is `TwReuse/sl_company-platform-governance/docs/governance/skill-registry.md` (GOV-PLATFORM-AI-012). This prompt only definitions core SSDLC macros to preserve token limits. For domain-specific skills (e.g., UI, DB, DevOps), query the registry.
 
 **Entry Point Macro (Start Here)**:
-- **`$coordinator <任務描述>`**: (Phase -0) AI 開發團隊入口。根據輸入類型（規格倉規格 / 需求想法 / 小任務 / Bug）自動判斷並路由到正確的核心模式。不熟悉應該用哪個模式時，永遠從這裡開始。讀取 `payload/.agents/skills/team-coordinator/SKILL.md`。
+- **`$pm <任務描述>`**: (Phase -0) AI 開發團隊入口。根據輸入類型（規格倉規格 / 需求想法 / 小任務 / Bug）自動判斷並路由到正確的核心模式。不熟悉應該用哪個模式時，永遠從這裡開始。讀取 `payload/.agents/skills/team-coordinator/SKILL.md`。
 - **`$req-analyst <raw-input>`**: (Phase 0 前置，僅限 $agile 路徑) 將模糊的口語需求、會議記錄或 Issue 描述整理成 $agile 可接受的結構化規格草稿。讀取 `payload/.agents/skills/requirement-analyst/SKILL.md`。
 
 **Core SSDLC Macros**:
