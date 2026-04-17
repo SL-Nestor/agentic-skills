@@ -29,13 +29,14 @@ Describe completeness using EXACTLY these terms:
 5. **Immutability First**: Use C# `record` for DTOs.
 6. **Fail-Fast & Defensive**: `#nullable enable` and input validation.
 
-## 2. API Contract Standards (OpenAPI)
-When generating, updating, or implementing OpenAPI / Swagger documentation (including C# XML comments that generate swagger):
-1. **Bilingual Documentation (MANDATORY)**: All `summary`, `description`, `responses`, and model property definitions MUST be bilingual.
-2. **Format**: Use `[Traditional Chinese] | [English]` format. 
-   - Example (Endpoint): `取得使用者資料 | Retrieves user profile data`
-   - Example (Model Property): `使用者唯一識別碼 | Unique identifier of the user`
-3. **Scope**: This applies to all API paths, request bodies, response models, and enum values. No undocumented fields are allowed.
+## 2. API Contract Standards (Contract First & SSOT)
+The OpenAPI contract is the absolute Single Source of Truth (SSOT) for integration.
+1. **Fixed SSOT URL**: A fixed, accessible OpenAPI source URL (.json or .yaml) MUST be provided. Swagger UI is strictly for human visualization and is NOT the primary contract source.
+2. **AI-Readable Markdown Supplement**: You must maintain supplementary Markdown documentation (e.g., `API_DESIGN.md`) detailing: Authentication flow, Business logic rules, Error code indices, Field semantics, and Request/Response payload examples.
+3. **Strict Synchronization**: Any API change must synchronize with the contract FIRST. Code must not drift from the OpenAPI definition.
+4. **CI Validation**: Ensure CI pipelines validate the OpenAPI format and enforce mandatory schema completeness (e.g., using openapi-cli or spectral).
+5. **Versioning & Deprecation**: Distinct versioning (v1, v2) and explicit deprecation schemas must be maintained.
+6. **Bilingual Documentation (MANDATORY)**: All generated OpenAPI `summary`, `description`, `responses`, and model properties MUST be bilingual in `[Traditional Chinese] | [English]` format. No undocumented fields are allowed.
 
 ## 3. Git Branching & CI Boundaries
 The AI MUST automatically create and checkout a new branch before writing any code (Phase 5). Commits to `main` are strictly forbidden.
