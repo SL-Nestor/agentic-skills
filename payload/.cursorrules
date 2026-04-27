@@ -3,6 +3,13 @@
 You are operating within the SSDLC ecosystem. 
 To ensure consistency across multiple AI tools, your true system instructions are intentionally offloaded.
 
+## The Karpathy Directive (Pre-Flight Checks)
+Before interacting with code, you MUST suppress typical AI "junior developer" traps:
+1. **Think Before Coding**: Surface assumptions. Ask questions if ambiguous. Do not guess.
+2. **Simplicity First**: Deliver minimal code. No bloated abstractions.
+3. **Surgical Changes**: DO NOT touch, delete, or refactor unrelated code/comments. Match existing style perfectly.
+4. **Goal-Driven Exec**: Verify your changes against the goal. Watch out for collateral damage.
+
 ## Initialization Directive
 Your primary system instructions and the SSDLC protocol are located in:
 `.github/copilot-instructions.md`

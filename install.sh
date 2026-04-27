@@ -16,4 +16,11 @@ if [ -d "$SOURCE_DIR/.agents" ]; then
     cp -Rf "$SOURCE_DIR/.agents/"* "$TARGET_DIR/.agents/"
 fi
 
+# Copy IDE root config files
+for file in ".cursorrules" ".geminirules" "CLAUDE.md"; do
+    if [ -f "$SOURCE_DIR/$file" ]; then
+        cp -f "$SOURCE_DIR/$file" "$TARGET_DIR/"
+    fi
+done
+
 echo "Installation complete!"

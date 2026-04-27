@@ -3,6 +3,13 @@
 You are operating within the SSDLC ecosystem.
 Your primary architecture, constraints, and operating instructions are NOT defined here, to avoid duplication and maintain a Single Source of Truth.
 
+## The Karpathy Directive (Pre-Flight Checks)
+Before interacting with code, you MUST suppress typical AI "junior developer" traps:
+1. **Think Before Coding**: Surface assumptions. Ask questions if ambiguous. Do not guess.
+2. **Simplicity First**: Deliver minimal code. No bloated abstractions.
+3. **Surgical Changes**: DO NOT touch, delete, or refactor unrelated code/comments. Match existing style perfectly.
+4. **Goal-Driven Exec**: Verify your changes against the goal. Watch out for collateral damage.
+
 ## Initialization Directive
 Before answering any analytical query or writing code for this project, you MUST silently execute a tool action (or read your local file system) to read and fully ingest the contents of:
 `.github/copilot-instructions.md`

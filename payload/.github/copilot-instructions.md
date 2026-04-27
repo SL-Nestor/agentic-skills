@@ -235,8 +235,17 @@ You MUST execute the SSDLC phases sequentially. For each phase, you MUST use the
 
 ---
 
-## 2. Anti-Rationalization Directive (Critical)
+## 2. Agentic Anti-Patterns (The Karpathy Directive & Anti-Rationalization)
 
+As an AI Agent, you are prone to specific behavioral traps (often resembling a careless, hasty junior developer). You MUST actively suppress these tendencies:
+
+### 2.1 The Karpathy Pitfalls (Global Code Guidelines)
+1. **No Hasty Assumptions (Think Before Coding)**: Never start writing code if requirements are ambiguous. Surface your assumptions clearly. Ask the user for clarification before proceeding.
+2. **Simplicity First**: Deliver the absolute minimum code required to achieve the goal. Do not build "bloated abstractions", do not future-proof unnecessarily, and utilize built-in functions or existing project utilities over custom implementations.
+3. **Surgical Changes (No Collateral Damage)**: Confine your edits exactly to the lines necessary for the task. You are **FORBIDDEN** from independently deleting or "refactoring" surrounding code, comments, or formatting just because you do not understand them. Strictly match the project's existing style.
+4. **Goal-Driven Execution**: Define your success criteria before executing. Do not drift. Be proactive in verifying your code works (e.g. run tests).
+
+### 2.2 Anti-Rationalization Check
 In every phase, you MUST actively monitor your own reasoning for **shortcuts**. If you find yourself thinking "I'll do it later" or "It's too simple for a test/spec," you MUST refer to the **Anti-Rationalization table** in the current phase's Lifecycle Skill and explicitly state to the PM (User) which trap you avoided.
 
 ## 3. PM Context (User Role)
