@@ -16,11 +16,11 @@
 ## Phase Tracker
 | Phase | Name | Status | Approver | Date | Artifacts / Notes |
 |-------|------|--------|----------|------|-------------------|
-| 0-1   | Define: Spec & Threat Model    | 🔲 | | | |
-| 2-3   | Plan: Atomic Breakdown         | 🔲 | | | |
-| 5-6   | Build: TDD Implementation      | 🔲 | | | |
-| 7-8   | Verify: Proof of Work          | 🔲 | | | |
-| 9-10  | Ship: Release & Support        | 🔲 | | | |
+| 0-1   | Define: Spec & Threat Model    | 🔲 <!-- status:PENDING --> | | | |
+| 2-3   | Plan: Atomic Breakdown         | 🔲 <!-- status:PENDING --> | | | |
+| 5-6   | Build: TDD Implementation      | 🔲 <!-- status:PENDING --> | | | |
+| 7-8   | Verify: Proof of Work          | 🔲 <!-- status:PENDING --> | | | |
+| 9-10  | Ship: Release & Support        | 🔲 <!-- status:PENDING --> | | | |
 
 ## DORA Metrics Telemetry
 | Metric | Timestamp | Notes |
@@ -30,5 +30,9 @@
 | PR / Feature Branch Created | | |
 | DORA Blocked Duration | | (Used for recording time blocked by Writebacks) |
 
-Status Legend: 🔲 Not Started | 🔄 In Progress | ✅ Completed | 🛑 Blocked
+## Error Log
+| Turn | Type | Description | Agent | Resolved? |
+|:---:|:---|:---|:---|:---:|
+
+Status Legend: 🔲 Not Started <!-- PENDING --> | 🔄 In Progress <!-- IN_PROGRESS --> | ✅ Completed <!-- PASS --> | 🛑 Blocked <!-- BLOCKED -->
 ```

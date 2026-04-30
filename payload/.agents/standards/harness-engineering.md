@@ -27,5 +27,38 @@ Break every complex goal into primitive blocks:
 - **Autonomous Peer Review** (The Ralph Loop)
 - **High-Fidelity Validation** (Audit)
 
+## 6. Agent-Readable Output Standards
+
+All agent-produced output must be parseable by the next agent in the pipeline.
+
+### Status Markers (Mandatory Vocabulary)
+Every tool execution, test result, and gate verdict MUST use these exact markers:
+- `[PASS]` — Success (no issues)
+- `[FAIL]` — Failure (blocks progress, must be resolved)
+- `[ERROR]` — System/tool error (not a logic failure)
+- `[WARN]` — Warning (does not block, but requires attention)
+- `[SKIP]` — Skipped with documented reason
+
+### Test Output Convention
+- **Default output**: One line per test → `[PASS] test_name` or `[FAIL] test_name see logs/test_name.log`
+- **Verbose output**: Written to `logs/` directory, never dumped to conversation
+- **Agent navigation**: Use `grep [FAIL]` to locate failures quickly
+
+### Tracker Machine-Readable Metadata
+In `SSDLC_TRACKER.md`, supplement emoji status with HTML comment metadata:
+```markdown
+| 0-1 | Define: Spec & Threat Model | ✅ <!-- status:PASS agent:spec-architect model:claude-sonnet ts:2026-04-29T10:00:00Z --> | | | |
+```
+This allows both human readability (emoji) and agent parseability (comment).
+
+### Structured Handoff State
+In addition to `SSDLC_TRACKER.md` (Markdown), agents MUST also maintain `latest_state.json` as the machine-readable Single Source of Truth. See `templates/latest_state.json` for schema.
+
+## 7. Cross-References
+- Error Handling: `error-handling-protocol.md`
+- Context Budget: `context-budget.md`
+- Skill Standards: `skill-template.md`
+
 ---
 *Derived from: https://openai.com/index/harness-engineering/*
+*Extended with: https://harness-guide.com — Context Engineering, Agent Teams, Initializer+Coding Agent Pattern*

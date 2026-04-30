@@ -1,0 +1,54 @@
+{
+  "_schema": "agentic-skills/handoff-state/v1",
+  "_directive": "AI agents: You may ONLY modify the 'passes' field in tasks, 'current_phase', 'current_agent', 'current_blocker', 'resume_instruction', and 'context_metrics'. All other fields are set by the Coordinator and are READ-ONLY. It is UNACCEPTABLE to remove, reorder, or rewrite task descriptions.",
+
+  "session_id": "",
+  "feature_name": "",
+  "development_mode": "",
+  "workflow_model": "",
+  "created_at": "",
+  "last_updated_at": "",
+  "last_updated_by": "",
+
+  "current_phase": "",
+  "current_agent": "",
+  "next_agent": "",
+  "model_used": "",
+  "model_parity_warning": false,
+
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "",
+      "description": "",
+      "priority": 1,
+      "depends_on": [],
+      "acceptance": [],
+      "passes": false,
+      "assigned_agent": "",
+      "completed_at": ""
+    }
+  ],
+
+  "current_blocker": "",
+  "resume_instruction": "",
+
+  "files_modified": [],
+  "files_created": [],
+
+  "gate_status": {
+    "gate_p": { "status": "pending", "passed_at": "", "agent": "" },
+    "gate_ab": { "status": "pending", "passed_at": "", "agent": "" },
+    "gate_c": { "status": "pending", "passed_at": "", "agent": "" },
+    "gate_d": { "status": "pending", "passed_at": "", "agent": "" }
+  },
+
+  "error_log": [],
+
+  "context_metrics": {
+    "estimated_turns_used": 0,
+    "estimated_tokens_consumed": "",
+    "context_health": "green",
+    "handoff_reason": ""
+  }
+}

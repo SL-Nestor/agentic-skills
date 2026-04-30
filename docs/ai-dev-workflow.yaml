@@ -1,0 +1,300 @@
+meta:
+  title: AI 開發工作流手冊
+  version: "1.0"
+  language: zh-TW
+  purpose: 可執行的 AI 輔助開發流程，包含三段式 Session 管理與日常快速樣板
+
+phases:
+
+  - id: phase-00
+    title: 建立專案記憶
+    trigger: 每個新 repo 做一次，永久生效
+    goal: 讓每次 session 自動載入專案背景，不用每次重複交代
+
+    actions:
+
+      - id: A0-1
+        title: 在 repo 根目錄建立 CLAUDE.md
+        description: 填入專案背景、架構慣例、程式碼規範、常用指令。Claude Code 每次 session 開始時自動讀取。
+        constraint: 控制在 1500 token 以內，超過就是每次都在多燒錢
+        template: |
+          # 專案背景
+          專案名稱：[填入]
+          語言 / 框架：[e.g. TypeScript / Next.js 14 / Prisma]
+          部署環境：[e.g. Vercel + PlanetScale]
+
+          # 架構慣例
+          - 元件放 /components，每個元件一個資料夾
+          - API route 放 /app/api，RESTful 命名
+          - DB 操作統一透過 /lib/db.ts
+
+          # 程式碼規範
+          - 禁用 any，型別需明確定義
+          - 函數超過 40 行需拆分
+          - commit 前必跑 pnpm lint
+
+          # 常用指令
+          dev:   pnpm dev
+          test:  pnpm test
+          build: pnpm build
+
+      - id: A0-2
+        title: 建立 Skills 資料夾（按需載入）
+        description: 把不常用但重要的 SOP 放進獨立 .md 檔，只在需要時手動帶入，不佔每次的 context
+        structure:
+          - path: CLAUDE.md
+            note: 每次自動載入，保持精簡
+          - path: .claude/skills/deploy.md
+            note: 手動帶入，使用方式：「參考 deploy.md 部署」
+          - path: .claude/skills/db.md
+            note: 手動帶入，使用方式：「參考 db.md 做 migration」
+          - path: .claude/skills/review.md
+            note: 手動帶入，使用方式：「按 review.md 做 code review」
+
+  - id: phase-01
+    title: "Session 1：探索 → 出規格"
+    trigger: 每個新任務開始時
+    goal: 讓 AI 問清楚需求，產出結構化實作規格。這個 session 不寫任何程式碼。
+    warning: 規格產出後立刻結束此 session，不要在同一 session 繼續實作
+
+    actions:
+
+      - id: A1-1
+        title: 讓 AI 先問 3 個問題，不要讓它直接跳進去猜
+        description: 直接命令 AI 寫程式，它會亂猜需求。先讓它問你，把模糊的地方在這裡解決。
+        prompt: |
+          我要做：[一句話描述任務]
+
+          在開始之前，請問我最重要的 3 個問題，確認你完全理解需求。
+          不要直接開始寫程式。
+
+      - id: A1-2
+        title: 回答完問題後，要求輸出 YAML 規格
+        description: 這份規格就是 Session 2 的輸入。YAML 格式更精簡，避免 AI 寫成大篇散文。
+        prompt: |
+          根據以上討論，用 YAML 輸出實作規格：
+
+          files:          # 要建立 / 修改的檔案清單
+            - path: ...
+              changes: ... # 3 行內說明
+
+          interfaces:     # 型別定義或 API 簽章
+            - ...
+
+          edge_cases:     # 邊界條件與錯誤處理
+            - ...
+
+          out_of_scope:   # 明確不做的事項
+            - ...
+
+          控制在 150 行以內，不要 markdown 標題格式。
+
+      - id: A1-3
+        title: 將規格存為實體交接文件 (Handoff Document)
+        description: 確保這份規格被儲存為實體檔案，讓下一個 Session 或另一個 Agent 可以直接讀取，不依賴歷史對話。
+        prompt: |
+          請將上述確認的 YAML 規格，儲存至專案目錄下的 .ai/handoff/01-spec.yaml 檔案中。
+          完成後請告訴我，我將開啟全新的 Session（或交由實作 Agent）進行下一步。
+
+  - id: phase-02
+    title: "Session 2：照規格實作"
+    trigger: Session 1 規格確認後，開全新對話
+    goal: 逐檔確認實作，精準取用程式碼片段，小改用 diff
+
+    actions:
+
+      - id: A2-1
+        title: 開新對話，貼規格，要求逐檔確認
+        description: 不要讓 AI 一次輸出所有檔案。逐檔確認可以避免錯誤擴散。
+        prompt: |
+          以下是這個任務的實作規格：
+
+          [貼上 YAML 規格]
+
+          請按規格實作。
+          規則：每完成一個檔案就停下來，等我確認後再繼續下一個。
+          不要一次輸出所有檔案。
+
+      - id: A2-2
+        title: 需要現有程式碼時，只貼相關函數
+        description: 貼 1 個函數 vs 貼整個 500 行檔案，AI 準確度更高，token 省 80%
+        bad_example: |
+          這是 auth.ts（貼整個 500 行），請修改 verifyToken 函數
+        good_prompt: |
+          這是 /lib/auth.ts 中 verifyToken 函數的現有實作：
+
+          [只貼那 20-40 行]
+
+          依照規格修改這個函數，其他程式碼不動。
+
+      - id: A2-3
+        title: 小修改要求輸出 diff，不要全部重寫
+        description: 改 3 行卻輸出 100 行是 token 浪費，也讓 review 更難
+        prompt: |
+          只輸出需要修改的部分，格式：
+
+          // 原本（行號）
+          [原始程式碼]
+
+          // 改為
+          [修改後程式碼]
+
+          不要輸出整個檔案。每個修改點各自列出。
+
+      - id: A2-4
+        title: Context 快超限時主動壓縮
+        description: 當 AI 重複犯同樣的錯、或輸出舊版本，是 context 快滿的信號
+        signal: AI 開始重複錯誤或輸出已討論過的舊版本
+        prompt: |
+          請用 3 點摘要目前的實作進度：
+          1. 已完成的檔案與主要變更
+          2. 目前卡在哪個問題
+          3. 下一步要做什麼
+
+          我會開新 session 繼續，把這個摘要帶過去。
+        tip: Claude Code 中可用 /compact 觸發 Compaction API 自動壓縮
+
+      - id: A2-5
+        title: Session 結束或換手前，產出實作交接文件
+        description: 為了讓其他 Session 或負責測試的 Agent 接手，必須在離開前留下開發狀態快照。
+        prompt: |
+          這個實作階段即將告一段落。請產生一份交接文件，儲存至 .ai/handoff/02-implementation-status.md。
+          文件需包含：
+          1. 根據 01-spec.yaml，已完成哪些項目？
+          2. 修改了哪些主要檔案？（列出路徑）
+          3. 遺留問題、尚未實作的邊界條件、或已知的技術債。
+          4. 給下一個負責驗證或接手實作的 Agent 的下一步執行建議。
+
+  - id: phase-03
+    title: "Session 3：驗證與除錯"
+    trigger: 實作完成後，開全新對話
+    goal: 精準回報錯誤，限制輸出型 code review，帶量化的效能分析
+
+    actions:
+
+      - id: A3-1
+        title: 回報錯誤只貼 3 個要素
+        description: 把 500 行 log 全貼進去，AI 反而容易分心在不相關的地方
+        elements:
+          - 錯誤訊息（只貼 error message 那幾行）
+          - 發生位置（檔名:行號）
+          - 相關程式碼（只貼那 10-25 行）
+        prompt: |
+          執行 [pnpm test / pnpm build] 出現錯誤：
+
+          錯誤訊息：[只貼 error message 那幾行]
+          發生位置：[檔名:行號]
+          相關程式碼：[只貼那 10-25 行]
+
+          請診斷原因，給出最小修改方案，不要重寫整個檔案。
+
+      - id: A3-2
+        title: Code Review 限定只輸出問題
+        description: 不加限制的 review 通常會複述程式碼再誇一遍，浪費 token
+        prompt: |
+          Review 以下程式碼，只輸出問題，格式：
+          [行號] [類型：安全性/效能/型別/可讀性] [問題說明] [建議修法]
+
+          沒有問題就只說 LGTM。
+          不要解釋正確的部分，不要複述程式碼。
+
+          [貼程式碼]
+
+      - id: A3-3
+        title: 效能分析要求量化估算
+        description: 模糊的「這可能比較慢」沒有價值，要求 AI 估算 Big O 或預期影響
+        prompt: |
+          分析以下程式碼的效能問題：
+          - 指出時間/空間複雜度（Big O）
+          - 找出 N+1 query 或不必要的重複計算
+          - 每個問題附上改法
+
+          格式：[問題] → [影響] → [建議]
+
+          [貼程式碼]
+
+      - id: A3-4
+        title: 結束驗證時，產出最終驗證交接文件
+        description: 記錄測試結果與修復歷史，完成此任務的最終閉環，以便後續合碼 (Merge) 審查或下一階段開發。
+        prompt: |
+          驗證與除錯已完成。請產生一份交接文件，儲存至 .ai/handoff/03-verification-report.md。
+          文件需包含：
+          1. 通過了哪些測試（單元/整合/手動）？
+          2. 修復了哪些在 02-implementation-status.md 中提及的遺留問題？
+          3. 是否有發現新的架構問題需要未來處理？
+          這個檔案將作為未來 PR Review 或接續開發的重要依據。
+
+  - id: phase-04
+    title: 日常快速樣板
+    trigger: 不需要三 session 流程的小任務，直接填空使用
+    goal: 測試、文件、重構、commit message、型別定義的標準化 prompt
+
+    actions:
+
+      - id: A4-1
+        title: 為現有函數生成測試
+        prompt: |
+          為以下函數寫 [Vitest / Jest] 單元測試：
+          - 正常路徑 1 個
+          - 邊界條件 2 個（空值、極大值等）
+          - 錯誤情境 1 個
+
+          只輸出測試程式碼，不要說明文字。
+
+          [貼函數]
+
+      - id: A4-2
+        title: 生成 JSDoc 文件
+        prompt: |
+          為以下函數生成 JSDoc 格式的文件註解。
+          只輸出 JSDoc 區塊，不要其他說明，不要複述整個函數。
+
+          [貼函數]
+
+      - id: A4-3
+        title: 重構，保持行為不變
+        prompt: |
+          重構以下程式碼，目標：[可讀性 / 效能 / 減少重複]
+          規則：
+          - 外部行為完全不變
+          - 不改變函數簽章（名稱、參數、回傳型別）
+          - 只輸出重構後的程式碼
+
+          [貼程式碼]
+
+      - id: A4-4
+        title: 生成 Conventional Commits 格式的 commit message
+        prompt: |
+          根據以下 git diff，生成 Conventional Commits 格式的 commit message：
+          - 第一行：type(scope): 簡短描述（50 字元以內）
+          - 空行
+          - body：說明為什麼改，不是怎麼改（最多 3 句）
+
+          type 選項：feat / fix / refactor / docs / test / chore
+
+          [貼 git diff 或改動摘要]
+
+      - id: A4-5
+        title: 從 JSON 生成 TypeScript 型別
+        prompt: |
+          把以下 JSON 轉成 TypeScript interface / type：
+          - 使用 interface（非 type alias）
+          - 可能為 null 的欄位加 | null
+          - 陣列型別用 T[] 而非 Array<T>
+          - 只輸出型別定義，不要說明
+
+          [貼 JSON]
+
+principles:
+  - name: 三 Session 分段
+    rule: 探索規格 → 實作 → 驗證，每段開全新對話，不讓 stale context 累積
+  - name: 精準取用 Context
+    rule: 只貼相關的函數或片段，不貼整個檔案；目標是最小有效 context
+  - name: Diff 優先
+    rule: 小改動只輸出 diff，不重寫整個檔案
+  - name: 輸出限制
+    rule: 明確告訴 AI 不要輸出什麼（不要複述程式碼、不要說明正確的部分）
+  - name: CLAUDE.md 精簡
+    rule: 每次自動載入的檔案控制在 1500 token 以內，細節移到按需載入的 Skills 檔
+  - name: 實體文件交接 (Handoff-Driven)
+    rule: Session 之間的切換絕不依賴對話紀錄，而是依賴儲存在 .ai/handoff/ 目錄下的實體狀態與規格文件，實現 Agent 間的無縫換手。

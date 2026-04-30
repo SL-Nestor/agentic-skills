@@ -13,11 +13,13 @@ description: "AI 開發團隊主動指揮官。兩種使用方式：(1) $coordin
 |------|------|------|
 | **診斷模式** | `$coordinator <任務描述>` | 不熟悉該用哪個核心模式時，先診斷再路由 |
 | **指揮模式** | `$coordinator run` | 已知模式，全自動執行整個 SSDLC 流程 |
+| **跨部門交接** | `$coordinator continue` | 讀取 Tracker 與最新交接文件 (latest_memo.md)，接續開發 |
 
 **最常用的啟動方式：**
 ```
-$coordinator $enterprise [規格路徑]   ← 直接以 Enterprise 模式全自動執行
-$coordinator $agile [需求描述]        ← 直接以 Agile 模式全自動執行
+$coordinator $enterprise [規格路徑]   ← 直接以 Enterprise 模式啟動
+$coordinator $agile [需求描述]        ← 直接以 Agile 模式啟動
+$coordinator continue                 ← 🚀 (推薦) 開新對話接續開發，切換部門並釋放 Token
 $coordinator $light [任務]            ← 直接以 Light 模式執行
 $coordinator $legacy [Bug描述]        ← 直接以 Legacy 模式執行
 ```
@@ -29,14 +31,15 @@ $coordinator $legacy [Bug描述]        ← 直接以 Legacy 模式執行
 當使用者輸入 `$coordinator <描述>` 但**未指定核心模式**時執行。
 
 ### Step 1：確認是否有進行中的工作
-讀取 `SSDLC_TRACKER.md`（如存在）。若有未完成 Phase：
+讀取根目錄的 `SSDLC_TRACKER.md` 與交接目錄的 `.ai/handoff/latest_memo.md`（若存在）。若有未完成 Phase：
 
 ```
-📊 偵測到進行中的工作
+📊 偵測到進行中的工作交接單
 
   功能：[...]  模式：[...]  進度：Phase [X] ✅ → 待執行 Phase [X+1]
+  💡 根據 latest_memo.md，接下來的重點任務是：[...]
 
-  A) 繼續現有工作    B) 開始新任務
+  A) 接續交接單執行 ($pm continue)    B) 開始全新任務
 ```
 
 選 A → 直接進入**指揮模式**，從 Phase [X+1] 繼續。
@@ -80,7 +83,7 @@ $coordinator $legacy [Bug描述]        ← 直接以 Legacy 模式執行
 
 ---
 
-## 🚀 模式二：指揮模式（全自動）
+## 🚀 模式二：指揮模式（全自動 / 跨部門交接）
 
 當使用者輸入 `$coordinator run`、或直接輸入 `$coordinator $agile/enterprise [描述]` 時執行。
 
@@ -116,18 +119,35 @@ Gate 是絕對的停止點，不得跳過。即使使用者說「一次跑完」
    ├─ 產出 design.md（規格完整性清單 8/8 ✅）
    └─ 更新 SSDLC_TRACKER.md Phase 0-1 ✅
 
-🛑 [GATE P] 規格與威脅模型就緒。請審查並回覆「確認」繼續。
+▶️ [產出交接單] 雙軌交接（Dual-Track Handoff）：
+   📄 `.ai/handoff/latest_memo.md`（散文版，給人類 + 上下文補充）：
+      1. 目前已產出的架構與核心決定。
+      2. 免讀 Code/Spec 也能懂的「下一步行動指示」(給接手的計畫 Agent)。
+   🔧 `.ai/handoff/latest_state.json`（結構化版，SSOT）：
+      1. 更新 current_phase, current_agent, next_agent
+      2. 填入 tasks 陣列（每個任務的 passes 狀態）
+      3. 填入 context_metrics（turns_used, handoff_reason: "gate_reached"）
 
---- 等待確認 ---
+🛑 [GATE P] 規格與威脅模型就緒。
+   💡 **[跨部門交接]**：交接單已備妥，請關閉當前視窗。
+   在全新的對話中輸入 `$pm continue`，下一個部門的 AI 將先讀 `latest_state.json` 確認狀態，再讀 `latest_memo.md` 補充上下文。
+
+--- 等待換手或確認 ---
 
 ▶️ [Phase 2-3] 執行 $lifecycle-plan（任務拆解）... ⏳
    ├─ 產出 tasks.md（原子任務，Given/When/Then）
    ├─ 產出 acceptance.md（BDD 驗收條件）
    └─ 更新 SSDLC_TRACKER.md Phase 2-3 ✅
 
-🛑 [GATE A/B] 任務清單就緒。請審查並回覆「確認」繼續。
+▶️ [產出交接單] 雙軌交接（Dual-Track Handoff）：
+   📄 `.ai/handoff/latest_memo.md`：已拆解的核心任務與實作邊界。
+   🔧 `.ai/handoff/latest_state.json`：更新 phase、tasks、context_metrics。
 
---- 等待確認 ---
+🛑 [GATE A/B] 任務清單就緒。
+   💡 **[跨部門交接]**：交接單已備妥，此階段即將進入實作，請關閉當前視窗。
+   在全新的對話中輸入 `$pm continue`，接手的實作 AI 將先讀 JSON 狀態再展開 Phase 4-6。
+
+--- 等待換手或確認 ---
 
 ▶️ [Phase 4] 架構審查與 SAST... ⏳
    └─ 執行 $reviewer（架構 + 安全靜態分析）
@@ -146,9 +166,15 @@ Gate 是絕對的停止點，不得跳過。即使使用者說「一次跑完」
    ├─ Beyonce Rule：每個行為都要有測試覆蓋
    └─ 更新 SSDLC_TRACKER.md Phase 5-6 ✅
 
-🛑 [GATE C] 實作覆蓋率矩陣就緒。請審查並回覆「確認」繼續。
+▶️ [產出交接單] 雙軌交接（Dual-Track Handoff）：
+   📄 `.ai/handoff/latest_memo.md`：完成的模組、技術債、測試重點。
+   🔧 `.ai/handoff/latest_state.json`：翻轉完成 tasks 的 passes→true，記錄 error_log。
 
---- 等待確認 ---
+🛑 [GATE C] 實作覆蓋率矩陣就緒。
+   💡 **[跨部門交接]**：交接單已備妥，請關閉當前視窗。
+   在全新的對話中輸入 `$pm continue`，測試部門的 AI 將依據交接單接手 Phase 7-8 驗證。
+
+--- 等待換手或確認 ---
 
 ▶️ [Phase 7-8] 執行 $lifecycle-verify（驗證）... ⏳
    ├─ 功能測試、DAST、安全稽核
@@ -158,9 +184,15 @@ Gate 是絕對的停止點，不得跳過。即使使用者說「一次跑完」
 
    ⚡ [多模型建議] Code Review 適合切換至 @05-code-reviewer（Gemini）交叉驗證
 
-🛑 [GATE D] 驗證完成。請確認部署。
+▶️ [產出交接單] 覆寫 `.ai/handoff/latest_memo.md`，內容必須濃縮：
+   1. 測試通過的狀況與修正的漏洞。
+   2. 免讀 Code 也能懂的「最後打包發布注意事項」(給接手的 DevOps Agent)。
 
---- 等待確認 ---
+🛑 [GATE D] 驗證完成。
+   💡 **[跨部門交接]**：交接單已備妥，請關閉當前視窗。
+   在全新的對話中輸入 `$pm continue`，發布部門的 AI 將依據交接單進行 Phase 9-10 打包。
+
+--- 等待換手或確認 ---
 
 ▶️ [Phase 9-10] 執行 $lifecycle-ship... ⏳
    ├─ Living Docs 同步（README.md、CHANGELOG.md）
@@ -219,3 +251,16 @@ Gate 是絕對的停止點，不得跳過。即使使用者說「一次跑完」
 
 **模型切換建議是軟的：**
 多模型交叉驗證是加值選項。若使用者無法切換模型，Coordinator 繼續執行，不得因此阻斷流程。
+
+---
+
+## 📐 Harness Engineering Cross-References
+
+| Standard | When to Read | Purpose |
+|:---|:---|:---|
+| `context-budget.md` | Session start | Token budget awareness, auto-handoff thresholds |
+| `error-handling-protocol.md` | On error/loop | Turn budget, loop detection, graceful degradation |
+| `harness-engineering.md` §6 | Producing output | Agent-readable status markers (`[PASS]`/`[FAIL]`) |
+| `skill-template.md` | Creating new skills | Standardized SKILL.md format |
+| `templates/latest_state.json` | Every Gate handoff | Structured state schema (SSOT) |
+| `templates/MEMORY.md` | Project closure | Long-term project memory template |

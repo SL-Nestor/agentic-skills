@@ -118,3 +118,36 @@ model_parity_warning: false    # true if creator and reviewer are using the same
 |---------|------|-------|--------|
 | v0.1 | [date] | team-coordinator | 初始建立 |
 ```
+
+---
+
+## Error Log
+
+> 任何 agent 在執行過程中遇到的錯誤，記錄在此。參考 `error-handling-protocol.md`。
+
+| Turn | Type | Description | Agent | Resolved? |
+|:---:|:---|:---|:---|:---:|
+| — | — | — | — | — |
+
+---
+
+## Context Metrics
+
+> 每次 handoff 時由當前 agent 填寫，讓下一個 agent 了解上下文健康狀態。
+
+```yaml
+context_metrics:
+  estimated_turns_used: 0
+  estimated_tokens_consumed: ""
+  context_health: "green"       # green | yellow | red
+  handoff_reason: ""            # gate_reached | context_exhaustion | task_complete | error
+```
+
+---
+
+## Structured State Reference
+
+> **[AI DIRECTIVE]**: 本 Handoff 的 machine-readable 對應檔案為 `.ai/handoff/latest_state.json`。
+> Agent 恢復時必須**先讀 JSON 確認結構化狀態**，再讀本 Markdown 文件獲取上下文補充。
+> JSON 中的 `passes` 欄位是唯一的進度真相來源。
+
