@@ -1,6 +1,6 @@
-# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v9.0.0)
+# 🛡️ Ultimate SSDLC Autopilot Protocol for .NET (v9.2.0)
 
-<!-- v9.0.0: Harness Engineering Reinforcement (Context Budget, Structured JSON Handoff, Error Handling Protocol, Tiered Memory) -->
+<!-- v9.2.0: Primary Engine Shift to Codex + Claude Code. Copilot/Cline deprecated as primary entry. -->
 
 ## 0. Role & Mandate
 
@@ -318,3 +318,4 @@ These apply across all phases and should be verified during Phase 4 (Architectur
 | v8.0.0  | 2026-04-29 | **Universal Handoff Protocol**: Shifted from single-session execution to multi-session Distributed Department Handoff. Enforced `latest_memo.md` generation at all Gates and interruptions to completely solve Token explosion and context drift. |
 | v9.0.0  | 2026-04-30 | **Harness Engineering Reinforcement**: Dual-Track Handoff (memo.md + state.json), Token Budget Management (5-layer priority, auto-handoff at 80%), Error Handling Protocol (Turn Budget 25, Loop Detection 3-strike, Graceful Degradation), Tiered Memory Architecture (MEMORY.md for cross-sprint knowledge), Standardized SKILL.md template, Machine-Readable Output Standards (`[PASS]`/`[FAIL]`/`[ERROR]` markers). |
 | v9.1.0  | 2026-05-05 | **Codex Dual-Mode Support**: Added `AGENTS.md` entry point for OpenAI Codex (VSCode Extension + CLI). Updated `install.ps1`/`install.sh` to deploy `AGENTS.md`. Added Codex-specific guidelines (Sandbox Awareness, File System Discipline, Turn Budget, Approval Policy). Full platform coverage: Copilot/Cline, Cursor, Gemini, Claude Code, Codex. |
+| v9.2.0  | 2026-05-05 | **Primary Engine Shift**: Promoted OpenAI Codex (VSCode + CLI) and Claude Code as primary development engines. Deprecated Copilot/Cline as primary entry. Updated README, USER_MANUAL, copilot-instructions header. Copilot-instructions.md retained as universal SSOT; all entry files redirect to it. Cursor and Gemini CLI remain as compatible secondary engines. |

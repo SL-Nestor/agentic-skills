@@ -1,6 +1,6 @@
 # 🚀 SSDLC Autopilot: 多代理協作網路 (Multi-Agent Network) 實戰手冊
 
-歡迎進入 v9.1.0 全新時代！我們已將原本的單點「AI 輔助」與「肥胖的單一會話」升級為**「跨部門實體交接 (Handoff-Driven) 異質多代理生產管線」**。本架構透過強制讓 Claude 生產規格、Gemini 審視威脅、GPT-4o / Codex 撰寫代碼並交由另一位 AI Review 的方式，徹底解決 AI 產生幻覺或「自己寫錯自己包庇」的問題，實踐 Zero-Trust Agentic Workflow。
+歡迎進入 v9.2.0 全新時代！我們已將原本的單點「AI 輔助」與「肥胖的單一會話」升級為**「跨部門實體交接 (Handoff-Driven) 異質多代理生產管線」**。本架構以 **OpenAI Codex** 與 **Claude Code** 作為雙主力引擎，搭配其他模型進行交叉審查，徹底解決 AI 產生幻覺或「自己寫錯自己包庇」的問題，實踐 Zero-Trust Agentic Workflow。
 
 ---
 
@@ -12,10 +12,17 @@
 👉 **`00-pm` (路由樞紐 / 專案經理)**
 
 ### 啟動方式 (任選其一)：
-1. **VS Code / IDE 介面 (Copilot / Cline)**：開啟您的 Copilot / Cline 介面，在選單點選或輸入 `@00-pm`。
-2. **VS Code + Codex Extension**：在 Codex 面板的 Agent 模式中輸入 `$pm [任務描述]`。Codex 會自動讀取專案根目錄的 `AGENTS.md` 載入 SSDLC 指令。
-3. **Codex CLI (終端機)**：在終端機執行 `codex` 後輸入 `$pm [任務描述]`。Codex CLI 支援 hierarchical `AGENTS.md` discovery（全域 → 專案根 → 子目錄）。
-4. **純文字指令巨集**：在任何其他 AI 聊天對話框（Cursor / Gemini / Claude）輸入 `$pm [我今天要做的任務 / 規格文件路徑]`。
+
+#### 🥇 主力開發方式（推薦）
+
+1. **Codex CLI (終端機)**：在終端機執行 `codex` 後輸入 `$pm [任務描述]`。Codex CLI 支援 hierarchical `AGENTS.md` discovery（全域 `~/.codex/AGENTS.md` → 專案根 → 子目錄），是最高效的 Agentic 開發體驗。
+2. **VSCode + Codex Extension**：在 Codex 面板的 Agent 模式中輸入 `$pm [任務描述]`。Codex 會自動讀取專案根目錄的 `AGENTS.md` 載入 SSDLC 指令。
+3. **Claude Code (終端機)**：在終端機執行 `claude` 後輸入 `$pm [任務描述]`。Claude Code 會自動讀取專案根目錄的 `CLAUDE.md` 載入 SSDLC 指令。
+
+#### 🔧 備用 / 相容方式
+
+4. **Cursor**：在 Cursor 的 AI 面板中輸入 `$pm [任務描述]`。Cursor 會自動讀取 `.cursorrules`。
+5. **Gemini CLI**：在終端機執行 `gemini` 後輸入 `$pm [任務描述]`。Gemini CLI 會讀取 `.geminirules`。
 
 ### 🔄 跨部門交接 (Token 最佳化 / 防幻覺機制)
 當開發進入各階段檢查哨 (Gate)，或是中途除錯卡關需要暫停時，`$pm` 會主動產出**雙軌交接單**：
@@ -24,6 +31,8 @@
 
 為了避免聊天紀錄過長導致 AI 產生幻覺與 Token 費用爆炸，請**勇敢關閉視窗**。在全新的對話框中輸入：
 👉 **`$pm continue`** （新的 AI 將先讀 JSON 狀態確認進度，再讀散文補充上下文，完全不需看歷史對話即可無縫接手！）
+
+> 💡 **跨引擎接手**：您可以在 Codex 裡開始任務，中途因為需要更強的推理能力而切換到 Claude Code 接手，或反之。交接單的格式是通用的，所有引擎都能解析。
 
 ---
 
@@ -47,8 +56,8 @@
 1. `00-pm`: 判斷意圖，按下啟動按鈕。
 2. `01-req-analyst` & `02-spec-architect`: 將草稿繪製成 Mermaid 系統圖與 BDD 驗證步驟。
 3. `03-threat-modeler` **(Gemini)**: 扮演黑帽駭客，針對剛剛寫出來的規格找出 3-5 個邏輯盲點 (STRIDE)。
-4. `04-implementer` **(GPT-4o)**: 真正寫下主要實作程式碼的工程師。
-5. `05-code-reviewer` **(Gemini)**: 鐵血 Reviewer。負責踢回 GPT-4o 寫錯或硬幹的 N+1 Query / SQL Injection。
+4. `04-implementer` **(Codex / Claude)**: 真正寫下主要實作程式碼的工程師。
+5. `05-code-reviewer` **(Claude / Codex 交叉審查)**: 鐵血 Reviewer。負責踢回對方寫錯或硬幹的 N+1 Query / SQL Injection。
 6. `06-test-engineer`: 根據 Review 建議，掛載端到端 (E2E) 或自動化覆蓋測試。
 7. `07-security-gate` **(Claude)**: 發布前的最終裁判。如果不符合資安規範，直接退件。
 8. `08-devops`: 將通過考驗的專案包裝成 GitHub Actions 或 GitLab CI pipeline，並交還棒子。
@@ -82,10 +91,10 @@
 
 安裝後，以下所有 AI 開發工具皆可直接使用本系統，**無需額外設定**：
 
-| 平台 | 入口檔 | 備註 |
+| 平台 | 入口檔 | 定位 |
 |------|--------|------|
-| GitHub Copilot / Cline | `.github/copilot-instructions.md` | 核心 SSOT (Single Source of Truth) |
-| Cursor | `.cursorrules` | 薄代理，自動載入 SSOT |
-| Gemini CLI / Vertex AI | `.geminirules` | 薄代理，自動載入 SSOT |
-| Claude Code / Anthropic | `CLAUDE.md` | 薄代理，自動載入 SSOT |
-| **OpenAI Codex (VSCode + CLI)** | **`AGENTS.md`** | **v9.1.0 新增**，薄代理，自動載入 SSOT |
+| **OpenAI Codex (VSCode + CLI)** | **`AGENTS.md`** | 🥇 **主力引擎** |
+| **Claude Code (Anthropic)** | **`CLAUDE.md`** | 🥇 **主力引擎** |
+| Cursor | `.cursorrules` | 🔧 相容支援 |
+| Gemini CLI / Vertex AI | `.geminirules` | 🔧 相容支援 |
+| GitHub Copilot / Cline | `.github/copilot-instructions.md` | 📘 核心 SSOT (所有入口檔導向此文件) |
