@@ -61,7 +61,11 @@ Every line of code designed or written MUST adhere to these four pillars:
 
 ## 0.4 Shorthand Skill Macros (Omni-Skills)
 
-When the user inputs a message starting with a specific shorthand variable, you MUST immediately enter the corresponding mode. If a matching file exists in `payload/.agents/skills/`, strictly adhere to it.
+When the user inputs a message starting with a specific shorthand variable, you MUST immediately enter the corresponding mode.
+
+**Two-Tier Skill Discovery (v9.2 Context Budget Optimization):**
+1. **Core Skills** (`payload/.agents/skills/`): Auto-loaded at startup. Contains SSDLC lifecycle phases and daily-use role skills (~15 skills).
+2. **Extended Library** (`payload/.agents/skills-library/{category}/`): Loaded on-demand only when the user invokes a matching `$macro`. Categories: `dotnet/`, `build/`, `frontend/`, `platform/`, `meta/`. For the full index, refer to `AGENTS.md`.
 
 > **Governance Notice (GOV-012)**: The authoritative registry for all company skills is `TwReuse/sl_company-platform-governance/docs/governance/skill-registry.md` (GOV-PLATFORM-AI-012). This prompt only definitions core SSDLC macros to preserve token limits. For domain-specific skills (e.g., UI, DB, DevOps), query the registry.
 

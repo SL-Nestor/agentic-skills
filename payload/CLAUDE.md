@@ -20,3 +20,10 @@ You MUST abide by the SSDLC Phases and Gates defined in that document. DO NOT pr
 If the user's prompt begins with a macro (e.g., `$qa-tester`, `$devops-eng`), you must silently read the corresponding markdown file in:
 `.agents/skills/`
 and assume that persona and its detailed directives entirely.
+
+## Extended Skills Library (On-Demand)
+If the macro does not match any skill in `.agents/skills/`, check the extended library at:
+`.agents/skills-library/{category}/{skill-name}/SKILL.md`
+
+Categories: `dotnet/`, `build/`, `frontend/`, `platform/`, `meta/`.
+For the full index of available extended skills, refer to the `AGENTS.md` file in the project root.
