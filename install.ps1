@@ -33,7 +33,7 @@ if (Test-Path (Join-Path $SourceDir ".agents")) {
     Copy-Item -Path (Join-Path $SourceDir ".agents\*") -Destination $targetAgents -Recurse -Force
 }
 
-$rootFiles = @(".cursorrules", ".geminirules", "CLAUDE.md")
+$rootFiles = @(".cursorrules", ".geminirules", "CLAUDE.md", "AGENTS.md")
 foreach ($file in $rootFiles) {
     $srcPath = Join-Path $SourceDir $file
     if (Test-Path $srcPath) {

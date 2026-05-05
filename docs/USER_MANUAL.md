@@ -1,6 +1,6 @@
 # 🚀 SSDLC Autopilot: 多代理協作網路 (Multi-Agent Network) 實戰手冊
 
-歡迎進入 v9.0.0 全新時代！我們已將原本的單點「AI 輔助」與「肥胖的單一會話」升級為**「跨部門實體交接 (Handoff-Driven) 異質多代理生產管線」**。本架構透過強制讓 Claude 生產規格、Gemini 審視威脅、GPT-4o 撰寫代碼並交由另一位 AI Review 的方式，徹底解決 AI 產生幻覺或「自己寫錯自己包庇」的問題，實踐 Zero-Trust Agentic Workflow。
+歡迎進入 v9.1.0 全新時代！我們已將原本的單點「AI 輔助」與「肥胖的單一會話」升級為**「跨部門實體交接 (Handoff-Driven) 異質多代理生產管線」**。本架構透過強制讓 Claude 生產規格、Gemini 審視威脅、GPT-4o / Codex 撰寫代碼並交由另一位 AI Review 的方式，徹底解決 AI 產生幻覺或「自己寫錯自己包庇」的問題，實踐 Zero-Trust Agentic Workflow。
 
 ---
 
@@ -11,9 +11,11 @@
 您唯一的起點與入口是：
 👉 **`00-pm` (路由樞紐 / 專案經理)**
 
-### 啟動方式 (兩者皆可)：
-1. **VS Code / IDE 介面**：開啟您的 Copilot / Cline 介面，在選單點選或輸入 `@00-pm`。
-2. **純文字指令巨集**：在任何 AI 聊天對話框輸入 `$pm [我今天要做的任務 / 規格文件路徑]`。
+### 啟動方式 (任選其一)：
+1. **VS Code / IDE 介面 (Copilot / Cline)**：開啟您的 Copilot / Cline 介面，在選單點選或輸入 `@00-pm`。
+2. **VS Code + Codex Extension**：在 Codex 面板的 Agent 模式中輸入 `$pm [任務描述]`。Codex 會自動讀取專案根目錄的 `AGENTS.md` 載入 SSDLC 指令。
+3. **Codex CLI (終端機)**：在終端機執行 `codex` 後輸入 `$pm [任務描述]`。Codex CLI 支援 hierarchical `AGENTS.md` discovery（全域 → 專案根 → 子目錄）。
+4. **純文字指令巨集**：在任何其他 AI 聊天對話框（Cursor / Gemini / Claude）輸入 `$pm [我今天要做的任務 / 規格文件路徑]`。
 
 ### 🔄 跨部門交接 (Token 最佳化 / 防幻覺機制)
 當開發進入各階段檢查哨 (Gate)，或是中途除錯卡關需要暫停時，`$pm` 會主動產出**雙軌交接單**：
@@ -73,3 +75,17 @@
 *   `$ccg` ➡ 叫 AI 變成三個極端的架構師開會，為你決策技術選型。
 *   `$ralph` ➡ 讓 AI 閉上嘴巴。不需要問候語，只管把測試從紅燈改成綠燈。
 *   `$stack-advisor` ➡ 當規格未明，讓 AI 幫你選擇前端該用什麼框架 (React/Vue/Vite/Next)。
+
+---
+
+## 🔌 支援平台一覽
+
+安裝後，以下所有 AI 開發工具皆可直接使用本系統，**無需額外設定**：
+
+| 平台 | 入口檔 | 備註 |
+|------|--------|------|
+| GitHub Copilot / Cline | `.github/copilot-instructions.md` | 核心 SSOT (Single Source of Truth) |
+| Cursor | `.cursorrules` | 薄代理，自動載入 SSOT |
+| Gemini CLI / Vertex AI | `.geminirules` | 薄代理，自動載入 SSOT |
+| Claude Code / Anthropic | `CLAUDE.md` | 薄代理，自動載入 SSOT |
+| **OpenAI Codex (VSCode + CLI)** | **`AGENTS.md`** | **v9.1.0 新增**，薄代理，自動載入 SSOT |

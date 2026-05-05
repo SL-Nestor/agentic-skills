@@ -17,7 +17,7 @@ if [ -d "$SOURCE_DIR/.agents" ]; then
 fi
 
 # Copy IDE root config files
-for file in ".cursorrules" ".geminirules" "CLAUDE.md"; do
+for file in ".cursorrules" ".geminirules" "CLAUDE.md" "AGENTS.md"; do
     if [ -f "$SOURCE_DIR/$file" ]; then
         cp -f "$SOURCE_DIR/$file" "$TARGET_DIR/"
     fi

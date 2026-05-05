@@ -1,4 +1,4 @@
-# 🧬 Agentic Skills - Multi-Agent Network (v9.0.0)
+# 🧬 Agentic Skills - Multi-Agent Network (v9.1.0)
 
 這個儲存庫是針對軟體開發團隊所配置的**異質多代理協作網路 (Multi-Agent Orchestration)** 與 **SSDLC (安全軟體開發生命週期)** 大腦設定檔。
 
@@ -8,7 +8,12 @@
 告別冗長對話導致的「Token 爆炸」與「AI 幻覺」！本系統內建 **Universal Handoff Protocol**。
 每個任務階段 (Phase) 結束、或是遇到 Debug 卡關時，AI 會自動產出**雙軌交接**：`.ai/handoff/latest_memo.md`（散文版）+ `.ai/handoff/latest_state.json`（結構化狀態 SSOT）。你隨時可以開啟全新的對話視窗（甚至切換給不同的 AI 模型），並輸入指令 `$pm continue`。新的 AI 將先讀取 JSON 狀態確認進度，再讀散文補充上下文，實現**「跨部門、跨模型」**的極致效能協作。
 
-## 🆕 v9.0.0 新增：Harness Engineering 強化
+## 🆕 v9.1.0 新增：Codex 雙軌開發支援
+- **OpenAI Codex 原生支援**：新增 `AGENTS.md` 入口檔，同時支援 **VSCode Codex Extension** 與 **Codex CLI** 兩種開發模式
+- **業界最完整平台覆蓋**：Copilot / Cline / Cursor / Gemini / Claude Code / **Codex** — 共 6 大 AI 開發工具一鍵部署
+- **Codex 專屬守則**：Sandbox Awareness、Turn Budget、Approval Policy 等行為指引
+
+## v9.0.0：Harness Engineering 強化
 - **Token 預算管理**：5 層載入優先級，自動偵測 context 使用量並觸發交接
 - **結構化 JSON 交接**：LLM 不會隨意改寫 JSON，徹底解決「Premature Victory」問題
 - **Agent 韌性**：Turn Budget (25 turns)、Loop Detection (3-strike)、Graceful Degradation
@@ -23,7 +28,7 @@
 
 ## 🚀 部署教學 (安裝至你的目標專案)
 
-透過執行內建的安裝腳本，可以一鍵將這個「虛擬團隊設定檔」佈署到你要實際開發的專案根目錄中（如 `.github/` 與 `.agents/`）。這些設定將直接融入 GitHub Copilot、Cline 或 Cursor 的原生開發流。
+透過執行內建的安裝腳本，可以一鍵將這個「虛擬團隊設定檔」佈署到你要實際開發的專案根目錄中（如 `.github/`、`.agents/` 與 `AGENTS.md`）。這些設定將直接融入 GitHub Copilot、Cline、Cursor、Gemini CLI、Claude Code 以及 **OpenAI Codex (VSCode / CLI)** 的原生開發流。
 
 ### Windows (PowerShell)
 在需要套用的專案中，開啟 PowerShell：
