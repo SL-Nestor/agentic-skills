@@ -105,6 +105,7 @@ When the user invokes a `$macro` that matches one of these, read the SKILL.md fr
 | `$mcp-debug` | `platform/mcp-csharp-debug` | MCP Server 除錯 |
 | `$mcp-publish` | `platform/mcp-csharp-publish` | MCP Server 發佈 |
 | `$mcp-test` | `platform/mcp-csharp-test` | MCP Server 測試 |
+| `$e2e-incident` | `platform/e2e-incident-handler` | 端到端事故處理 |
 | `$mcp-dev` | `platform/mcp-dev` | MCP 開發框架 |
 
 ### meta/ — 元技能與工具
