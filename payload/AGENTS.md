@@ -92,6 +92,9 @@ When the user invokes a `$macro` that matches one of these, read the SKILL.md fr
 | `$stitch-loop` | `frontend/stitch-loop` | Stitch 迭代迴圈 |
 | `$taste` | `frontend/taste-design` | 設計品味評估 |
 | `$ui-designer` | `frontend/ui-designer` | UI 設計師模式 |
+| `$ux-audit` | `frontend/ux-auditor` | UX 可用性審計 |
+| `$ui-ux-review` | `frontend/ui-ux-review` | UI/UX 統一設計審查 |
+| `$ux-design` | `frontend/ux-driven-design` | UX 驅動 UI 設計 |
 
 ### platform/ — 平台與整合
 | Macro | Path | Description |
