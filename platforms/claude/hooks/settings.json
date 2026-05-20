@@ -1,0 +1,46 @@
+{
+  "_comment": "Claude Code hooks for SSDLC Autopilot v7.9.5. Copy to target project's .claude/settings.json (merge if exists).",
+  "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f .agents/standards/ssdlc-core-rules.md ] && echo '[SSDLC] Core rules loaded' || echo '[SSDLC] WARNING: .agents/ not found. Run install script first.'"
+          },
+          {
+            "type": "command",
+            "command": "[ -f .agents/hooks/gate-checks/check-gate-p.sh ] && bash .agents/hooks/gate-checks/check-gate-p.sh || true"
+          },
+          {
+            "type": "command",
+            "command": "[ -f .agents/hooks/gate-checks/check-gate-d.sh ] && bash .agents/hooks/gate-checks/check-gate-d.sh || true"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "[ -f SSDLC_TRACKER.md ] && echo '[SSDLC] Session end: remember to update SSDLC_TRACKER.md and AGENT_HANDOFF.md' || true"
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "allow": [
+      "Read(.agents/**)",
+      "Read(docs/**)",
+      "Read(SSDLC_TRACKER.md)",
+      "Read(AGENT_HANDOFF.md)",
+      "Write(docs/**)",
+      "Write(SSDLC_TRACKER.md)",
+      "Write(AGENT_HANDOFF.md)"
+    ]
+  }
+}

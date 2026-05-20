@@ -1,0 +1,74 @@
+{
+  "name": "ssdlc-autopilot",
+  "version": "8.0.0",
+  "description": "SSDLC Autopilot: 9-Agent 異質多代理協作網路 (Multi-Agent Orchestration) for secure software development. Zero-Trust cross-validation with Claude, Gemini, and Codex.",
+  "author": "SL-Nestor",
+  "repository": "https://github.com/SL-Nestor/agentic-skills",
+  "license": "MIT",
+  "skills": [
+    {
+      "name": "pm",
+      "description": "🎯 SSDLC 入口路由 — 判斷開發模式，分派 Agent 任務",
+      "path": "skills/pm.md"
+    },
+    {
+      "name": "req-analyst",
+      "description": "📋 需求分析師 — 模糊業務需求 → 結構化 requirements.md",
+      "path": "skills/req-analyst.md"
+    },
+    {
+      "name": "spec-architect",
+      "description": "🏗️ 規格架構師 — 需求 → Mermaid 架構圖 + BDD 任務清單",
+      "path": "skills/spec-architect.md"
+    },
+    {
+      "name": "threat-modeler",
+      "description": "🛡️ 威脅建模師 (Gemini) — STRIDE 安全評估，交叉驗證規格",
+      "path": "skills/threat-modeler.md"
+    },
+    {
+      "name": "implementer",
+      "description": "💻 實作工程師 (Codex) — TDD 驅動程式碼實作",
+      "path": "skills/implementer.md"
+    },
+    {
+      "name": "code-reviewer",
+      "description": "🔍 程式碼審查員 (Gemini) — 交叉驗證審查，不審查自己寫的代碼",
+      "path": "skills/code-reviewer.md"
+    },
+    {
+      "name": "test-engineer",
+      "description": "🧪 測試工程師 — E2E + Edge Case + 資安負面測試",
+      "path": "skills/test-engineer.md"
+    },
+    {
+      "name": "security-gate",
+      "description": "🔒 安全閘口 (Claude) — 部署前最終驗證，PASS/FAIL 無中間地帶",
+      "path": "skills/security-gate.md"
+    },
+    {
+      "name": "devops",
+      "description": "🚀 DevOps 工程師 (Codex) — CI/CD Pipeline 產出",
+      "path": "skills/devops.md"
+    },
+    {
+      "name": "doubt-driven-development",
+      "description": "🤔 懷疑驅動開發 — 對非瑣碎決策進行新鮮上下文的對抗性審查",
+      "path": "skills/doubt-driven-development.md"
+    }
+  ],
+  "mcps": [
+    {
+      "name": "cavemem",
+      "description": "🪨 Cross-agent persistent memory (optional). Stores SSDLC decisions compressed in local SQLite. Enables agents to recall past phase decisions, threat findings, and Gate verdicts across sessions and across AI models (Claude → Gemini → Codex). Install separately: npm install -g cavemem && cavemem install",
+      "command": "cavemem mcp",
+      "optional": true,
+      "installUrl": "https://github.com/JuliusBrussee/cavemem",
+      "tools": ["search", "timeline", "get_observations", "list_sessions"]
+    }
+  ],
+  "installHooks": {
+    "postInstall": "echo 'SSDLC Autopilot installed. Start with: $pm [your task]'\necho 'Optional: npm install -g cavemem && cavemem install  # Cross-session memory'"
+  },
+  "tags": ["ssdlc", "multi-agent", "security", "devops", "cross-validation", "zero-trust", "persistent-memory"]
+}

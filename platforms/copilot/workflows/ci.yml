@@ -1,0 +1,174 @@
+# SSDLC Autopilot — CI Pipeline
+# Security Gate: PASS (2026-05-19)
+# Triggers: push to main, all PRs
+
+name: SSDLC Autopilot CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  # ─── 靜態分析 ──────────────────────────────────────────────────
+  shellcheck:
+    name: ShellCheck (SAST)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install ShellCheck
+        run: sudo apt-get install -y shellcheck
+      - name: Lint install.sh
+        run: shellcheck install.sh
+      - name: Lint gate-check scripts
+        run: |
+          shellcheck core/hooks/gate-checks/check-gate-p.sh
+          shellcheck core/hooks/gate-checks/check-gate-d.sh
+
+  # ─── 測試套件 ──────────────────────────────────────────────────
+  bats-tests:
+    name: bats Tests (install.sh)
+    runs-on: ubuntu-latest
+    needs: shellcheck
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install bats-core
+        run: |
+          git clone --depth 1 https://github.com/bats-core/bats-core.git /tmp/bats-core
+          echo "/tmp/bats-core/bin" >> $GITHUB_PATH
+      - name: Run install.sh test suite
+        run: bats tests/install/test_install_sh.bats
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: bats-results
+          path: "*.tap"
+
+  # ─── PowerShell 測試（Windows）──────────────────────────────────
+  pester-tests:
+    name: Pester Tests (install.ps1)
+    runs-on: windows-latest
+    needs: shellcheck
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Pester
+        shell: pwsh
+        run: Install-Module Pester -Force -SkipPublisherCheck
+      - name: Run Pester test suite
+        shell: pwsh
+        run: |
+          Invoke-Pester ./tests/install/test_install_ps1.Tests.ps1 `
+            -Output Detailed `
+            -PassThru | Export-CliXml pester-results.xml
+      - name: Upload Pester results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pester-results
+          path: pester-results.xml
+
+  # ─── Markdown 品質 ─────────────────────────────────────────────
+  markdown-lint:
+    name: Markdown Lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install markdownlint-cli
+        run: npm install -g markdownlint-cli
+      - name: Lint all Markdown files
+        run: |
+          markdownlint \
+            'platforms/**/*.md' \
+            'core/standards/*.md' \
+            'core/hooks/*.md' \
+            'tests/skills/*.md' \
+            --config .markdownlint.json \
+            --ignore 'core/skills/**'
+        continue-on-error: true  # 警告，不阻擋（目前 skills 數量多，先容忍）
+
+  # ─── 結構完整性驗證 ────────────────────────────────────────────
+  structure-check:
+    name: Repository Structure Check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify required files exist
+        run: |
+          required_files=(
+            "install.sh"
+            "install.ps1"
+            "core/standards/ssdlc-core-rules.md"
+            "core/hooks/session-start.md"
+            "core/hooks/session-end.md"
+            "core/hooks/gate-checks/check-gate-p.sh"
+            "core/hooks/gate-checks/check-gate-d.sh"
+            "platforms/claude/entry/CLAUDE.md"
+            "platforms/claude/hooks/settings.json"
+            "platforms/gemini/entry/GEMINI.md"
+            "platforms/codex/entry/AGENTS.md"
+            ".claude-plugin/plugin.json"
+            "docs/requirements.md"
+            "docs/threat-model.md"
+            "docs/security-gate-report.md"
+          )
+          failed=0
+          for f in "${required_files[@]}"; do
+            if [ ! -f "$f" ]; then
+              echo "❌ Missing: $f"
+              failed=1
+            else
+              echo "✅ $f"
+            fi
+          done
+          exit $failed
+      - name: Verify Ghost Skills exist
+        run: |
+          for skill in deep-interview ccg ralph stack-advisor incident-responder; do
+            f="platforms/claude/agents/omni-${skill}.md"
+            [ -f "$f" ] && echo "✅ $f" || { echo "❌ Missing: $f"; exit 1; }
+          done
+      - name: Verify new Pipeline Agents exist (v8.0.0)
+        run: |
+          agents=(
+            "09-ux-analyst"
+            "10-data-modeler"
+            "11-api-designer"
+            "12-dependency-auditor"
+            "13-performance-engineer"
+            "14-compliance-checker"
+            "15-tech-writer"
+            "16-retrospective"
+          )
+          failed=0
+          for agent in "${agents[@]}"; do
+            for platform in claude codex; do
+              f="platforms/${platform}/agents/${agent}.md"
+              [ -f "$f" ] && echo "✅ $f" || { echo "❌ Missing: $f"; failed=1; }
+            done
+          done
+          exit $failed
+      - name: Verify BDD TESTS.md exist
+        run: |
+          for skill in pm req-analyst spec-architect threat-modeler implementer \
+                       code-reviewer test-engineer security-gate devops; do
+            f="tests/skills/${skill}.TESTS.md"
+            [ -f "$f" ] && echo "✅ $f" || { echo "❌ Missing: $f"; exit 1; }
+          done
+
+  # ─── 最終整合驗證 ──────────────────────────────────────────────
+  integration-check:
+    name: Full Install Integration
+    runs-on: ubuntu-latest
+    needs: [bats-tests, structure-check]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Full install (all platforms) to temp dir
+        run: |
+          TMP=$(mktemp -d)
+          bash install.sh "$TMP" all
+          echo "Claude agents: $(ls $TMP/.agents/agents/*.md | wc -l)"
+          echo "Skills: $(ls $TMP/.agents/skills/ | wc -l)"
+          echo "Standards: $(ls $TMP/.agents/standards/ | wc -l)"
+          rm -rf "$TMP"
